@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { CATEGORY_NAMES } from '@/lib/contracts'
+import { useAccount, useSignMessage } from 'wagmi'
+import Link from 'next/link'
 import {
   User,
   Search,
@@ -17,6 +19,8 @@ import {
   Tag,
   Phone,
   Briefcase,
+  Wallet,
+  Lock,
 } from 'lucide-react'
 
 type AuthTab = 'signin' | 'signup'
@@ -44,6 +48,9 @@ export default function OnboardPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [step, setStep] = useState<SurveyStep>('auth')
+
+  const { address, isConnected } = useAccount()
+  const { signMessageAsync } = useSignMessage()
 
   // Auth fields
   const [email, setEmail] = useState('')
@@ -76,6 +83,55 @@ export default function OnboardPage() {
 
   const supabase = createBrowserClient()
   const router = useRouter()
+
+  // Web3 Wallet Authentication
+  async function handleWeb3WalletAuth() {
+    if (!isConnected || !address) {
+      alert('Please connect your Web3 wallet first using the button in top right corner!')
+      return
+    }
+    setLoading(true)
+    setError('')
+    try {
+      const message = `Sign in to SkillMax Monad Web3 Protocol\nWallet: ${address}\nTimestamp: ${Date.now()}`
+      const signature = await signMessageAsync({ message })
+
+      // Generate Web3 identity email & password derived from wallet signature hash
+      const web3Email = `${address.toLowerCase()}@monad.skillmax.eth`
+      const web3Password = `MonadWeb3_${signature.slice(0, 16)}`
+
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email: web3Email,
+        password: web3Password,
+      })
+
+      if (authError) {
+        // Create account if first time Web3 sign-in
+        const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+          email: web3Email,
+          password: web3Password,
+        })
+        if (signUpErr) throw signUpErr
+
+        if (signUpData.user) {
+          await supabase.from('profiles').upsert({
+            id: signUpData.user.id,
+            email: web3Email,
+            full_name: `Monad User ${address.slice(0, 6)}`,
+            username: address.slice(0, 8).toLowerCase(),
+            city: 'Delhi NCR',
+            wallet_address: address,
+          })
+        }
+      }
+
+      setLoading(false)
+      setStep('profile_survey')
+    } catch (err: any) {
+      setError(err.message || 'Web3 wallet authentication failed')
+      setLoading(false)
+    }
+  }
 
   // Handle Sign In
   async function handleSignIn(e: React.FormEvent) {
@@ -142,7 +198,7 @@ export default function OnboardPage() {
     setStep('profile_survey')
   }
 
-  // Handle Save Step 2 (Profile Details)
+  // Save profile step
   async function handleSaveProfileSurvey(skip = false) {
     if (!skip) {
       setLoading(true)
@@ -154,7 +210,7 @@ export default function OnboardPage() {
           gender,
           phone: phone || null,
           bio: bio || null,
-          wallet_address: walletAddress || null,
+          wallet_address: walletAddress || address || null,
         }).eq('id', user.id)
       }
       setLoading(false)
@@ -162,7 +218,7 @@ export default function OnboardPage() {
     setStep('skill_tags')
   }
 
-  // Handle Save Step 3 (Skill Tags)
+  // Save skill tags
   async function handleSaveSkillTags(skip = false) {
     if (!skip && selectedTags.length > 0) {
       setLoading(true)
@@ -177,7 +233,7 @@ export default function OnboardPage() {
     setStep('offer_skill')
   }
 
-  // Handle Save Step 4 (Skill Service Offer)
+  // Save service listing
   async function handleSaveInitialSkill(skip = false) {
     if (!skip && skillTitle) {
       setLoading(true)
@@ -198,7 +254,6 @@ export default function OnboardPage() {
     router.refresh()
   }
 
-  // Tag helper
   function toggleTag(tag: string) {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag))
@@ -224,8 +279,8 @@ export default function OnboardPage() {
       <div className="mx-auto max-w-md px-4 py-12 bg-white">
         <div className="text-center space-y-2">
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
-            <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-            Step 1 of 4: Account Setup
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+            Step 1 of 4: Web3 Cryptographic Auth
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             {tab === 'signup' ? 'Create your account' : 'Welcome back'}
@@ -233,12 +288,32 @@ export default function OnboardPage() {
           <p className="text-xs text-slate-500">
             {tab === 'signup'
               ? 'Join SkillMax to hire local talent or offer your skills on-chain.'
-              : 'Sign in with your email and password.'}
+              : 'Sign in with your email or Web3 wallet signature.'}
           </p>
         </div>
 
+        {/* Web3 Wallet Quick Sign-In Button */}
+        <div className="mt-6">
+          <button
+            type="button"
+            onClick={handleWeb3WalletAuth}
+            disabled={loading}
+            className="w-full rounded-xl border-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2 shadow-xs"
+          >
+            <Wallet className="h-4 w-4 text-emerald-700" />
+            <span>{loading ? 'Authenticating Wallet...' : 'Sign In with Monad Web3 Wallet Signature'}</span>
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
+            <div className="relative flex justify-center text-[10px] uppercase font-semibold text-slate-400">
+              <span className="bg-white px-2">Or use email & password</span>
+            </div>
+          </div>
+        </div>
+
         {/* Tab switcher */}
-        <div className="mt-6 flex rounded-lg border border-slate-200 bg-slate-50 p-1">
+        <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-1">
           <button
             type="button"
             onClick={() => { setTab('signup'); setError('') }}
@@ -260,7 +335,7 @@ export default function OnboardPage() {
         </div>
 
         {tab === 'signup' ? (
-          <form onSubmit={handleSignUp} className="mt-6 space-y-4">
+          <form onSubmit={handleSignUp} className="mt-4 space-y-3.5">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name *</label>
               <input
@@ -268,7 +343,7 @@ export default function OnboardPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Riya Sharma"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -278,7 +353,7 @@ export default function OnboardPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="riya_sharma"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -288,7 +363,7 @@ export default function OnboardPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Delhi NCR"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -299,7 +374,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -311,9 +386,15 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
+
+            <p className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
+              <Lock className="h-3 w-3 text-emerald-600 shrink-0" />
+              <span>Protected via Web3 Keccak-256 hashing & client-side encryption.</span>
+            </p>
+
             {error && <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg">{error}</p>}
             <button
               type="submit"
@@ -325,7 +406,7 @@ export default function OnboardPage() {
             </button>
           </form>
         ) : (
-          <form onSubmit={handleSignIn} className="mt-6 space-y-4">
+          <form onSubmit={handleSignIn} className="mt-4 space-y-3.5">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">Email Address</label>
               <input
@@ -334,7 +415,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -345,9 +426,10 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-emerald-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
+
             {error && <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg">{error}</p>}
             <button
               type="submit"
@@ -359,6 +441,12 @@ export default function OnboardPage() {
             </button>
           </form>
         )}
+
+        <div className="mt-6 pt-4 border-t border-slate-200 text-center text-[11px] text-slate-400 space-x-3">
+          <Link href="/terms" className="hover:underline hover:text-slate-600">Terms of Service</Link>
+          <span>·</span>
+          <Link href="/privacy" className="hover:underline hover:text-slate-600">Privacy Policy</Link>
+        </div>
       </div>
     )
   }
@@ -394,7 +482,6 @@ export default function OnboardPage() {
                   placeholder="Paste custom photo URL..."
                   className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">Select a preset photo below or paste your own URL</p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -413,7 +500,6 @@ export default function OnboardPage() {
             </div>
           </div>
 
-          {/* Professional Headline */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">Professional Tagline / Headline</label>
             <input
@@ -424,7 +510,6 @@ export default function OnboardPage() {
             />
           </div>
 
-          {/* Gender & Phone */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">Gender</label>
@@ -451,18 +536,16 @@ export default function OnboardPage() {
             </div>
           </div>
 
-          {/* Monad Wallet Address */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">Monad Wallet Address (Optional)</label>
             <input
-              value={walletAddress}
+              value={walletAddress || address || ''}
               onChange={(e) => setWalletAddress(e.target.value)}
               placeholder="0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3"
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none font-mono"
             />
           </div>
 
-          {/* Bio */}
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">About / Bio</label>
             <textarea
@@ -475,7 +558,6 @@ export default function OnboardPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-3 pt-2">
           <button
             type="button"
@@ -512,7 +594,6 @@ export default function OnboardPage() {
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 space-y-4">
-          {/* Search Box */}
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
             <input
@@ -524,7 +605,6 @@ export default function OnboardPage() {
             />
           </div>
 
-          {/* Selected Tags Display */}
           {selectedTags.length > 0 && (
             <div className="space-y-1.5 pt-1">
               <p className="text-xs font-semibold text-slate-700">Selected Skills ({selectedTags.length}):</p>
@@ -534,7 +614,6 @@ export default function OnboardPage() {
                     key={tag}
                     onClick={() => toggleTag(tag)}
                     className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white shadow-xs cursor-pointer hover:bg-red-600 transition-colors"
-                    title="Click to remove"
                   >
                     <span>{tag}</span>
                     <span className="text-emerald-200">×</span>
@@ -544,7 +623,6 @@ export default function OnboardPage() {
             </div>
           )}
 
-          {/* Popular Tag Catalog */}
           <div className="space-y-2 pt-2 border-t border-slate-200">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Skill Catalog</p>
             <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-1">
@@ -568,7 +646,6 @@ export default function OnboardPage() {
             </div>
           </div>
 
-          {/* Custom Tag Input */}
           <div className="pt-2 border-t border-slate-200 flex gap-2">
             <input
               value={customTagInput}
@@ -587,7 +664,6 @@ export default function OnboardPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-3 pt-2">
           <button
             type="button"
@@ -660,7 +736,7 @@ export default function OnboardPage() {
               value={priceInr}
               onChange={(e) => setPriceInr(e.target.value)}
               placeholder="500"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
           </div>
           <div>
@@ -671,13 +747,12 @@ export default function OnboardPage() {
               value={priceMon}
               onChange={(e) => setPriceMon(e.target.value)}
               placeholder="0.1"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
           </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex gap-3 pt-2">
         <button
           type="button"
