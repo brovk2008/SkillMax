@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { CitySelector } from '@/components/CitySelector'
+import { AvatarUploader } from '@/components/AvatarUploader'
 import { CheckCircle2 } from 'lucide-react'
 
 interface Profile {
@@ -69,22 +70,11 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
 
   return (
     <form onSubmit={handleSave} className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-      <div className="flex items-center gap-4 border-b border-slate-100 pb-4">
-        <img
-          src={form.avatar_url}
-          alt="Avatar Preview"
-          className="h-16 w-16 rounded-full object-cover border-2 border-emerald-500 shadow-xs"
-        />
-        <div className="flex-1">
-          <label className="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL</label>
-          <input
-            value={form.avatar_url}
-            onChange={(e) => setForm({ ...form, avatar_url: e.target.value })}
-            placeholder="https://..."
-            className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
-          />
-        </div>
-      </div>
+      <AvatarUploader
+        value={form.avatar_url || ''}
+        onChange={(url) => setForm({ ...form, avatar_url: url })}
+        label="Profile Avatar Photo"
+      />
 
       {[
         { label: 'Full name *', key: 'full_name', placeholder: 'Riya Sharma' },

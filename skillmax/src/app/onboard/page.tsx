@@ -7,6 +7,7 @@ import { CATEGORY_NAMES } from '@/lib/contracts'
 import { useAccount, useSignMessage } from 'wagmi'
 import Link from 'next/link'
 import { CitySelector } from '@/components/CitySelector'
+import { AvatarUploader } from '@/components/AvatarUploader'
 import {
   User,
   Search,
@@ -492,40 +493,7 @@ export default function OnboardPage() {
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-slate-50/50 p-6 space-y-5">
-          {/* Avatar Photo Selector */}
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-2">Profile Avatar Photo</label>
-            <div className="flex items-center gap-3 mb-3">
-              <img
-                src={avatarUrl}
-                alt="Avatar Preview"
-                className="h-14 w-14 rounded-full object-cover border-2 border-emerald-500 shadow-xs"
-              />
-              <div className="flex-1">
-                <input
-                  type="text"
-                  value={avatarUrl}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
-                  placeholder="Paste custom photo URL..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
-                />
-              </div>
-            </div>
-            <div className="flex gap-2">
-              {PRESET_AVATARS.map((url, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setAvatarUrl(url)}
-                  className={`h-9 w-9 rounded-full overflow-hidden border-2 transition-all ${
-                    avatarUrl === url ? 'border-emerald-600 scale-105' : 'border-slate-200 opacity-70'
-                  }`}
-                >
-                  <img src={url} alt={`Preset ${idx}`} className="h-full w-full object-cover" />
-                </button>
-              ))}
-            </div>
-          </div>
+          <AvatarUploader value={avatarUrl} onChange={setAvatarUrl} />
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">Professional Tagline / Headline</label>
