@@ -12,6 +12,11 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'SkillMax — Local Skill Marketplace on Monad',
   description: 'Hire local talent verified on-chain. Escrow powered by Monad Testnet. Payments via Razorpay.',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
