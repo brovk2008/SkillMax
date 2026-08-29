@@ -52,7 +52,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Service Provider</p>
             <Link href={`/profile/${provider?.username}`} className="flex items-center gap-3 hover:opacity-80">
               <img
-                src={provider?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                src={provider?.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'}
                 alt={provider?.full_name}
                 className="h-10 w-10 rounded-full object-cover border border-slate-200"
               />

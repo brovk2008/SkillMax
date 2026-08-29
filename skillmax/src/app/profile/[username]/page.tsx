@@ -29,7 +29,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <div className="rounded-lg border border-gray-200 p-5 space-y-3">
             <div className="flex items-center gap-3">
               <img
-                src={profile.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+                src={profile.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'}
                 alt={profile.full_name}
                 className="size-12 rounded-full object-cover border border-slate-200"
               />

@@ -49,7 +49,7 @@ export default function SkillCard({ skill }: SkillCardProps) {
           {/* Provider Details */}
           <div className="flex items-center gap-2.5 pt-1">
             <img
-              src={skill.profiles?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'}
+              src={skill.profiles?.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'}
               alt={skill.profiles?.full_name}
               className="size-7 rounded-full object-cover border border-slate-200 shrink-0"
             />

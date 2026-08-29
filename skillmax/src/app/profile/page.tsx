@@ -55,7 +55,7 @@ export default async function MyProfilePage() {
     joinedYear: new Date(profile.created_at ?? Date.now()).getFullYear(),
   }
 
-  const avatar = profile.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+  const avatar = profile.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 space-y-8 bg-white">
