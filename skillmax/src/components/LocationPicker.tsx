@@ -39,11 +39,11 @@ export function LocationPicker() {
       title="Click to detect current device GPS location"
     >
       {locating ? (
-        <Navigation className="h-3.5 w-3.5 text-fuchsia-600 animate-spin" />
+        <Navigation className="h-3.5 w-3.5 text-blue-600 animate-spin" />
       ) : coords ? (
-        <CheckCircle2 className="h-3.5 w-3.5 text-fuchsia-600" />
+        <CheckCircle2 className="h-3.5 w-3.5 text-blue-600" />
       ) : (
-        <MapPin className="h-3.5 w-3.5 text-fuchsia-600" />
+        <MapPin className="h-3.5 w-3.5 text-blue-600" />
       )}
       <span>{locating ? 'Detecting...' : locationName}</span>
       <span className="text-slate-400 text-[10px]">▾</span>

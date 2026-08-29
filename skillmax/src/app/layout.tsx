@@ -36,8 +36,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <div className="flex items-center gap-2">
                 <span className="font-bold text-slate-900">SkillMax Protocol</span>
                 <span>·</span>
-                <span className="inline-flex items-center gap-1 font-semibold text-fuchsia-700 bg-fuchsia-100/80 px-2 py-0.5 rounded-md text-[11px]">
-                  <Zap className="h-3 w-3 text-fuchsia-600" />
+                <span className="inline-flex items-center gap-1 font-semibold text-blue-700 bg-blue-100/80 px-2 py-0.5 rounded-md text-[11px]">
+                  <Zap className="h-3 w-3 text-blue-600" />
                   Monad Chain ID 10143
                 </span>
               </div>

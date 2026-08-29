@@ -35,7 +35,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
           <div>
-            <span className="inline-block rounded-full bg-fuchsia-50 px-3 py-1 text-xs font-medium text-fuchsia-700">
+            <span className="inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
               {skill.category}
             </span>
             <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{skill.title}</h1>
@@ -86,7 +86,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
               ) : !user ? (
                 <Link
                   href="/onboard"
-                  className="block w-full rounded-md bg-fuchsia-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-fuchsia-700 shadow-sm"
+                  className="block w-full rounded-md bg-blue-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 shadow-sm"
                 >
                   Sign in to Book
                 </Link>

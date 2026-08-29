@@ -45,7 +45,7 @@ export default async function DashboardPage() {
 
         <Link
           href="/skills/new"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-fuchsia-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-fuchsia-700 shadow-xs shrink-0"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-blue-700 shadow-xs shrink-0"
         >
           <Plus className="h-4 w-4" />
           <span>Offer New Skill</span>
@@ -56,34 +56,34 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Link
           href="/skills/new"
-          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-fuchsia-500 hover:shadow-xs transition-all group"
+          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-blue-500 hover:shadow-xs transition-all group"
         >
-          <div className="h-10 w-10 rounded-lg bg-fuchsia-100 flex items-center justify-center text-fuchsia-700 mb-3 group-hover:bg-fuchsia-600 group-hover:text-white transition-colors">
+          <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700 mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
             <Plus className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900 group-hover:text-fuchsia-700">Offer a Skill</h3>
+          <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700">Offer a Skill</h3>
           <p className="text-xs text-slate-500 mt-0.5">List a new service in INR or MON tokens</p>
         </Link>
 
         <Link
           href="/profile"
-          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-fuchsia-500 hover:shadow-xs transition-all group"
+          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-blue-500 hover:shadow-xs transition-all group"
         >
-          <div className="h-10 w-10 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700 mb-3 group-hover:bg-fuchsia-600 group-hover:text-white transition-colors">
+          <div className="h-10 w-10 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700 mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
             <Award className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900 group-hover:text-fuchsia-700">My Offered Skills & Badges</h3>
+          <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700">My Offered Skills & Badges</h3>
           <h4 className="text-xs text-slate-500 mt-0.5">View your listed skills and Monad achievements</h4>
         </Link>
 
         <Link
           href="/leaderboard"
-          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-fuchsia-500 hover:shadow-xs transition-all group"
+          className="rounded-xl border border-slate-200 bg-slate-50/70 p-5 hover:border-blue-500 hover:shadow-xs transition-all group"
         >
           <div className="h-10 w-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700 mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
             <Trophy className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900 group-hover:text-fuchsia-700">Community Leaderboard</h3>
+          <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700">Community Leaderboard</h3>
           <p className="text-xs text-slate-500 mt-0.5">Check city provider rankings and points</p>
         </Link>
       </div>
@@ -92,7 +92,7 @@ export default async function DashboardPage() {
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">Services I Booked (Client)</h2>
-          <Link href="/explore" className="text-xs font-semibold text-fuchsia-700 hover:underline">
+          <Link href="/explore" className="text-xs font-semibold text-blue-700 hover:underline">
             Book another service →
           </Link>
         </div>
@@ -102,7 +102,7 @@ export default async function DashboardPage() {
             <p className="text-sm text-slate-500">You haven't booked any local services yet.</p>
             <Link
               href="/explore"
-              className="mt-3 inline-block rounded-lg bg-fuchsia-600 px-4 py-2 text-xs font-semibold text-white hover:bg-fuchsia-700"
+              className="mt-3 inline-block rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
             >
               Explore Skills
             </Link>
@@ -120,7 +120,7 @@ export default async function DashboardPage() {
       <section className="space-y-4 pt-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">Bookings Received (Provider)</h2>
-          <Link href="/profile" className="text-xs font-semibold text-fuchsia-700 hover:underline">
+          <Link href="/profile" className="text-xs font-semibold text-blue-700 hover:underline">
             Manage my skills →
           </Link>
         </div>
@@ -130,7 +130,7 @@ export default async function DashboardPage() {
             <p className="text-sm text-slate-500">No client bookings received yet.</p>
             <Link
               href="/skills/new"
-              className="mt-3 inline-block rounded-lg bg-fuchsia-600 px-4 py-2 text-xs font-semibold text-white hover:bg-fuchsia-700"
+              className="mt-3 inline-block rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
             >
               List a New Skill
             </Link>

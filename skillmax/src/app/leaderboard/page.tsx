@@ -45,8 +45,8 @@ export default async function LeaderboardPage() {
       <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 md:p-8 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-fuchsia-800 bg-fuchsia-100/80 px-2.5 py-0.5 rounded-full">
-              <Trophy className="h-3.5 w-3.5 text-fuchsia-700" />
+            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
+              <Trophy className="h-3.5 w-3.5 text-blue-700" />
               Local Community Rankings
             </span>
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
@@ -58,7 +58,7 @@ export default async function LeaderboardPage() {
           </div>
 
           <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl p-4 shadow-xs shrink-0">
-            <div className="h-10 w-10 rounded-full bg-fuchsia-100 flex items-center justify-center text-fuchsia-700 font-bold">
+            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
               <Flame className="h-5 w-5" />
             </div>
             <div>
@@ -92,13 +92,13 @@ export default async function LeaderboardPage() {
                     <Trophy className="h-3.5 w-3.5" />
                     Rank #{idx + 1}
                   </span>
-                  <span className="text-xs font-bold text-fuchsia-700 bg-fuchsia-50 px-2.5 py-0.5 rounded-md">
+                  <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-md">
                     {item.points} PTS
                   </span>
                 </div>
 
                 <Link href={`/profile/${item.username}`} className="group block">
-                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-fuchsia-700 transition-colors">
+                  <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
                     {item.full_name}
                   </h3>
                   <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
@@ -115,7 +115,7 @@ export default async function LeaderboardPage() {
                 </div>
                 <div>
                   <p className="text-slate-400">MON Earned</p>
-                  <p className="font-bold text-fuchsia-600">{item.monEarned.toFixed(2)} MON</p>
+                  <p className="font-bold text-blue-600">{item.monEarned.toFixed(2)} MON</p>
                 </div>
               </div>
             </div>
@@ -150,7 +150,7 @@ export default async function LeaderboardPage() {
                     #{idx + 1}
                   </td>
                   <td className="px-6 py-4">
-                    <Link href={`/profile/${item.username}`} className="font-semibold text-slate-900 hover:text-fuchsia-600">
+                    <Link href={`/profile/${item.username}`} className="font-semibold text-slate-900 hover:text-blue-600">
                       {item.full_name}
                     </Link>
                     <p className="text-[11px] text-slate-400">@{item.username}</p>
@@ -167,11 +167,11 @@ export default async function LeaderboardPage() {
                   <td className="px-6 py-4 font-semibold text-slate-900">
                     {item.completedJobs}
                   </td>
-                  <td className="px-6 py-4 font-mono font-semibold text-fuchsia-600">
+                  <td className="px-6 py-4 font-mono font-semibold text-blue-600">
                     {item.monEarned.toFixed(2)} MON
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-fuchsia-50 px-2.5 py-1 text-xs font-bold text-fuchsia-700 border border-fuchsia-200">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-bold text-blue-700 border border-blue-200">
                       {item.points} PTS
                     </span>
                   </td>

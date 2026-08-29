@@ -6,8 +6,8 @@ export default function TermsPage() {
     <div className="mx-auto max-w-4xl px-4 py-12 space-y-8 bg-white text-slate-800">
       {/* Header */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 md:p-8 space-y-2">
-        <div className="flex items-center gap-2 text-xs font-semibold text-fuchsia-800 bg-fuchsia-100/80 px-2.5 py-0.5 rounded-full w-fit">
-          <Scale className="h-3.5 w-3.5 text-fuchsia-600" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full w-fit">
+          <Scale className="h-3.5 w-3.5 text-blue-600" />
           SkillMax Legal Framework
         </div>
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Terms of Service</h1>
@@ -17,17 +17,17 @@ export default function TermsPage() {
       <div className="prose prose-slate max-w-none text-xs leading-relaxed space-y-6">
         <section className="space-y-2 border-b border-slate-100 pb-4">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <Lock className="h-4 w-4 text-fuchsia-600" />
+            <Lock className="h-4 w-4 text-blue-600" />
             1. Non-Custodial Monad Blockchain Escrow Protocol
           </h2>
           <p>
-            SkillMax operates on top of the Monad Blockchain (Chain ID 10143). When booking a service or creating a job request with MON tokens, funds are transferred directly into smart contract vaults (<code className="font-mono text-fuchsia-700 bg-fuchsia-50 px-1 py-0.5 rounded">SkillMaxEscrow.sol</code>). SkillMax does not hold, manage, or custody user cryptocurrency funds. Fund releases are programmatically executed upon job completion confirmation or dispute resolution.
+            SkillMax operates on top of the Monad Blockchain (Chain ID 10143). When booking a service or creating a job request with MON tokens, funds are transferred directly into smart contract vaults (<code className="font-mono text-blue-700 bg-blue-50 px-1 py-0.5 rounded">SkillMaxEscrow.sol</code>). SkillMax does not hold, manage, or custody user cryptocurrency funds. Fund releases are programmatically executed upon job completion confirmation or dispute resolution.
           </p>
         </section>
 
         <section className="space-y-2 border-b border-slate-100 pb-4">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-fuchsia-600" />
+            <ShieldCheck className="h-4 w-4 text-blue-600" />
             2. Web3 Cryptographic Security & Identity Protection
           </h2>
           <p>
@@ -37,7 +37,7 @@ export default function TermsPage() {
 
         <section className="space-y-2 border-b border-slate-100 pb-4">
           <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-            <Zap className="h-4 w-4 text-fuchsia-600" />
+            <Zap className="h-4 w-4 text-blue-600" />
             3. Local Fiat Payouts via Razorpay
           </h2>
           <p>
@@ -57,13 +57,13 @@ export default function TermsPage() {
         <section className="space-y-2">
           <h2 className="text-base font-bold text-slate-900">5. On-Chain Soulbound Badges & Ratings</h2>
           <p>
-            Provider ratings and Soulbound ERC-1155 NFT Badges (<code className="font-mono text-fuchsia-700 bg-fuchsia-50 px-1 py-0.5 rounded">SkillMaxBadge.sol</code>) are permanently recorded on the Monad Blockchain. Once minted, on-chain reputation statistics are non-transferable and immutable.
+            Provider ratings and Soulbound ERC-1155 NFT Badges (<code className="font-mono text-blue-700 bg-blue-50 px-1 py-0.5 rounded">SkillMaxBadge.sol</code>) are permanently recorded on the Monad Blockchain. Once minted, on-chain reputation statistics are non-transferable and immutable.
           </p>
         </section>
       </div>
 
       <div className="pt-6 border-t border-slate-200 flex justify-between items-center text-xs">
-        <Link href="/privacy" className="font-semibold text-fuchsia-600 hover:underline">
+        <Link href="/privacy" className="font-semibold text-blue-600 hover:underline">
           View Privacy Policy →
         </Link>
         <Link href="/" className="font-semibold text-slate-600 hover:text-slate-900">

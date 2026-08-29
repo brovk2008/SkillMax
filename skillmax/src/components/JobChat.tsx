@@ -115,11 +115,11 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
       {/* Header with Web3 Encryption Badge */}
       <div className="border-b border-slate-200 px-4 py-3 bg-slate-50/70 rounded-t-xl flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Lock className="h-4 w-4 text-fuchsia-600" />
+          <Lock className="h-4 w-4 text-blue-600" />
           <span className="font-bold text-xs text-slate-900">Encrypted Job Chat</span>
         </div>
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-fuchsia-700 bg-fuchsia-100/80 px-2.5 py-0.5 rounded-full border border-fuchsia-200">
-          <ShieldCheck className="h-3 w-3 text-fuchsia-600" />
+        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-100/80 px-2.5 py-0.5 rounded-full border border-blue-200">
+          <ShieldCheck className="h-3 w-3 text-blue-600" />
           AES-GCM 256-Bit E2EE
         </span>
       </div>
@@ -146,7 +146,7 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
                 <div
                   className={`max-w-xs rounded-xl px-3.5 py-2 text-xs leading-relaxed ${
                     isOwn
-                      ? 'bg-fuchsia-600 text-white font-medium shadow-xs'
+                      ? 'bg-blue-600 text-white font-medium shadow-xs'
                       : 'bg-slate-100 text-slate-900 border border-slate-200'
                   }`}
                 >
@@ -167,12 +167,12 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
           placeholder={disabled ? 'Chat closed' : 'Type encrypted message...'}
           disabled={disabled}
-          className="flex-1 rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-fuchsia-600 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
+          className="flex-1 rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-blue-600 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
         />
         <button
           onClick={handleSend}
           disabled={sending || !input.trim() || disabled}
-          className="rounded-lg bg-fuchsia-600 px-4 py-2 text-xs font-bold text-white hover:bg-fuchsia-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition-colors"
+          className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition-colors"
         >
           Send
         </button>

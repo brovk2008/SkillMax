@@ -103,7 +103,7 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
       <button
         onClick={handleBook}
         disabled={isPending || isConfirming || status === 'done'}
-        className="w-full rounded-lg bg-fuchsia-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-fuchsia-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs flex items-center justify-center gap-1.5"
+        className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs flex items-center justify-center gap-1.5"
       >
         <Zap className="h-3.5 w-3.5" />
         <span>{label}</span>

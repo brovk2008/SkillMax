@@ -77,7 +77,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           placeholder="Python tutoring, Logo design..."
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none text-gray-900"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none text-gray-900"
         />
       </div>
       <div>
@@ -85,7 +85,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
         <select
           value={form.category}
           onChange={(e) => setForm({ ...form, category: e.target.value })}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none text-gray-900"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none text-gray-900"
         >
           {CATEGORY_NAMES.map((c) => <option key={c}>{c}</option>)}
         </select>
@@ -97,7 +97,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           rows={4}
           placeholder="Describe what you offer, your experience, what's included..."
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none resize-none text-gray-900"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none resize-none text-gray-900"
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -109,7 +109,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
             value={form.price_inr}
             onChange={(e) => setForm({ ...form, price_inr: e.target.value })}
             placeholder="500"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none text-gray-900"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none text-gray-900"
           />
         </div>
         <div>
@@ -121,7 +121,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
             value={form.price_mon}
             onChange={(e) => setForm({ ...form, price_mon: e.target.value })}
             placeholder="0.1"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none text-gray-900"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none text-gray-900"
           />
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
           type="checkbox"
           checked={form.is_active}
           onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-          className="h-4 w-4 rounded border-gray-300 text-fuchsia-600 focus:ring-fuchsia-500"
+          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
         />
         <span className="text-sm text-gray-700">Visible on Explore page</span>
       </label>
@@ -138,7 +138,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-md bg-fuchsia-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-fuchsia-700 disabled:opacity-50"
+        className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
       >
         {loading ? 'Saving...' : skillId ? 'Update Skill' : 'Create Skill'}
       </button>

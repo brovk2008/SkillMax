@@ -32,7 +32,7 @@ export function Navbar({ user }: NavbarProps) {
               className="rounded-md object-contain"
             />
             <span className="text-xl font-bold tracking-tight text-slate-900">
-              Skill<span className="text-fuchsia-600">Max</span>
+              Skill<span className="text-blue-600">Max</span>
             </span>
           </Link>
 
@@ -57,11 +57,11 @@ export function Navbar({ user }: NavbarProps) {
                 href={link.href}
                 className={`text-xs font-semibold flex items-center gap-1 transition-colors ${
                   active
-                    ? 'text-fuchsia-700 font-bold'
+                    ? 'text-blue-700 font-bold'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                {Icon && <Icon className="h-3.5 w-3.5 text-fuchsia-600" />}
+                {Icon && <Icon className="h-3.5 w-3.5 text-blue-600" />}
                 <span>{link.label}</span>
               </Link>
             )
@@ -80,12 +80,12 @@ export function Navbar({ user }: NavbarProps) {
                 className="flex items-center gap-1 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-xs"
                 title="Need help? Post a task request for local providers"
               >
-                <ClipboardList className="h-3.5 w-3.5 text-fuchsia-600" />
+                <ClipboardList className="h-3.5 w-3.5 text-blue-600" />
                 <span>Post Task</span>
               </Link>
               <Link
                 href="/skills/new"
-                className="flex items-center gap-1 rounded-lg bg-fuchsia-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-fuchsia-700 transition-colors shadow-xs"
+                className="flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-blue-700 transition-colors shadow-xs"
                 title="Available to help? Offer a skill service"
               >
                 <HandHeart className="h-3.5 w-3.5" />
@@ -95,7 +95,7 @@ export function Navbar({ user }: NavbarProps) {
           ) : (
             <Link
               href="/onboard"
-              className="flex items-center gap-1 rounded-lg bg-fuchsia-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-fuchsia-700 transition-colors shadow-xs"
+              className="flex items-center gap-1 rounded-lg bg-blue-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-blue-700 transition-colors shadow-xs"
             >
               <UserCheck className="h-3.5 w-3.5" />
               <span>Sign In</span>

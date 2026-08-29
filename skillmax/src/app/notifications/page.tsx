@@ -28,7 +28,7 @@ export default async function NotificationsPage() {
           <p className="text-sm text-gray-400 text-center py-10">No notifications yet.</p>
         )}
         {notifs?.map((n) => (
-          <div key={n.id} className={`rounded-lg border p-4 ${n.is_read ? 'border-gray-200 bg-white' : 'border-fuchsia-200 bg-fuchsia-50'}`}>
+          <div key={n.id} className={`rounded-lg border p-4 ${n.is_read ? 'border-gray-200 bg-white' : 'border-blue-200 bg-blue-50'}`}>
             <p className="text-sm text-gray-900">{n.message}</p>
             <p className="mt-1 text-xs text-gray-400">{new Date(n.created_at).toLocaleString('en-IN')}</p>
           </div>

@@ -38,7 +38,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
                 <p className="text-xs text-gray-500">@{profile.username} · {profile.city}</p>
               </div>
             </div>
-            {profile.headline && <p className="text-xs font-semibold text-fuchsia-600">{profile.headline}</p>}
+            {profile.headline && <p className="text-xs font-semibold text-blue-600">{profile.headline}</p>}
             {profile.bio && <p className="text-xs text-gray-600">{profile.bio}</p>}
           </div>
           {profile.wallet_address && (
