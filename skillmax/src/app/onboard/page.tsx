@@ -145,12 +145,35 @@ export default function OnboardPage() {
     setError('')
 
     try {
+      const cleanEmail = email.trim()
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
+        email: cleanEmail,
         password,
       })
 
       if (error) {
+        // If account doesn't exist yet, automatically create and sign in
+        if (error.message.includes('Invalid login credentials')) {
+          const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+            email: cleanEmail,
+            password,
+          })
+
+          if (!signUpErr && signUpData.user) {
+            const baseData = {
+              id: signUpData.user.id,
+              email: signUpData.user.email,
+              full_name: cleanEmail.split('@')[0],
+              username: cleanEmail.split('@')[0].toLowerCase(),
+            }
+            const { error: pErr } = await supabase.from('profiles').upsert({ ...baseData, city: 'Delhi NCR' })
+            if (pErr) await supabase.from('profiles').upsert(baseData)
+
+            window.location.href = '/dashboard'
+            return
+          }
+        }
+
         setError(error.message)
         setLoading(false)
         return
@@ -159,7 +182,6 @@ export default function OnboardPage() {
       if (data.user || data.session) {
         window.location.href = '/dashboard'
       } else {
-        setError('Signed in successfully, establishing session...')
         window.location.href = '/dashboard'
       }
     } catch (err: any) {

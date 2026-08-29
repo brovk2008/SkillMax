@@ -15,7 +15,7 @@ export function NotifBadge({ userId }: { userId?: string }) {
       .select('id', { count: 'exact', head: true })
       .eq('user_id', userId)
       .eq('is_read', false)
-      .then(({ count: c }) => setCount(c ?? 0))
+      .then((res: any) => setCount(res.count ?? 0))
 
     const channel = supabase
       .channel('notif-badge')
