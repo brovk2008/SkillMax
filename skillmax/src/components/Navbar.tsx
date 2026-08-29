@@ -32,7 +32,7 @@ export function Navbar({ user }: NavbarProps) {
               className="rounded-md object-contain"
             />
             <span className="text-xl font-bold tracking-tight text-slate-900">
-              Skill<span className="text-fuchsia-600">Max</span>
+              Skill<span className="text-blue-600">Max</span>
             </span>
           </Link>
 
