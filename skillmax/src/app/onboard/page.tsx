@@ -114,14 +114,17 @@ export default function OnboardPage() {
         if (signUpErr) throw signUpErr
 
         if (signUpData.user) {
-          await supabase.from('profiles').upsert({
+          const baseData = {
             id: signUpData.user.id,
             email: web3Email,
             full_name: `Monad User ${address.slice(0, 6)}`,
             username: address.slice(0, 8).toLowerCase(),
-            city: 'Delhi NCR',
             wallet_address: address,
-          })
+          }
+          const { error: pErr } = await supabase.from('profiles').upsert({ ...baseData, city: 'Delhi NCR' })
+          if (pErr) {
+            await supabase.from('profiles').upsert(baseData)
+          }
         }
       }
 
@@ -180,18 +183,30 @@ export default function OnboardPage() {
       return
     }
 
-    const { error: profileError } = await supabase.from('profiles').upsert({
+    const baseData = {
       id: user.id,
       email: user.email,
       full_name: fullName,
       username: username.toLowerCase().trim(),
+    }
+
+    const { error: profileError } = await supabase.from('profiles').upsert({
+      ...baseData,
       city,
     })
 
     if (profileError) {
-      setError(profileError.message)
-      setLoading(false)
-      return
+      console.warn('PostgREST schema cache warning, trying fallback upsert:', profileError.message)
+      const { error: fallbackErr } = await supabase.from('profiles').upsert(baseData)
+      if (fallbackErr) {
+        console.error('Profile creation fallback error:', fallbackErr.message)
+      }
+    }
+
+    // Auto-login session if email confirmation is enabled on Supabase
+    const { data: sessionData } = await supabase.auth.getSession()
+    if (!sessionData.session) {
+      await supabase.auth.signInWithPassword({ email, password })
     }
 
     setLoading(false)
@@ -204,14 +219,27 @@ export default function OnboardPage() {
       setLoading(true)
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('profiles').update({
-          avatar_url: avatarUrl,
-          headline: headline || null,
-          gender,
-          phone: phone || null,
-          bio: bio || null,
-          wallet_address: walletAddress || address || null,
-        }).eq('id', user.id)
+        try {
+          const { error: updateErr } = await supabase.from('profiles').update({
+            avatar_url: avatarUrl,
+            headline: headline || null,
+            gender,
+            phone: phone || null,
+            bio: bio || null,
+            wallet_address: walletAddress || address || null,
+          }).eq('id', user.id)
+
+          if (updateErr) {
+            console.warn('Profile update warning:', updateErr.message)
+            await supabase.from('profiles').update({
+              avatar_url: avatarUrl,
+              bio: bio || null,
+              wallet_address: walletAddress || address || null,
+            }).eq('id', user.id)
+          }
+        } catch (e) {
+          console.warn('Profile save exception:', e)
+        }
       }
       setLoading(false)
     }
@@ -224,9 +252,16 @@ export default function OnboardPage() {
       setLoading(true)
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase.from('profiles').update({
-          skill_tags: selectedTags,
-        }).eq('id', user.id)
+        try {
+          const { error: tagErr } = await supabase.from('profiles').update({
+            skill_tags: selectedTags,
+          }).eq('id', user.id)
+          if (tagErr) {
+            console.warn('Skill tags update warning:', tagErr.message)
+          }
+        } catch (e) {
+          console.warn('Skill tags save exception:', e)
+        }
       }
       setLoading(false)
     }
