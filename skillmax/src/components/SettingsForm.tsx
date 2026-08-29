@@ -24,7 +24,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
     username: profile.username,
     city: profile.city,
     headline: profile.headline ?? '',
-    avatar_url: profile.avatar_url ?? '/logo.png',
+    avatar_url: profile.avatar_url ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     gender: profile.gender ?? 'Prefer not to say',
     phone: profile.phone ?? '',
     bio: profile.bio ?? '',
