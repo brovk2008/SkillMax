@@ -1,46 +1,61 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MapPin, Search, Check, Navigation, ChevronDown } from 'lucide-react'
+import { MapPin, Search, Check, Navigation, ChevronDown, Building2 } from 'lucide-react'
 
-const POPULAR_CITIES = [
-  'Gurugram',
-  'Delhi NCR',
-  'Noida',
-  'Bengaluru',
-  'Mumbai',
-  'Hyderabad',
-  'Pune',
-  'Chennai',
-  'Kolkata',
-  'Ahmedabad',
-  'Chandigarh',
-  'Jaipur',
-  'Lucknow',
-  'Indore',
-  'Kochi',
-  'Goa',
-  'Surat',
-  'Nagpur',
-  'Bhubaneswar',
-  'Coimbatore',
-  'Dehradun',
-  'San Francisco',
-  'London',
-  'Singapore',
-  'Dubai',
-  'New York',
+export interface CityStateItem {
+  city: string
+  state: string
+}
+
+export const CITIES_WITH_STATES: CityStateItem[] = [
+  { city: 'Gurugram', state: 'Haryana' },
+  { city: 'Delhi NCR', state: 'Delhi NCR' },
+  { city: 'Noida', state: 'Uttar Pradesh' },
+  { city: 'Greater Noida', state: 'Uttar Pradesh' },
+  { city: 'Faridabad', state: 'Haryana' },
+  { city: 'Ghaziabad', state: 'Uttar Pradesh' },
+  { city: 'Bengaluru', state: 'Karnataka' },
+  { city: 'Mumbai', state: 'Maharashtra' },
+  { city: 'Hyderabad', state: 'Telangana' },
+  { city: 'Pune', state: 'Maharashtra' },
+  { city: 'Chennai', state: 'Tamil Nadu' },
+  { city: 'Kolkata', state: 'West Bengal' },
+  { city: 'Ahmedabad', state: 'Gujarat' },
+  { city: 'Chandigarh', state: 'Punjab / Haryana' },
+  { city: 'Jaipur', state: 'Rajasthan' },
+  { city: 'Lucknow', state: 'Uttar Pradesh' },
+  { city: 'Indore', state: 'Madhya Pradesh' },
+  { city: 'Kochi', state: 'Kerala' },
+  { city: 'Panaji (Goa)', state: 'Goa' },
+  { city: 'Surat', state: 'Gujarat' },
+  { city: 'Nagpur', state: 'Maharashtra' },
+  { city: 'Bhubaneswar', state: 'Odisha' },
+  { city: 'Coimbatore', state: 'Tamil Nadu' },
+  { city: 'Dehradun', state: 'Uttarakhand' },
+  { city: 'Patna', state: 'Bihar' },
+  { city: 'Ranchi', state: 'Jharkhand' },
+  { city: 'Guwahati', state: 'Assam' },
+  { city: 'Bhopal', state: 'Madhya Pradesh' },
+  { city: 'Varanasi', state: 'Uttar Pradesh' },
+  { city: 'Agra', state: 'Uttar Pradesh' },
+  { city: 'Thiruvananthapuram', state: 'Kerala' },
+  { city: 'San Francisco', state: 'California, USA' },
+  { city: 'London', state: 'Greater London, UK' },
+  { city: 'Singapore', state: 'Central Region, SG' },
+  { city: 'Dubai', state: 'Dubai Emirate, UAE' },
+  { city: 'New York', state: 'New York, USA' },
 ]
 
 interface CitySelectorProps {
   value: string
-  onChange: (city: string) => void
+  onChange: (cityWithState: string) => void
   label?: string
   required?: boolean
   className?: string
 }
 
-export function CitySelector({ value, onChange, label = 'Home City *', required = true, className = '' }: CitySelectorProps) {
+export function CitySelector({ value, onChange, label = 'Home City & State *', required = true, className = '' }: CitySelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [locating, setLocating] = useState(false)
@@ -57,8 +72,9 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const filteredCities = POPULAR_CITIES.filter((c) =>
-    c.toLowerCase().includes(searchQuery.toLowerCase().trim())
+  const query = searchQuery.toLowerCase().trim()
+  const filteredItems = CITIES_WITH_STATES.filter(
+    (item) => item.city.toLowerCase().includes(query) || item.state.toLowerCase().includes(query)
   )
 
   function handleDetectLocation(e: React.MouseEvent) {
@@ -70,21 +86,22 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
 
     setLocating(true)
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      () => {
         setLocating(false)
-        onChange('Gurugram') // Default detected city
+        onChange('Gurugram, Haryana')
         setIsOpen(false)
       },
-      (err) => {
+      () => {
         setLocating(false)
-        alert('Could not access device location. Please select or type your city manually.')
+        alert('Could not access device location. Please select city & state manually.')
       },
       { timeout: 8000 }
     )
   }
 
-  function handleSelectCity(city: string) {
-    onChange(city)
+  function handleSelect(item: CityStateItem) {
+    const formatted = `${item.city}, ${item.state}`
+    onChange(formatted)
     setIsOpen(false)
     setSearchQuery('')
   }
@@ -101,7 +118,7 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
         <div className="flex items-center gap-2 truncate">
           <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
           <span className={value ? 'font-semibold text-slate-900' : 'text-slate-400'}>
-            {value || 'Select or search your city...'}
+            {value || 'Select city & state (e.g. Gurugram, Haryana)...'}
           </span>
         </div>
         <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
@@ -121,7 +138,7 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
               autoFocus
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search city (e.g. Gurugram, Delhi, Mumbai)..."
+              placeholder="Search by city or state (e.g. Haryana, Mumbai, Karnataka)..."
               className="w-full rounded-md border border-slate-200 bg-slate-50 pl-8 pr-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:bg-white focus:outline-none"
             />
           </div>
@@ -134,17 +151,18 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
             className="w-full flex items-center gap-2 rounded-lg bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors mb-2.5 cursor-pointer"
           >
             <Navigation className={`h-3.5 w-3.5 text-emerald-600 ${locating ? 'animate-spin' : ''}`} />
-            <span>{locating ? 'Detecting GPS location...' : 'Detect my current GPS location'}</span>
+            <span>{locating ? 'Detecting GPS location...' : 'Detect my current location (GPS)'}</span>
           </button>
 
-          {/* Quick Popular Cities Catalog */}
-          <div className="max-h-52 overflow-y-auto space-y-0.5 pr-1 text-xs">
-            {filteredCities.map((c) => {
-              const isSelected = value.toLowerCase() === c.toLowerCase()
+          {/* Cities & States List */}
+          <div className="max-h-56 overflow-y-auto space-y-0.5 pr-1 text-xs">
+            {filteredItems.map((item) => {
+              const fullStr = `${item.city}, ${item.state}`
+              const isSelected = value.toLowerCase() === fullStr.toLowerCase() || value.toLowerCase() === item.city.toLowerCase()
               return (
                 <div
-                  key={c}
-                  onClick={() => handleSelectCity(c)}
+                  key={fullStr}
+                  onClick={() => handleSelect(item)}
                   className={`flex items-center justify-between rounded-md px-2.5 py-1.5 cursor-pointer transition-colors ${
                     isSelected
                       ? 'bg-emerald-600 text-white font-bold'
@@ -153,21 +171,28 @@ export function CitySelector({ value, onChange, label = 'Home City *', required 
                 >
                   <div className="flex items-center gap-2">
                     <MapPin className={`h-3.5 w-3.5 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
-                    <span>{c}</span>
+                    <span className="font-semibold">{item.city}</span>
+                    <span className={`text-[11px] px-1.5 py-0.2 rounded ${isSelected ? 'bg-emerald-700 text-emerald-100' : 'bg-slate-100 text-slate-500'}`}>
+                      {item.state}
+                    </span>
                   </div>
                   {isSelected && <Check className="h-3.5 w-3.5 text-white" />}
                 </div>
               )
             })}
 
-            {/* Custom City Entry if search query is not found */}
-            {searchQuery.trim() && !filteredCities.some((c) => c.toLowerCase() === searchQuery.toLowerCase().trim()) && (
+            {/* Custom City & State Entry if search query is not found */}
+            {query && !filteredItems.some((item) => `${item.city}, ${item.state}`.toLowerCase().includes(query)) && (
               <div
-                onClick={() => handleSelectCity(searchQuery.trim())}
+                onClick={() => {
+                  onChange(searchQuery.trim())
+                  setIsOpen(false)
+                  setSearchQuery('')
+                }}
                 className="flex items-center gap-2 rounded-md bg-slate-50 px-2.5 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 cursor-pointer border border-dashed border-emerald-300 mt-1"
               >
-                <MapPin className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Use &quot;{searchQuery.trim()}&quot; as my city</span>
+                <Building2 className="h-3.5 w-3.5 text-emerald-600" />
+                <span>Use &quot;{searchQuery.trim()}&quot; as my location</span>
               </div>
             )}
           </div>
