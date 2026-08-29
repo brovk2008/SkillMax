@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { CitySelector } from '@/components/CitySelector'
 import { AvatarUploader } from '@/components/AvatarUploader'
+import { PhoneInput } from '@/components/PhoneInput'
 import { CheckCircle2 } from 'lucide-react'
 
 interface Profile {
@@ -94,20 +95,17 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
 
       <CitySelector value={form.city} onChange={(city) => setForm({ ...form, city })} label="City *" />
 
-      {[
-        { label: 'Phone / WhatsApp', key: 'phone', placeholder: '+91 98765 43210' },
-        { label: 'Monad Wallet Address', key: 'wallet_address', placeholder: '0x...' },
-      ].map((f) => (
-        <div key={f.key}>
-          <label className="block text-xs font-semibold text-slate-700 mb-1">{f.label}</label>
-          <input
-            value={(form as any)[f.key]}
-            onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-            placeholder={f.placeholder}
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none text-slate-900"
-          />
-        </div>
-      ))}
+      <PhoneInput value={form.phone || ''} onChange={(p) => setForm({ ...form, phone: p })} location={form.city} />
+
+      <div>
+        <label className="block text-xs font-semibold text-slate-700 mb-1">Monad Wallet Address</label>
+        <input
+          value={form.wallet_address || ''}
+          onChange={(e) => setForm({ ...form, wallet_address: e.target.value })}
+          placeholder="0x..."
+          className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none text-slate-900 font-mono"
+        />
+      </div>
 
       <div>
         <label className="block text-xs font-semibold text-slate-700 mb-1">Gender</label>

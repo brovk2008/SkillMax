@@ -8,6 +8,7 @@ import { useAccount, useSignMessage } from 'wagmi'
 import Link from 'next/link'
 import { CitySelector } from '@/components/CitySelector'
 import { AvatarUploader } from '@/components/AvatarUploader'
+import { PhoneInput } from '@/components/PhoneInput'
 import {
   User,
   Search,
@@ -548,15 +549,7 @@ export default function OnboardPage() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Phone / WhatsApp</label>
-              <input
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="+91 98765 43210"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
-              />
-            </div>
+            <PhoneInput value={phone} onChange={setPhone} location={city} />
           </div>
 
           <div>
