@@ -20,10 +20,10 @@ export function monadScanAddress(address: string): string {
 
 export const STATUS_CLASSES: Record<string, string> = {
   pending: 'bg-yellow-50 text-yellow-700',
-  active: 'bg-emerald-50 text-emerald-700',
+  active: 'bg-fuchsia-50 text-fuchsia-700',
   client_done: 'bg-amber-50 text-amber-700',
   provider_done: 'bg-amber-50 text-amber-700',
-  completed: 'bg-green-50 text-green-700',
+  completed: 'bg-fuchsia-50 text-fuchsia-700',
   disputed: 'bg-red-50 text-red-700',
   resolved: 'bg-gray-100 text-gray-700',
   cancelled: 'bg-gray-100 text-gray-500',

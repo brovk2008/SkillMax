@@ -61,16 +61,16 @@ export function SkillBadges({ earnedBadges, walletAddress }: Props) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm space-y-2">
       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
-        <Shield className="h-3.5 w-3.5 text-emerald-600" />
+        <Shield className="h-3.5 w-3.5 text-fuchsia-600" />
         Soulbound Monad Badges
       </p>
       <div className="flex flex-wrap gap-2 pt-1">
         {earned.map((b) => (
           <span
             key={b.name}
-            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700"
+            className="inline-flex items-center gap-1.5 rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1 text-xs font-semibold text-fuchsia-700"
           >
-            <Award className="h-3.5 w-3.5 text-emerald-600" />
+            <Award className="h-3.5 w-3.5 text-fuchsia-600" />
             <span>{b.name} ×{b.count}</span>
           </span>
         ))}

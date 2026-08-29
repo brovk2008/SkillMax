@@ -52,8 +52,8 @@ export default function NewTaskPostingPage() {
   return (
     <div className="mx-auto max-w-lg px-4 py-10 bg-white space-y-6">
       <div className="text-center space-y-2">
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
-          <ClipboardList className="h-3.5 w-3.5 text-emerald-600" />
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-fuchsia-800 bg-fuchsia-100/80 px-2.5 py-0.5 rounded-full">
+          <ClipboardList className="h-3.5 w-3.5 text-fuchsia-600" />
           Need Something Done?
         </span>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">Post a Task Request</h1>
@@ -68,7 +68,7 @@ export default function NewTaskPostingPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Need kitchen sink fixed today at 4pm"
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none"
           />
         </div>
 
@@ -77,7 +77,7 @@ export default function NewTaskPostingPage() {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none"
           >
             {CATEGORY_NAMES.map((c) => <option key={c}>{c}</option>)}
           </select>
@@ -90,7 +90,7 @@ export default function NewTaskPostingPage() {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             placeholder="Delhi NCR"
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none"
           />
         </div>
 
@@ -101,7 +101,7 @@ export default function NewTaskPostingPage() {
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
             placeholder="Explain what help you need, time preferences, requirements..."
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none resize-none"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none resize-none"
           />
         </div>
 
@@ -113,7 +113,7 @@ export default function NewTaskPostingPage() {
               value={budgetInr}
               onChange={(e) => setBudgetInr(e.target.value)}
               placeholder="500"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none"
             />
           </div>
 
@@ -125,7 +125,7 @@ export default function NewTaskPostingPage() {
               value={budgetMon}
               onChange={(e) => setBudgetMon(e.target.value)}
               placeholder="0.1"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-fuchsia-600 focus:outline-none"
             />
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function NewTaskPostingPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+          className="w-full rounded-lg bg-fuchsia-600 px-4 py-3 text-xs font-bold text-white hover:bg-fuchsia-700 disabled:opacity-50 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
         >
           <span>{loading ? 'Posting task...' : 'Post Task to Community Board'}</span>
           <ArrowRight className="h-4 w-4" />

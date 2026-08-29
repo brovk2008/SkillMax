@@ -64,7 +64,7 @@ export default function DisputeForm({ jobId, isCrypto }: Props) {
           onChange={(e) => setReason(e.target.value)}
           rows={4}
           placeholder="Explain what went wrong..."
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none resize-none text-gray-900"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-fuchsia-500 focus:outline-none resize-none text-gray-900"
         />
       </div>
       <button

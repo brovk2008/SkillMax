@@ -41,7 +41,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           </div>
 
           <div className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-700">
-            <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+            <MapPin className="h-3.5 w-3.5 text-fuchsia-600" />
             <span>Delhi NCR</span>
             <span className="text-gray-400">▾</span>
           </div>
@@ -62,7 +62,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-emerald-600 px-5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm"
+            className="rounded-lg bg-fuchsia-600 px-5 py-2 text-xs font-semibold text-white hover:bg-fuchsia-700 transition-colors shadow-sm"
           >
             Search
           </button>
@@ -78,7 +78,7 @@ export default async function ExplorePage({ searchParams }: Props) {
                 href={cat === 'All' ? '/explore' : `/explore?category=${encodeURIComponent(cat)}`}
                 className={`rounded-full px-3.5 py-1 text-xs font-semibold transition-colors ${
                   active
-                    ? 'bg-emerald-600 text-white shadow-sm'
+                    ? 'bg-fuchsia-600 text-white shadow-sm'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -109,7 +109,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           <p className="text-sm text-gray-500">No services found matching your search.</p>
           <Link
             href="/explore"
-            className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:underline"
+            className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-fuchsia-700 hover:underline"
           >
             <span>Clear filters</span>
             <ArrowRight className="h-3 w-3" />

@@ -44,10 +44,10 @@ export function OnChainReputation({ walletAddress }: Props) {
     <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-3">
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
-          <ShieldCheck className="h-4 w-4 text-emerald-600" />
+          <ShieldCheck className="h-4 w-4 text-fuchsia-600" />
           On-Chain Monad Reputation
         </span>
-        <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+        <span className="inline-flex items-center rounded-full bg-fuchsia-50 px-2 py-0.5 text-xs font-medium text-fuchsia-700">
           Live Escrow Data
         </span>
       </div>
@@ -70,7 +70,7 @@ export function OnChainReputation({ walletAddress }: Props) {
         href={monadScanAddress(walletAddress)}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 font-mono text-xs text-emerald-600 hover:underline pt-1"
+        className="inline-flex items-center gap-1 font-mono text-xs text-fuchsia-600 hover:underline pt-1"
       >
         <span>{shortenAddress(walletAddress)}</span>
         <ExternalLink className="h-3 w-3" />

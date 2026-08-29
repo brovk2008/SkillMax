@@ -25,7 +25,7 @@ export function BlockchainStatus({ entries }: Props) {
           <div key={idx} className="flex items-center justify-between text-xs py-1 border-b border-gray-50 last:border-0">
             <div className="flex items-center gap-2">
               {entry.status === 'success' && (
-                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-fuchsia-100 text-fuchsia-600">
                   <CheckCircle2 className="h-3 w-3" />
                 </span>
               )}
@@ -43,7 +43,7 @@ export function BlockchainStatus({ entries }: Props) {
                 href={monadScanTx(entry.hash)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-mono text-xs text-emerald-600 hover:underline"
+                className="inline-flex items-center gap-1 font-mono text-xs text-fuchsia-600 hover:underline"
               >
                 <span>View on MonadScan</span>
                 <ExternalLink className="h-3 w-3" />
