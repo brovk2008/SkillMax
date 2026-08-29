@@ -4,6 +4,7 @@ import { CryptoBookingButton } from '@/components/CryptoBookingButton'
 import { RazorpayBookingButton } from '@/components/RazorpayBookingButton'
 import Link from 'next/link'
 import { formatINR } from '@/lib/utils'
+import { Zap, ShieldCheck } from 'lucide-react'
 
 export default async function SkillDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createServerClient()
@@ -29,6 +30,8 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
   }
   const provider = skill.profiles as ProviderProfile | null
   const isOwnSkill = user?.id === skill.provider_id
+
+  const providerWallet = provider?.wallet_address || '0x71C7656EC7ab88b098defB751B7401B5f6d8976F'
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 space-y-8">
@@ -75,53 +78,67 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm space-y-4">
-            <h3 className="text-sm font-semibold text-gray-900">Book this Skill</h3>
+          <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-bold text-gray-900">Book this Skill</h3>
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                <ShieldCheck className="size-3 text-emerald-600" />
+                <span>Monad Escrow</span>
+              </span>
+            </div>
 
             <div className="space-y-1">
-              {skill.price_inr && (
-                <p className="text-2xl font-bold text-gray-900">{formatINR(skill.price_inr)}</p>
-              )}
               {skill.price_mon && (
-                <p className="text-sm text-gray-500">{skill.price_mon} MON</p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-2xl font-extrabold text-slate-900">{skill.price_mon} MON</span>
+                  <span className="text-xs text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">Web3 Escrow</span>
+                </div>
+              )}
+              {skill.price_inr && (
+                <p className="text-xs font-medium text-gray-500">or {formatINR(skill.price_inr)} via UPI</p>
               )}
             </div>
 
-            <div className="border-t border-gray-100 pt-4">
+            <div className="border-t border-gray-100 pt-4 space-y-2.5">
               {isOwnSkill ? (
-                <div className="rounded-md bg-gray-50 p-3 text-center text-xs text-gray-500">
+                <div className="rounded-md bg-gray-50 p-3 text-center text-xs text-gray-500 font-medium">
                   This is your listing
                 </div>
-              ) : !user ? (
-                <Link
-                  href="/onboard"
-                  className="block w-full rounded-md bg-emerald-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-emerald-700 shadow-sm"
-                >
-                  Sign in to Book
-                </Link>
               ) : (
-                <div className="space-y-2">
+                <>
+                  {/* Web3 Wallet Pay with MON button — ALWAYS available */}
                   {skill.price_mon && (
                     <CryptoBookingButton
                       skillId={skill.id}
                       priceMon={skill.price_mon}
-                      providerAddress={provider?.wallet_address || '0x71C7656EC7ab88b098defB751B7401B5f6d8976F'}
+                      providerAddress={providerWallet}
                       providerUserId={provider?.id ?? skill.provider_id}
                     />
                   )}
+
+                  {/* Fiat UPI / Razorpay option */}
                   {skill.price_inr && (
-                    <RazorpayBookingButton
-                      skillId={skill.id}
-                      priceInr={skill.price_inr}
-                      providerUserId={provider?.id ?? skill.provider_id}
-                    />
+                    user ? (
+                      <RazorpayBookingButton
+                        skillId={skill.id}
+                        priceInr={skill.price_inr}
+                        providerUserId={provider?.id ?? skill.provider_id}
+                      />
+                    ) : (
+                      <Link
+                        href="/onboard"
+                        className="block w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-center text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
+                      >
+                        Sign in for UPI / Card Payment
+                      </Link>
+                    )
                   )}
-                </div>
+                </>
               )}
             </div>
           </div>
-          <p className="text-xs text-gray-400 text-center">
-            Funds held in non-custodial Monad escrow until completion
+          <p className="text-[11px] text-gray-400 text-center leading-relaxed">
+            Funds held securely in non-custodial Monad smart contract escrow until work is delivered.
           </p>
         </div>
       </div>
