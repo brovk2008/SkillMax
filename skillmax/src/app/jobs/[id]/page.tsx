@@ -3,9 +3,11 @@ import { createServerClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 import JobChat from '@/components/JobChat'
 import { BlockchainStatus } from '@/components/BlockchainStatus'
+import { ReleasePaymentButton } from '@/components/ReleasePaymentButton'
+import { MarkDoneButton } from '@/components/MarkDoneButton'
 import { STATUS_CLASSES, formatINR } from '@/lib/utils'
 import Link from 'next/link'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, ShieldCheck, ArrowLeft } from 'lucide-react'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser()
@@ -38,21 +40,31 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
 
   const isClosed = ['completed', 'resolved', 'cancelled'].includes(job.status)
   const statusClass = STATUS_CLASSES[job.status] ?? 'bg-gray-50 text-gray-500'
+  const jobTitle = job.skills?.title || job.custom_title || 'Neighborhood Task Escrow'
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
+    <div className="mx-auto max-w-5xl px-3 sm:px-4 py-6 sm:py-10 space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-4">
         <div>
-          <p className="text-xs text-gray-400"><Link href="/dashboard" className="hover:underline">← Dashboard</Link></p>
-          <h1 className="mt-1 text-xl font-semibold text-gray-900">{job.skills?.title}</h1>
+          <Link href="/dashboard" className="text-xs font-semibold text-emerald-700 hover:underline inline-flex items-center gap-1">
+            <ArrowLeft className="size-3" />
+            <span>Back to Dashboard</span>
+          </Link>
+          <h1 className="mt-1 text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">{jobTitle}</h1>
         </div>
-        <span className={`self-start rounded-full px-3 py-1 text-xs font-medium ${statusClass}`}>
-          {job.status.replace('_', ' ')}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className={`self-start rounded-full px-3 py-1 text-xs font-bold capitalize shadow-2xs ${statusClass}`}>
+            {job.status.replace('_', ' ')}
+          </span>
+          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+            <ShieldCheck className="size-3 text-emerald-600" />
+            <span>Escrow Protected</span>
+          </span>
+        </div>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-5">
+      <div className="grid gap-6 lg:grid-cols-5">
         {/* Chat — 3/5 */}
         <div className="lg:col-span-3">
           <JobChat
@@ -66,18 +78,19 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
         {/* Sidebar — 2/5 */}
         <div className="lg:col-span-2 space-y-4">
           {/* Job info */}
-          <div className="rounded-lg border border-gray-200 p-4 space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Client</span>
-              <span className="font-medium text-gray-900">{(job.client_profile as any).full_name}</span>
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3.5 shadow-xs">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Escrow Details</h3>
+            <div className="flex justify-between items-center text-xs">
+              <span className="text-slate-500 font-medium">Client</span>
+              <span className="font-bold text-slate-900">{(job.client_profile as any)?.full_name || 'Client'}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Provider</span>
-              <span className="font-medium text-gray-900">{(job.provider_profile as any).full_name}</span>
+            <div className="flex justify-between items-center text-xs">
+              <span className="text-slate-500 font-medium">Provider</span>
+              <span className="font-bold text-slate-900">{(job.provider_profile as any)?.full_name || 'Provider'}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Payment</span>
-              <span className="font-medium text-gray-900">
+            <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2.5">
+              <span className="text-slate-500 font-medium">Escrow Value</span>
+              <span className="font-extrabold text-slate-900 text-sm">
                 {job.payment_method === 'crypto'
                   ? `${job.price_mon} MON`
                   : formatINR(job.price_inr ?? 0)}
@@ -88,40 +101,49 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
           {/* On-chain status */}
           {job.payment_method === 'crypto' && (
             <BlockchainStatus entries={[
-              { label: 'Escrow created', hash: job.chain_tx_create, status: job.chain_tx_create ? 'success' : 'idle' },
-              { label: 'Job completed', hash: job.chain_tx_complete, status: job.chain_tx_complete ? 'success' : 'idle' },
+              { label: 'Escrow locked', hash: job.chain_tx_create, status: job.chain_tx_create ? 'success' : 'idle' },
+              { label: 'Job completed & paid', hash: job.chain_tx_complete, status: job.chain_tx_complete ? 'success' : 'idle' },
               { label: 'Dispute raised', hash: job.chain_tx_dispute, status: job.chain_tx_dispute ? 'success' : 'idle' },
             ]} />
           )}
 
-          {/* Actions */}
-          {!isClosed && (
-            <div className="rounded-lg border border-gray-200 p-4 space-y-2">
-              {isClient && job.status === 'provider_done' && (
-                <form action={`/api/jobs/${job.id}/mark-complete`} method="POST">
-                  <button className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700">
-                    <span className="flex items-center justify-center gap-1.5">
-                      <span>Release Payment</span>
-                      <CheckCircle2 className="h-4 w-4" />
-                    </span>
-                  </button>
-                </form>
+          {/* Action Triggers */}
+          {!isClosed ? (
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3 shadow-xs">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Workflow Actions</h3>
+              
+              {/* Provider: Mark Work Done */}
+              {isProvider && job.status === 'active' && (
+                <MarkDoneButton jobId={job.id} />
               )}
+
+              {/* Client: Release Payment (Available when provider marks done OR directly by client) */}
+              {isClient && (job.status === 'provider_done' || job.status === 'active') && (
+                <div className="space-y-1.5">
+                  <ReleasePaymentButton jobId={job.id} />
+                  <p className="text-[11px] text-slate-400 text-center">
+                    Releases locked funds to provider and mints Soulbound ERC-1155 proof of work.
+                  </p>
+                </div>
+              )}
+
+              {/* Raise Dispute button */}
               {(isClient || isProvider) && !['disputed', 'completed', 'resolved', 'cancelled'].includes(job.status) && (
                 <Link
                   href={`/jobs/${job.id}/dispute`}
-                  className="block w-full rounded-md border border-red-300 px-4 py-2 text-center text-sm font-medium text-red-600 hover:bg-red-50"
+                  className="block w-full rounded-xl border border-red-200 bg-red-50/50 py-2.5 text-center text-xs font-bold text-red-600 hover:bg-red-100 transition-colors"
                 >
-                  Raise Dispute
+                  Raise Dispute (Monad Arbitration)
                 </Link>
               )}
-              {isProvider && job.status === 'active' && (
-                <form action={`/api/jobs/${job.id}/mark-done`} method="POST">
-                  <button className="w-full rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Mark as Done (Provider)
-                  </button>
-                </form>
-              )}
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-5 text-center space-y-2">
+              <CheckCircle2 className="size-8 text-emerald-600 mx-auto" />
+              <h4 className="text-sm font-bold text-emerald-900">Job Completed & Settled</h4>
+              <p className="text-xs text-emerald-700">
+                Payment has been released and an immutable Proof of Reputation badge is minted.
+              </p>
             </div>
           )}
         </div>

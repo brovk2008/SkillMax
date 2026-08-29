@@ -1,8 +1,9 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { CATEGORY_NAMES } from '@/lib/contracts'
-import { ClipboardList, MapPin, Search, Plus, ArrowRight, CheckCircle2, Zap, MessageSquare } from 'lucide-react'
+import { ClipboardList, MapPin, Search, Plus, ArrowRight, CheckCircle2, Zap } from 'lucide-react'
 import { formatINR } from '@/lib/utils'
+import { AcceptTaskButton } from '@/components/AcceptTaskButton'
 
 interface Props {
   searchParams: Promise<{
@@ -13,6 +14,7 @@ interface Props {
 
 export default async function TasksBoardPage({ searchParams }: Props) {
   const supabase = await createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
   const { category, q } = await searchParams
 
   let query = supabase
@@ -32,16 +34,16 @@ export default async function TasksBoardPage({ searchParams }: Props) {
   const { data: tasks } = await query
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 space-y-6 bg-white">
+    <div className="mx-auto max-w-6xl px-3 sm:px-4 py-6 sm:py-8 space-y-6 bg-white">
       {/* Header Banner */}
-      <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 md:p-8 space-y-4">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-5 sm:p-8 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
               <ClipboardList className="h-3.5 w-3.5 text-emerald-700" />
               Community Help Wanted
             </span>
-            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               Open Task Requests
             </h1>
             <p className="text-xs text-slate-500 max-w-xl">
@@ -67,7 +69,7 @@ export default async function TasksBoardPage({ searchParams }: Props) {
         </div>
 
         {/* Search Bar & Filters */}
-        <form action="/tasks" method="GET" className="flex gap-2 pt-2">
+        <form action="/tasks" method="GET" className="flex flex-col sm:flex-row gap-2 pt-2">
           {category && <input type="hidden" name="category" value={category} />}
           <div className="flex-1 flex items-center bg-white border border-slate-300 rounded-xl px-3.5 py-2">
             <Search className="h-4 w-4 text-slate-400 mr-2 shrink-0" />
@@ -76,26 +78,26 @@ export default async function TasksBoardPage({ searchParams }: Props) {
               name="q"
               defaultValue={q}
               placeholder="Search requested tasks (e.g. Plumbing, Tutoring, Smart Contract)..."
-              className="w-full bg-transparent text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none"
+              className="w-full bg-transparent text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="rounded-xl bg-emerald-600 px-5 py-2 text-xs font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs"
+            className="rounded-xl bg-emerald-600 px-5 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs shrink-0"
           >
             Search
           </button>
         </form>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-200/80">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-2 border-t border-slate-200/80">
           {['All', ...CATEGORY_NAMES].map((cat) => {
             const active = (category ?? 'All') === cat
             return (
               <Link
                 key={cat}
                 href={cat === 'All' ? '/tasks' : `/tasks?category=${encodeURIComponent(cat)}`}
-                className={`rounded-full px-3.5 py-1 text-xs font-semibold transition-colors ${
+                className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
                   active
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
@@ -121,7 +123,7 @@ export default async function TasksBoardPage({ searchParams }: Props) {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {tasks.map((task: any) => {
             const client = task.client_profile
-            const avatar = client?.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'
+            const avatar = client?.avatar_url || `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(client?.username || task.id)}`
 
             return (
               <div
@@ -150,35 +152,33 @@ export default async function TasksBoardPage({ searchParams }: Props) {
 
                   {/* Posted By */}
                   <div className="flex items-center gap-2.5 pt-1">
-                    <img src={avatar} alt={client?.full_name} className="h-7 w-7 rounded-full object-cover border border-slate-200" />
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{client?.full_name}</p>
-                      <p className="text-[11px] text-slate-400 flex items-center gap-0.5">
-                        <MapPin className="h-3 w-3 text-slate-400" />
-                        {task.city}
+                    <img src={avatar} alt={client?.full_name || 'Client'} className="size-7 rounded-full object-cover border border-slate-200 shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-semibold text-slate-900 truncate">{client?.full_name || 'Anonymous Client'}</p>
+                      <p className="text-[11px] text-slate-400 flex items-center gap-0.5 truncate">
+                        <MapPin className="size-3 text-slate-400 shrink-0" />
+                        <span className="truncate">{task.city}</span>
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Bar: Budget & Action */}
+                {/* Bottom Bar: Budget & Interactive Accept Task Action */}
                 <div className="mt-5 border-t border-slate-100 pt-3 flex items-center justify-between">
-                  <div>
+                  <div className="tabular-nums">
                     {task.budget_inr && (
                       <p className="text-base font-extrabold text-slate-900">{formatINR(task.budget_inr)}</p>
                     )}
                     {task.budget_mon && (
-                      <p className="text-xs font-mono font-semibold text-emerald-600">{task.budget_mon} MON</p>
+                      <p className="text-xs font-mono font-bold text-emerald-600">{task.budget_mon} MON</p>
                     )}
                   </div>
 
-                  <Link
-                    href={`/messages`}
-                    className="rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs flex items-center gap-1"
-                  >
-                    <MessageSquare className="h-3.5 w-3.5" />
-                    <span>Accept Task</span>
-                  </Link>
+                  <AcceptTaskButton
+                    taskId={task.id}
+                    taskClientId={task.client_id}
+                    currentUserId={user?.id}
+                  />
                 </div>
               </div>
             )
