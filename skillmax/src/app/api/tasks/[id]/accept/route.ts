@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -30,8 +31,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: 'This task is already assigned or completed' }, { status: 400 })
     }
 
-    // 2. Create active Job linking client and provider
-    const { data: job, error: jobErr } = await supabase
+    const supabaseAdmin = createAdminClient()
+
+    // 2. Create active Job linking client and provider using admin client
+    const { data: job, error: jobErr } = await supabaseAdmin
       .from('jobs')
       .insert({
         client_id: task.client_id,
@@ -51,20 +54,20 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     }
 
     // 3. Mark task as assigned
-    await supabase
+    await supabaseAdmin
       .from('task_postings')
       .update({ status: 'assigned' })
       .eq('id', taskId)
 
     // 4. Create initial chat message
-    await supabase.from('messages').insert({
+    await supabaseAdmin.from('messages').insert({
       job_id: job.id,
       sender_id: user.id,
       content: `👋 Hi! I have accepted your task request: "${task.title}". Looking forward to coordinating with you!`,
     })
 
     // 5. Notify client
-    await supabase.from('notifications').insert({
+    await supabaseAdmin.from('notifications').insert({
       user_id: task.client_id,
       job_id: job.id,
       message: `A local specialist has accepted your task request: "${task.title}"!`,

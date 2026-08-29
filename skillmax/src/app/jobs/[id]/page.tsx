@@ -120,7 +120,11 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               {/* Client: Release Payment (Available when provider marks done OR directly by client) */}
               {isClient && (job.status === 'provider_done' || job.status === 'active') && (
                 <div className="space-y-1.5">
-                  <ReleasePaymentButton jobId={job.id} />
+                  <ReleasePaymentButton
+                    jobId={job.id}
+                    isCrypto={job.payment_method === 'crypto'}
+                    chainJobId={job.chain_job_id}
+                  />
                   <p className="text-[11px] text-slate-400 text-center">
                     Releases locked funds to provider and mints Soulbound ERC-1155 proof of work.
                   </p>

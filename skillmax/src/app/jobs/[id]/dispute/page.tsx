@@ -38,7 +38,11 @@ export default async function DisputePage({ params }: { params: Promise<{ id: st
         </p>
       </div>
       <div className="mt-6">
-        <DisputeForm jobId={id} isCrypto={job.payment_method === 'crypto'} />
+        <DisputeForm
+          jobId={id}
+          isCrypto={job.payment_method === 'crypto'}
+          chainJobId={job.chain_job_id}
+        />
       </div>
     </div>
   )

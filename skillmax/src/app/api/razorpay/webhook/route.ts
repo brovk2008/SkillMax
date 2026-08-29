@@ -1,18 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
-import { createClient } from '@supabase/supabase-js'
-
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://placeholder.supabase.co',
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? 'placeholder-key'
-  )
-}
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const signature = req.headers.get('x-razorpay-signature') ?? ''
-  const secret = process.env.RAZORPAY_WEBHOOK_SECRET ?? ''
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET
+
+  if (!secret) {
+    console.error('RAZORPAY_WEBHOOK_SECRET is not configured')
+    return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 })
+  }
 
   const expectedSig = crypto.createHmac('sha256', secret).update(body).digest('hex')
   if (expectedSig !== signature) {
@@ -27,7 +25,7 @@ export async function POST(req: NextRequest) {
     const linkId = event.payload?.payment_link?.entity?.id
 
     if (linkId) {
-      const supabaseAdmin = getSupabaseAdmin()
+      const supabaseAdmin = createAdminClient()
       // Activate the job
       await supabaseAdmin
         .from('jobs')
@@ -47,19 +45,27 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true })
 }
 
-// Razorpay also sends GET callbacks from browser redirect
+// Razorpay browser redirect GET callback — safe redirect only; activation happens via signed POST webhook
 export async function GET(req: NextRequest) {
   const url = new URL(req.url)
   const razorpayPaymentLinkId = url.searchParams.get('razorpay_payment_link_id')
   const status = url.searchParams.get('razorpay_payment_link_status')
+  const razorpaySignature = url.searchParams.get('razorpay_signature')
+  const razorpayPaymentId = url.searchParams.get('razorpay_payment_id')
+  const secret = process.env.RAZORPAY_KEY_SECRET
 
-  if (razorpayPaymentLinkId && status === 'paid') {
-    const supabaseAdmin = getSupabaseAdmin()
-    await supabaseAdmin
-      .from('jobs')
-      .update({ status: 'active' })
-      .eq('razorpay_payment_link_id', razorpayPaymentLinkId)
+  // If valid callback parameters are present and secret is configured, verify HMAC before touching DB
+  if (secret && razorpayPaymentLinkId && razorpayPaymentId && razorpaySignature && status === 'paid') {
+    const payload = `${razorpayPaymentLinkId}|${razorpayPaymentId}`
+    const expectedSig = crypto.createHmac('sha256', secret).update(payload).digest('hex')
+    if (expectedSig === razorpaySignature) {
+      const supabaseAdmin = createAdminClient()
+      await supabaseAdmin
+        .from('jobs')
+        .update({ status: 'active', razorpay_payment_id: razorpayPaymentId })
+        .eq('razorpay_payment_link_id', razorpayPaymentLinkId)
+    }
   }
 
-  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/dashboard`)
+  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL ?? 'https://skillmax2026.vercel.app'}/dashboard`)
 }

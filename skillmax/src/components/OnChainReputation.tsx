@@ -36,9 +36,11 @@ export function OnChainReputation({ walletAddress }: Props) {
     )
   }
 
-  const [jobsCount, avgRating100] = (rep as any) ?? [0n, 0n]
-  const jobs = Number(jobsCount ?? 0n)
-  const avgDisplay = jobs > 0 ? (Number(avgRating100 ?? 0n) / 100).toFixed(1) : 'No ratings'
+  const [completedJobs, disputedJobs, ratingCount, avgRating100] = (rep as any) ?? [0n, 0n, 0n, 0n]
+  const jobs = Number(completedJobs ?? 0n)
+  const disputes = Number(disputedJobs ?? 0n)
+  const ratings = Number(ratingCount ?? 0n)
+  const avgDisplay = ratings > 0 ? (Number(avgRating100 ?? 0n) / 100).toFixed(1) : 'No ratings'
 
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-3">

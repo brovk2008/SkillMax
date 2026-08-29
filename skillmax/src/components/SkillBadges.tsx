@@ -33,14 +33,13 @@ export function SkillBadges({ earnedBadges, walletAddress }: Props) {
         }))
       setEarned(list)
     } else if (contractBadges) {
-      const [ids, balances] = (contractBadges as any) ?? [[], []]
+      const counts = Array.isArray(contractBadges) ? contractBadges : []
       const list: { name: string; count: number }[] = []
-      for (let i = 0; i < ids.length; i++) {
-        const count = Number(balances[i] ?? 0n)
+      for (let i = 0; i < counts.length; i++) {
+        const count = Number(counts[i] ?? 0n)
         if (count > 0) {
-          const catId = Number(ids[i])
           list.push({
-            name: CATEGORY_NAMES[catId] ?? `Category #${catId}`,
+            name: CATEGORY_NAMES[i] ?? `Category #${i}`,
             count,
           })
         }

@@ -14,47 +14,72 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { skillId, providerUserId, priceInr } = await req.json()
-  if (!skillId || !providerUserId || !priceInr) {
-    return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+  const { skillId } = await req.json()
+  if (!skillId) {
+    return NextResponse.json({ error: 'Missing skillId' }, { status: 400 })
   }
 
   try {
+    // 1. Fetch and verify skill directly from database to prevent price/provider tampering
+    const { data: skill, error: skillErr } = await supabase
+      .from('skills')
+      .select('id, title, price_inr, provider_id')
+      .eq('id', skillId)
+      .single()
+
+    if (skillErr || !skill) {
+      return NextResponse.json({ error: 'Skill listing not found' }, { status: 404 })
+    }
+
+    if (!skill.price_inr || skill.price_inr <= 0) {
+      return NextResponse.json({ error: 'This skill does not have a valid INR price' }, { status: 400 })
+    }
+
+    if (skill.provider_id === user.id) {
+      return NextResponse.json({ error: 'You cannot book your own skill listing' }, { status: 400 })
+    }
+
+    const verifiedPriceInr = skill.price_inr
+    const verifiedProviderUserId = skill.provider_id
+
     const razorpay = getRazorpay()
-    const { data: skill } = await supabase.from('skills').select('title').eq('id', skillId).single()
 
     const paymentLink = await razorpay.paymentLink.create({
-      amount: priceInr * 100, // in paise
+      amount: verifiedPriceInr * 100, // in paise
       currency: 'INR',
-      description: skill?.title ?? 'SkillMax Booking',
+      description: `SkillMax: ${skill.title}`,
       notify: { sms: false, email: true },
-      callback_url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/razorpay/webhook`,
+      callback_url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://skillmax2026.vercel.app'}/api/razorpay/webhook`,
       callback_method: 'get',
       notes: {
-        skillId,
+        skillId: skill.id,
         clientId: user.id,
-        providerUserId,
+        providerUserId: verifiedProviderUserId,
       },
     } as any)
 
     // Pre-create job in pending state
-    const { data: job } = await supabase
+    const { data: job, error: jobErr } = await supabase
       .from('jobs')
       .insert({
         client_id: user.id,
-        provider_id: providerUserId,
-        skill_id: skillId,
+        provider_id: verifiedProviderUserId,
+        skill_id: skill.id,
         payment_method: 'razorpay',
-        price_inr: priceInr,
+        price_inr: verifiedPriceInr,
         status: 'pending',
         razorpay_payment_link_id: paymentLink.id,
       })
       .select('id')
       .single()
 
+    if (jobErr) {
+      console.error('Job insertion error:', jobErr)
+    }
+
     return NextResponse.json({ paymentLink: paymentLink.short_url, jobId: job?.id })
   } catch (e: any) {
-    console.error(e)
+    console.error('Razorpay payment link creation exception:', e)
     return NextResponse.json({ error: e.message ?? 'Razorpay error' }, { status: 500 })
   }
 }
