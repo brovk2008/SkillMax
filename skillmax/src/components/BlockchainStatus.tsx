@@ -31,9 +31,9 @@ export function BlockchainStatus({ entries }: BlockchainStatusProps) {
                 href={monadScanTx(entry.hash)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-xs text-purple-600 hover:underline"
+                className="font-mono text-xs text-emerald-600 hover:underline"
               >
-                {entry.hash.slice(0, 8)}...↗
+                View on MonadScan ↗
               </a>
             ) : (
               <span className="text-xs text-gray-400">—</span>

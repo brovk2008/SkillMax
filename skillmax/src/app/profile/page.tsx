@@ -59,7 +59,7 @@ export default async function MyProfilePage() {
             <h2 className="text-base font-medium text-gray-900">My Skills</h2>
             <Link
               href="/skills/new"
-              className="rounded-md bg-purple-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-purple-700"
+              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
             >
               + Add Skill
             </Link>

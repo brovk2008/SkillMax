@@ -67,7 +67,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
             value={(form as any)[f.key]}
             onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
             placeholder={f.placeholder}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none text-gray-900"
           />
         </div>
       ))}
@@ -77,15 +77,15 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
           value={form.bio}
           onChange={(e) => setForm({ ...form, bio: e.target.value })}
           rows={3}
-          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none resize-none"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none resize-none text-gray-900"
         />
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
-      {saved && <p className="text-xs text-green-600">✓ Profile saved</p>}
+      {saved && <p className="text-xs text-emerald-600">✓ Profile saved</p>}
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+        className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
       >
         {loading ? 'Saving...' : 'Save Changes'}
       </button>

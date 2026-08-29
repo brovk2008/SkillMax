@@ -1,4 +1,5 @@
 import { createServerClient } from '@/lib/supabase/server'
+import Link from 'next/link'
 import SkillCard from '@/components/SkillCard'
 import { CATEGORIES } from '@/lib/contracts'
 
@@ -36,29 +37,34 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
             name="q"
             defaultValue={q}
             placeholder="Search skills..."
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-purple-500 focus:outline-none"
+            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none"
           />
           <button
             type="submit"
-            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
           >
             Search
           </button>
         </form>
-        <div className="flex flex-wrap gap-2">
-          {CATEGORIES.map((cat) => (
-            <a
-              key={cat}
-              href={`/explore?category=${cat}${q ? `&q=${q}` : ''}`}
-              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                (category === cat) || (!category && cat === 'All')
-                  ? 'border-purple-600 bg-purple-600 text-white'
-                  : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400'
-              }`}
-            >
-              {cat}
-            </a>
-          ))}
+
+        {/* Category Pills */}
+        <div className="mt-4 flex flex-wrap gap-2">
+          {CATEGORIES.map((cat) => {
+            const active = (category ?? 'All') === cat
+            return (
+              <Link
+                key={cat}
+                href={cat === 'All' ? '/explore' : `/explore?category=${encodeURIComponent(cat)}`}
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                  active
+                    ? 'bg-emerald-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {cat}
+              </Link>
+            )
+          })}
         </div>
       </div>
 

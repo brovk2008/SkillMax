@@ -170,7 +170,7 @@ export default function OnboardPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Riya Sharma"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -180,7 +180,7 @@ export default function OnboardPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="riya_sharma"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -190,7 +190,7 @@ export default function OnboardPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Delhi"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -201,7 +201,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -213,7 +213,7 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -222,7 +222,7 @@ export default function OnboardPage() {
                 value={walletAddress}
                 onChange={(e) => setWalletAddress(e.target.value)}
                 placeholder="0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none font-mono"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none font-mono"
               />
             </div>
             <div>
@@ -232,14 +232,14 @@ export default function OnboardPage() {
                 onChange={(e) => setBio(e.target.value)}
                 rows={2}
                 placeholder="Tell others what you do..."
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none resize-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none resize-none"
               />
             </div>
             {error && <p className="text-xs text-red-600 bg-red-50 p-2 rounded">{error}</p>}
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+              className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
             >
               {loading ? 'Creating account...' : 'Create Account & Continue →'}
             </button>
@@ -254,7 +254,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -265,14 +265,14 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none"
               />
             </div>
             {error && <p className="text-xs text-red-600 bg-red-50 p-2 rounded">{error}</p>}
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+              className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
             >
               {loading ? 'Signing in...' : 'Sign In →'}
             </button>
@@ -294,7 +294,7 @@ export default function OnboardPage() {
             type="checkbox"
             checked={wantToList}
             onChange={(e) => setWantToList(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
           />
           <span className="text-sm font-medium text-gray-700">Yes, I want to list a skill now</span>
         </label>
@@ -307,7 +307,7 @@ export default function OnboardPage() {
                 value={skillTitle}
                 onChange={(e) => setSkillTitle(e.target.value)}
                 placeholder="Python Tutoring, Web Design..."
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
               />
             </div>
             <div>
@@ -315,7 +315,7 @@ export default function OnboardPage() {
               <select
                 value={skillCat}
                 onChange={(e) => setSkillCat(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
               >
                 {CATEGORY_NAMES.map((c) => <option key={c}>{c}</option>)}
               </select>
@@ -327,7 +327,7 @@ export default function OnboardPage() {
                 onChange={(e) => setSkillDesc(e.target.value)}
                 rows={3}
                 placeholder="Describe your service..."
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none resize-none"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -338,7 +338,7 @@ export default function OnboardPage() {
                   value={priceInr}
                   onChange={(e) => setPriceInr(e.target.value)}
                   placeholder="500"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
                 />
               </div>
               <div>
@@ -349,7 +349,7 @@ export default function OnboardPage() {
                   value={priceMon}
                   onChange={(e) => setPriceMon(e.target.value)}
                   placeholder="0.1"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
+                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -359,7 +359,7 @@ export default function OnboardPage() {
         <button
           onClick={handleSaveSkill}
           disabled={loading}
-          className="w-full rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+          className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
         >
           {loading ? 'Saving...' : 'Finish & Go to Dashboard →'}
         </button>

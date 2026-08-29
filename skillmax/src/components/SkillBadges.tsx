@@ -27,9 +27,9 @@ export function SkillBadges({ walletAddress }: { walletAddress: string }) {
         {earned.map((b) => (
           <span
             key={b.name}
-            className="inline-flex items-center rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700"
+            className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700"
           >
-            {b.name} ×{b.count}
+            🎖️ {b.name} ×{b.count}
           </span>
         ))}
       </div>

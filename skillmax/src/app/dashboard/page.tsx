@@ -37,7 +37,7 @@ export default async function DashboardPage() {
         </h1>
         <Link
           href="/profile"
-          className="text-sm font-medium text-purple-600 hover:underline"
+          className="text-sm font-medium text-emerald-600 hover:underline"
         >
           My Profile →
         </Link>
@@ -48,7 +48,7 @@ export default async function DashboardPage() {
         <h2 className="text-base font-medium text-gray-900">Jobs I booked</h2>
         {clientJobs?.length === 0 && (
           <div className="mt-4 rounded-lg border border-dashed border-gray-300 p-6 text-center">
-            <p className="text-sm text-gray-500">No jobs yet. <Link href="/explore" className="text-purple-600 hover:underline">Browse skills →</Link></p>
+            <p className="text-sm text-gray-500">No jobs yet. <Link href="/explore" className="text-emerald-600 hover:underline">Browse skills →</Link></p>
           </div>
         )}
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
         <h2 className="text-base font-medium text-gray-900">Jobs for me to complete</h2>
         {providerJobs?.length === 0 && (
           <div className="mt-4 rounded-lg border border-dashed border-gray-300 p-6 text-center">
-            <p className="text-sm text-gray-500">No bookings yet. <Link href="/profile" className="text-purple-600 hover:underline">Add a skill →</Link></p>
+            <p className="text-sm text-gray-500">No bookings yet. <Link href="/profile" className="text-emerald-600 hover:underline">Add a skill →</Link></p>
           </div>
         )}
         <div className="mt-4 grid gap-3 sm:grid-cols-2">

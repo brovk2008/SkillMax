@@ -46,7 +46,7 @@ export function OnChainReputation({ walletAddress }: { walletAddress: string }) 
         href={monadScanAddress(walletAddress)}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 block font-mono text-xs text-purple-600 hover:underline"
+        className="mt-3 block font-mono text-xs text-emerald-600 hover:underline"
       >
         {shortenAddress(walletAddress)} ↗ MonadScan
       </a>

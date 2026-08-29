@@ -18,81 +18,99 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
 
   if (!skill) notFound()
 
-  const isOwn = user?.id === skill.provider_id
   const provider = skill.profiles as any
+  const isOwnSkill = user?.id === skill.provider_id
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10">
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Skill info */}
-        <div className="lg:col-span-2 space-y-6">
+    <div className="mx-auto max-w-4xl px-4 py-8 space-y-8">
+      {/* Breadcrumb */}
+      <nav className="text-xs text-gray-500">
+        <Link href="/explore" className="hover:underline">Explore</Link>
+        {' / '}
+        <span className="text-gray-900">{skill.category}</span>
+      </nav>
+
+      {/* Grid layout */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Main Content */}
+        <div className="md:col-span-2 space-y-6">
           <div>
-            <span className="inline-flex items-center rounded-full border border-gray-200 px-2.5 py-0.5 text-xs text-gray-600">
+            <span className="inline-block rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
               {skill.category}
             </span>
-            <h1 className="mt-3 text-2xl font-semibold text-gray-900">{skill.title}</h1>
-            <p className="mt-1 text-sm text-gray-500">{provider.city}</p>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{skill.title}</h1>
           </div>
+
           {skill.description && (
-            <div className="rounded-lg border border-gray-200 p-5">
-              <p className="text-sm font-medium text-gray-700 mb-2">About this skill</p>
+            <div className="rounded-lg border border-gray-200 bg-white p-5 space-y-2">
+              <h2 className="text-sm font-semibold text-gray-900">About this skill</h2>
               <p className="text-sm text-gray-600 whitespace-pre-wrap">{skill.description}</p>
             </div>
           )}
-          <div className="rounded-lg border border-gray-200 p-5">
-            <p className="text-sm font-medium text-gray-700 mb-2">Provider</p>
-            <Link href={`/profile/${provider.username}`} className="flex items-center gap-3 hover:opacity-80">
-              <div className="h-9 w-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 text-sm font-semibold">
-                {provider.full_name.charAt(0)}
+
+          <div className="rounded-lg border border-gray-200 bg-white p-5">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Service Provider</p>
+            <Link href={`/profile/${provider?.username}`} className="flex items-center gap-3 hover:opacity-80">
+              <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-semibold">
+                {provider?.full_name?.charAt(0) ?? '?'}
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-900">{provider.full_name}</p>
-                <p className="text-xs text-gray-500">@{provider.username}</p>
+                <p className="text-sm font-medium text-gray-900">{provider?.full_name}</p>
+                <p className="text-xs text-gray-500">@{provider?.username} · {provider?.city}</p>
               </div>
             </Link>
           </div>
         </div>
 
-        {/* Booking sidebar */}
+        {/* Sidebar */}
         <div className="space-y-4">
-          <div className="rounded-lg border border-gray-200 p-5">
-            <p className="text-sm font-medium text-gray-700 mb-4">Book this skill</p>
-            {skill.price_inr && <p className="text-2xl font-semibold text-gray-900">{formatINR(skill.price_inr)}</p>}
-            {skill.price_mon && <p className="text-sm text-gray-500 mt-0.5">{skill.price_mon} MON</p>}
+          <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900">Book this Skill</h3>
 
-            {isOwn ? (
-              <div className="mt-4 rounded-md bg-gray-50 p-3 text-center text-sm text-gray-500">
-                This is your listing
-              </div>
-            ) : !user ? (
-              <div className="mt-4 space-y-2">
-                <p className="text-xs text-gray-500">Sign in to book this skill</p>
-                <Link href="/onboard" className="block w-full rounded-md bg-purple-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-700">
-                  Sign In
+            <div className="space-y-1">
+              {skill.price_inr && (
+                <p className="text-2xl font-bold text-gray-900">{formatINR(skill.price_inr)}</p>
+              )}
+              {skill.price_mon && (
+                <p className="text-sm text-gray-500">{skill.price_mon} MON</p>
+              )}
+            </div>
+
+            <div className="border-t border-gray-100 pt-4">
+              {isOwnSkill ? (
+                <div className="rounded-md bg-gray-50 p-3 text-center text-xs text-gray-500">
+                  This is your listing
+                </div>
+              ) : !user ? (
+                <Link
+                  href="/onboard"
+                  className="block w-full rounded-md bg-emerald-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-emerald-700 shadow-sm"
+                >
+                  Sign in to Book
                 </Link>
-              </div>
-            ) : (
-              <div className="mt-4 space-y-2">
-                {skill.price_mon && provider.wallet_address && (
-                  <CryptoBookingButton
-                    skillId={skill.id}
-                    priceMon={skill.price_mon}
-                    providerAddress={provider.wallet_address}
-                    providerUserId={provider.id}
-                  />
-                )}
-                {skill.price_inr && (
-                  <RazorpayBookingButton
-                    skillId={skill.id}
-                    priceInr={skill.price_inr}
-                    providerUserId={provider.id}
-                  />
-                )}
-              </div>
-            )}
+              ) : (
+                <div className="space-y-2">
+                  {skill.price_mon && provider?.wallet_address && (
+                    <CryptoBookingButton
+                      skillId={skill.id}
+                      priceMon={skill.price_mon}
+                      providerAddress={provider.wallet_address}
+                      providerUserId={provider.id}
+                    />
+                  )}
+                  {skill.price_inr && (
+                    <RazorpayBookingButton
+                      skillId={skill.id}
+                      priceInr={skill.price_inr}
+                      providerUserId={provider.id}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
           <p className="text-xs text-gray-400 text-center">
-            Funds held in escrow until job is complete
+            Funds held in non-custodial Monad escrow until completion
           </p>
         </div>
       </div>

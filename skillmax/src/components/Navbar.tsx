@@ -34,7 +34,7 @@ export function Navbar({ userId }: { userId?: string }) {
               href={link.href}
               className={`text-sm font-medium transition-colors ${
                 pathname.startsWith(link.href)
-                  ? 'text-purple-600'
+                  ? 'text-emerald-600'
                   : 'text-gray-600 hover:text-gray-900'
               }`}
             >
@@ -54,7 +54,7 @@ export function Navbar({ userId }: { userId?: string }) {
           {!userId ? (
             <Link
               href="/onboard"
-              className="rounded-md bg-purple-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-purple-700"
+              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
             >
               Sign In
             </Link>
