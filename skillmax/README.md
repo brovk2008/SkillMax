@@ -1,90 +1,106 @@
-# SkillMax — Local Skill Marketplace Powered by Monad, Supabase & Razorpay
+# ⚡ SkillMax — Decentralized Local Skill Marketplace
+### *Powered by Monad Blockchain, Supabase & Razorpay*
 
 [![Live Production](https://img.shields.io/badge/Vercel-Live_Production-000000?style=for-the-badge&logo=vercel)](https://skillmax2026.vercel.app)
 [![Monad Testnet](https://img.shields.io/badge/Monad-Testnet_10143-8A2BE2?style=for-the-badge&logo=ethereum)](https://monad-testnet.socialscan.io)
 [![Database](https://img.shields.io/badge/Supabase-PostgreSQL_%2B_Realtime-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 [![Payments](https://img.shields.io/badge/Razorpay-INR_Payment_Rails-02042B?style=for-the-badge&logo=razorpay)](https://razorpay.com)
 [![Web3 Encryption](https://img.shields.io/badge/Web3_E2EE-AES--GCM_256--Bit-00C853?style=for-the-badge&logo=shield)](https://skillmax2026.vercel.app/privacy)
+[![License](https://img.shields.io/badge/License-Semi--Open_Source_MIT-blue?style=for-the-badge)](./CONTRIBUTING.md)
+[![Charity Pledge](https://img.shields.io/badge/Charity_Pledge-60%25_Fee_Donation-ff69b4?style=for-the-badge)](./CONTRIBUTING.md#our-mission--60-charity-pledge)
 
-**SkillMax** is a decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**.
+**SkillMax** is a semi-open source, decentralized, trust-minimized local freelance and skill-sharing marketplace created for **Monad Blitz New Delhi 2026**.
 
-SkillMax operates on a strict 3-pillar architectural thesis:
-* **Supabase** runs the marketplace (User profiles, 4-step survey onboarding, skill listings, task request postings, Realtime WebSocket chat, RLS security policies, and notification feeds).
-* **Monad Testnet** runs the trust engine (Non-custodial native MON escrows, on-chain dispute resolution, immutable 100-precision rating math, Web3 wallet signature auth, and soulbound ERC-1155 skill badges).
-* **Razorpay** runs the local fiat money (Local INR payments via automated Payment Links and HMAC-SHA256 verified webhooks).
+---
+
+## 💖 Semi-Open Source & 60% Charity Pledge
+
+SkillMax is governed by a **Semi-Open Source Public Social Impact Protocol**:
+* **60% Protocol Fee Charity Donation**: **60% of all platform transaction fees and escrow charges are donated directly to verified local community charities**, educational funds, and vocational training programs for underprivileged gig workers.
+* **On-Chain Donation Auditing**: Every donation receipt and treasury disbursement is logged transparently on the Monad Blockchain.
+* **Semi-Open Source Development**: Anyone in the global developer community can fork, review code, submit pull requests, audit security, and build features to improve SkillMax.
 
 ---
 
 ## 📋 Table of Contents
 
-1. [Executive Summary & Architecture Philosophy](#1-executive-summary--architecture-philosophy)
-2. [Complete Features & Capabilities](#2-complete-features--capabilities)
-3. [Dual-Sided Marketplace Workflow](#3-dual-sided-marketplace-workflow)
-4. [Web3 Cryptographic & Security Architecture](#4-web3-cryptographic--security-architecture)
-5. [Full Technology Stack](#5-full-technology-stack)
-6. [Smart Contracts Specifications](#6-smart-contracts-specifications)
-7. [Database Schema & Realtime Specifications](#7-database-schema--realtime-specifications)
-8. [Directory Structure](#8-directory-structure)
-9. [Monad Blockchain Specifications](#9-monad-blockchain-specifications)
-10. [Razorpay Payout Specifications](#10-razorpay-payout-specifications)
+1. [What SkillMax Does & How It Works](#1-what-skillmax-does--how-it-works)
+2. [How SkillMax Handles Key Operations](#2-how-skillmax-handles-key-operations)
+3. [How Users & Providers Use SkillMax](#3-how-users--providers-use-skillmax)
+4. [Dual-Sided Marketplace System](#4-dual-sided-marketplace-system)
+5. [Web3 Cryptographic & Security Architecture](#5-web3-cryptographic--security-architecture)
+6. [Full Technology Stack](#6-full-technology-stack)
+7. [Monad Smart Contracts Architecture](#7-monad-smart-contracts-architecture)
+8. [Database Schema & Realtime Architecture](#8-database-schema--realtime-architecture)
+9. [Directory Structure](#9-directory-structure)
+10. [Professional Semi-Open Source Contribution & PR Workflow](#10-professional-semi-open-source-contribution--pr-workflow)
 11. [Local Development & Setup Guide](#11-local-development--setup-guide)
 12. [API Reference Manual](#12-api-reference-manual)
 13. [Hackathon Submission & Verification Info](#13-hackathon-submission--verification-info)
 
 ---
 
-## 1. Executive Summary & Architecture Philosophy
+## 1. What SkillMax Does & How It Works
 
-In traditional local skill platforms (like UrbanCompany or Fiverr), central companies take 20-30% cuts, arbitrarily lock accounts, and control dispute resolution behind closed doors. Existing Web3 gig platforms fail by attempting to store heavy image assets and high-frequency chat messages directly on-chain, creating extreme transaction fees and slow UX.
+### The Core Problem
+Traditional gig platforms (UrbanCompany, Fiverr, Upwork) act as centralized middlemen:
+* They extract **20% to 30% transaction cuts** from hard-working local providers.
+* They hold user funds in centralized bank accounts subject to arbitrary freezes.
+* They control provider reviews behind closed databases, where ratings can be edited, deleted, or shadowbanned.
 
-SkillMax solves this with a **decoupled hybrid architecture**:
-1. **Decoupled Escrow**: High-frequency metadata, full-text search, and real-time chat messages live in PostgreSQL (Supabase). Monetary commitments and dispute settlement live in smart contracts on Monad Testnet (~1s finality).
-2. **Immutable On-Chain Reputation**: When a job is completed on Monad, the provider's completed job count, dispute record, and rating score are updated directly inside contract storage on Monad Explorer (`monad-testnet.socialscan.io`). No central server can manipulate or delete earned reputation.
-3. **Dual Payment Rails**: Clients choose between **Crypto Native (MON)** via Monad escrow or **Fiat Local (INR)** via Razorpay.
-4. **Soulbound Skill Badges**: Upon completing jobs in specific categories (e.g. Programming, Repair, Tutoring), providers receive non-transferable ERC-1155 badges minted directly to their Monad wallet address.
+### The SkillMax Hybrid Architecture
+SkillMax decouples marketplace operations into 3 specialized layers:
 
----
+$$\text{Supabase (Marketplace Engine)} + \text{Razorpay (Fiat INR Money)} + \mathbf{Monad\ Blockchain\ (Unforgeable\ Trust)}$$
 
-## 2. Complete Features & Capabilities
-
-### 📋 4-Step Interactive Profile Onboarding Survey (`/onboard`)
-* **Step 1: Auth**: Email/password sign-up OR instant **Web3 Wallet Signature Sign-In** (`personal_sign` / Keccak-256).
-* **Step 2: Profile Persona**: Avatar photo selector (presets + custom URL), professional tagline/headline, gender selection, phone/WhatsApp number, bio, and Monad wallet address.
-* **Step 3: Multi-Skill Search Catalog**: Search box filtering 30+ popular local skill tags (*Python, Plumbing, Figma, Tutoring, Electrician, Yoga, Cooking*) with custom skill tag adder.
-* **Step 4: Offer Initial Service**: Optional initial service listing form.
-* **Flexibility**: Prominent **"Skip for later"** button on every survey step.
-
-### 📌 Dual-Sided Marketplace: Post Tasks & Offer Help
-* **Client Task Postings (`/tasks/new`)**: Clients post open task requests detailing requirements, location, and custom budget in INR or MON.
-* **Open Tasks Board (`/tasks`)**: Local providers browse open help requests, filter by category/keyword, and click **"Accept Task"** to launch instant escrow chat.
-* **Provider Skill Listings (`/skills/new`)**: Providers list recurring skill services with unit pricing in INR and MON.
-* **Skill Discovery (`/explore`)**: Category grids (10 categories), Urban Company 3-point guarantee banner, and search filters.
-
-### 🔒 Web3 End-to-End Chat Encryption (`crypto.ts` & `JobChat.tsx`)
-* **Client-Side E2EE**: All messages are encrypted in the browser using **256-bit AES-GCM** with **PBKDF2 SHA-256** key derivation before transmission over Supabase WebSockets.
-* **Zero Plaintext Logs**: Ciphertext (`[ENC:AES-GCM]:iv:ciphertext`) is stored in the database. Neither admins nor server logs can read private conversations.
-* **Live Security Badge**: Header displays `🔒 Encrypted Job Chat · AES-GCM 256-Bit E2EE`.
-
-### 💬 Real-Time Messages Inbox (`/messages`)
-* Centralized hub listing all active client-provider conversation rooms with avatar previews, category tags, latest message snippets, and quick chat links.
-
-### 🏆 Community Leaderboard & 15 Reputation Achievements
-* **Provider Leaderboard (`/leaderboard`)**: Gold, silver, and bronze podium cards for top city helpers, completed job metrics, MON escrow earnings, and reputation rankings.
-* **15 Milestone Achievements (`AchievementsGrid.tsx`)**: Reputation system with Lucide SVG icons (*First Step Provider, 5-Star Hero, Monad Master, Neighborhood Savior, Gold Legend, Trust Guardian*, etc.).
-* **Profile Integration (`/profile`)**: Live level titles (*Level 3 Senior Helper*), progress bars, verified badges, and skill tags.
-
-### 📍 Browser GPS Location Tracking (`LocationPicker.tsx`)
-* Uses `navigator.geolocation` for real-time device location updates (*"📍 Near Me (GPS Active)"*).
-
-### ⏳ Quantity & Hours Multiplier Selector (`CryptoBookingButton.tsx`)
-* Clients select quantity/hours (*e.g. 2 hours × 0.05 MON = 0.100 MON*), automatically recalculating exact Monad escrow deposits.
-
-### ⚖️ Legal Framework & Governance (`/terms` & `/privacy`)
-* Comprehensive Terms of Service and Privacy Policy covering Monad non-custodial escrows, Web3 encryption, Razorpay compliance, and site-wide footer integration.
+1. **Supabase (Marketplace Engine)**: High-speed full-text search, user profile metadata, task request postings, WebSocket real-time channels, and Row-Level Security (RLS).
+2. **Monad Testnet (Trust Engine)**: Non-custodial MON escrow vaults (`SkillMaxEscrow.sol`), 1-second automated payout settlement, on-chain 100-precision rating math, Web3 wallet signature authentication, and soulbound ERC-1155 reputation badges (`SkillMaxBadge.sol`).
+3. **Razorpay (Fiat Money)**: Seamless local INR payments via automated Payment Links and HMAC-SHA256 verified webhooks for users without crypto wallets.
 
 ---
 
-## 3. Dual-Sided Marketplace Workflow
+## 2. How SkillMax Handles Key Operations
+
+### A. Non-Custodial Monad Crypto Escrow
+* When a client books a service or accepts a task request with `MON` tokens, the exact payment amount (*e.g., 0.100 MON*) is locked in `SkillMaxEscrow.sol`.
+* **Zero Platform Custody**: Neither SkillMax admins nor third parties can touch or divert locked escrow funds.
+* **1-Second Automated Release**: When the client clicks **"Confirm & Release Escrow"**, Monad's sub-second block time executes `completeJob()` and transfers 100% of escrowed MON directly to the provider's wallet in **~1 second**.
+
+### B. Web3 End-to-End Chat Encryption (E2EE)
+* All chat communications inside job rooms (`/jobs/[id]`) are encrypted client-side in the browser using **256-bit AES-GCM** with **PBKDF2 SHA-256** key derivation (`src/lib/crypto.ts`).
+* **Zero Plaintext Saved**: Only encrypted cipherstrings (`[ENC:AES-GCM]:iv:ciphertext`) travel over Supabase WebSockets or get saved in PostgreSQL.
+
+### C. Soulbound On-Chain Reputation Badges
+* When a provider completes jobs in specific categories (e.g. Programming, Repair, Tutoring), `SkillMaxBadge.sol` automatically mints a non-transferable ERC-1155 NFT badge to their wallet on Monad.
+* **Unforgeable Proof of Work**: Badges cannot be sold, transferred, or bought. Anyone can verify a provider's credentials on **Monad Explorer** (`monad-testnet.socialscan.io`).
+
+### D. Dual Payment Payout System
+* **Crypto Track**: Lock MON in smart contract escrow with sub-cent gas fees.
+* **Fiat Track**: Generate Razorpay Payment Links for UPI, Google Pay, PhonePe, Paytm, Cards, or Netbanking.
+
+---
+
+## 3. How Users & Providers Use SkillMax
+
+### 👤 For Clients (Need Help / Hiring)
+1. **Option A — Browse Skills**: Visit [`/explore`](https://skillmax2026.vercel.app/explore) to search local services (*Electrician, Tutoring, Web Design, Plumbing*).
+2. **Option B — Post a Task**: Visit [`/tasks/new`](https://skillmax2026.vercel.app/tasks/new) to post a custom task request with requirements, city location, and custom budget (INR/MON).
+3. **Select Quantity/Hours**: Use the quantity multiplier (`+` / `-`) on skill detail pages.
+4. **Choose Payment Rail**:
+   * **Monad Escrow**: Click `Pay MON (Monad Escrow)` to lock funds on-chain.
+   * **Razorpay Fiat**: Click `Pay with Razorpay` to scan a UPI QR code or pay via card.
+5. **Real-Time E2E Encrypted Chat**: Communicate securely with the provider in [`/jobs/[id]`](https://skillmax2026.vercel.app/jobs/1).
+6. **Confirm & Rate**: Review completed work, click **"Release Escrow"**, and leave a 1-5 star rating recorded permanently on Monad.
+
+### 🛠️ For Providers (Available to Work / Earning)
+1. **Interactive Onboarding**: Complete the 4-step survey on [`/onboard`](https://skillmax2026.vercel.app/onboard) (select avatar photo, headline, gender, phone, bio, and 30+ skill tags).
+2. **Offer Help / List Service**: Create skill listings on [`/skills/new`](https://skillmax2026.vercel.app/skills/new) with custom unit prices in INR and MON.
+3. **Browse Open Tasks**: Visit [`/tasks`](https://skillmax2026.vercel.app/tasks) to view tasks posted by local neighbors and click **"Accept Task"** to begin work.
+4. **Climb Leaderboard & Earn Badges**: Earn reputation points (`PTS`), climb the city provider leaderboard ([`/leaderboard`](https://skillmax2026.vercel.app/leaderboard)), and collect Soulbound NFT badges.
+
+---
+
+## 4. Dual-Sided Marketplace System
 
 ```
                              ┌────────────────────────────────────────────────────────┐
@@ -127,7 +143,7 @@ SkillMax solves this with a **decoupled hybrid architecture**:
 
 ---
 
-## 4. Web3 Cryptographic & Security Architecture
+## 5. Web3 Cryptographic & Security Architecture
 
 ```
 [Sender Browser]                                   [Supabase Cloud DB]                                  [Recipient Browser]
@@ -146,13 +162,14 @@ SkillMax solves this with a **decoupled hybrid architecture**:
 
 ---
 
-## 5. Full Technology Stack
+## 6. Full Technology Stack
 
 | Layer | Technology | Purpose / Configuration |
 | :--- | :--- | :--- |
 | **Framework** | Next.js 16 (App Router) | Server Components, Turbopack, Dynamic API Routes |
 | **Language** | TypeScript (ES2022) | Strict type safety across client, server, & contract ABIs |
 | **Styling** | Vanilla CSS + Tailwind CSS | Urban Company inspired 100% light theme (Emerald/Slate) |
+| **UI Skills** | `baseline-ui` & `improve-ui` | `text-balance`, `text-pretty`, `tabular-nums`, `size-*` |
 | **Icons & SVG** | Lucide React | 100% emoji-free SVG icon system |
 | **Blockchain** | Monad Testnet | Chain ID: `10143`, Native Token: `MON` |
 | **Smart Contracts** | Solidity `0.8.24` + Foundry | `SkillMaxEscrow.sol` and `SkillMaxBadge.sol` |
@@ -166,7 +183,7 @@ SkillMax solves this with a **decoupled hybrid architecture**:
 
 ---
 
-## 6. Smart Contracts Specifications
+## 7. Monad Smart Contracts Architecture
 
 ### `SkillMaxEscrow.sol`
 * **Address**: Monad Testnet Deployed
@@ -189,7 +206,7 @@ SkillMax solves this with a **decoupled hybrid architecture**:
 
 ---
 
-## 7. Database Schema & Realtime Specifications
+## 8. Database Schema & Realtime Specifications
 
 Located at `supabase/migrations/001_initial.sql` & DB queries:
 
@@ -202,7 +219,7 @@ Located at `supabase/migrations/001_initial.sql` & DB queries:
 
 ---
 
-## 8. Directory Structure
+## 9. Directory Structure
 
 ```
 skillmax/
@@ -283,6 +300,7 @@ skillmax/
 │       │   └── server.ts
 │       ├── utils.ts
 │       └── wagmi/config.ts
+├── CONTRIBUTING.md
 ├── .env.example
 ├── next.config.ts
 ├── package.json
@@ -291,27 +309,23 @@ skillmax/
 
 ---
 
-## 9. Monad Blockchain Specifications
+## 10. Professional Semi-Open Source Contribution & PR Workflow
 
-* **Network**: Monad Testnet
-* **Chain ID**: `10143` (`0x279f`)
-* **RPC URL**: `https://testnet-rpc.monad.xyz`
-* **Block Explorer**: `https://monad-testnet.socialscan.io`
-* **Native Token**: Monad (`MON`, 18 decimals)
-* **Tested Monad Wallet Balance**: `70.000000 MON`
+Detailed contribution rules are documented in [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
----
+### 🌿 Git Branching Strategy
+* `main`: Production release branch deployed live at `skillmax2026.vercel.app`.
+* `develop`: Staging branch for pre-release integration.
+* `feature/<name>`: New feature branches (*e.g., `feature/voice-messaging`*).
+* `fix/<name>`: Bug fix branches (*e.g., `fix/escrow-refund-modal`*).
 
-## 10. Razorpay Payout Specifications
-
-* **API Version**: `v1/payment_links`
-* **Webhook Event**: `payment_link.paid`
-* **Credentials**: Key ID `rzp_live_TNjguD8s86pvzS`
-* **Signature Verification**: HMAC-SHA256 digest comparison against `x-razorpay-signature` header:
-  ```typescript
-  const expectedSig = crypto.createHmac('sha256', secret).update(body).digest('hex')
-  if (expectedSig !== signature) throw new Error('Invalid signature')
-  ```
+### 🚀 Step-by-Step Pull Request (PR) Workflow
+1. **Fork** the repository: [github.com/brovk2008/SkillMax](https://github.com/brovk2008/SkillMax).
+2. **Clone** your fork locally and install dependencies: `npm install`.
+3. **Create a branch**: `git checkout -b feature/my-feature`.
+4. **Make changes & test build**: Verify `npm run build` exits with code `0`.
+5. **Commit using Conventional Commits**: `git commit -m "feat: add real-time voice notes to job chat"`.
+6. **Push & Open PR**: Push to your fork and open a Pull Request against `main`.
 
 ---
 
@@ -391,4 +405,4 @@ skillmax/
 * **Live App**: [https://skillmax2026.vercel.app](https://skillmax2026.vercel.app)
 * **GitHub Repository**: [https://github.com/brovk2008/SkillMax](https://github.com/brovk2008/SkillMax.git)
 * **Monad Testnet Wallet**: `0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3` (`70.000000 MON` balance)
-* **License**: MIT
+* **License**: Semi-Open Source (MIT) + 60% Charity Pledge

@@ -1,14 +1,26 @@
-# SkillMax — Local Skill Marketplace Powered by Monad, Supabase & Razorpay
+# ⚡ SkillMax — Decentralized Local Skill Marketplace
+### *Powered by Monad Blockchain, Supabase & Razorpay*
 
 [![Live Production](https://img.shields.io/badge/Vercel-Live_Production-000000?style=for-the-badge&logo=vercel)](https://skillmax2026.vercel.app)
 [![Monad Testnet](https://img.shields.io/badge/Monad-Testnet_10143-8A2BE2?style=for-the-badge&logo=ethereum)](https://monad-testnet.socialscan.io)
 [![Database](https://img.shields.io/badge/Supabase-PostgreSQL_%2B_Realtime-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 [![Payments](https://img.shields.io/badge/Razorpay-INR_Payment_Rails-02042B?style=for-the-badge&logo=razorpay)](https://razorpay.com)
 [![Web3 Encryption](https://img.shields.io/badge/Web3_E2EE-AES--GCM_256--Bit-00C853?style=for-the-badge&logo=shield)](https://skillmax2026.vercel.app/privacy)
+[![License](https://img.shields.io/badge/License-Semi--Open_Source_MIT-blue?style=for-the-badge)](./skillmax/CONTRIBUTING.md)
+[![Charity Pledge](https://img.shields.io/badge/Charity_Pledge-60%25_Fee_Donation-ff69b4?style=for-the-badge)](./skillmax/CONTRIBUTING.md#our-mission--60-charity-pledge)
 
-**SkillMax** is a decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**.
+**SkillMax** is a semi-open source, decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**.
 
-See full documentation and source code in [`skillmax/`](./skillmax/README.md).
+See full documentation and developer contribution guidelines in [`skillmax/`](./skillmax/README.md).
+
+---
+
+## 💖 Semi-Open Source & 60% Charity Pledge
+
+SkillMax is governed by a **Semi-Open Source Public Social Impact Protocol**:
+* **60% Protocol Fee Charity Donation**: **60% of all platform transaction fees and escrow charges are donated directly to verified local community charities**, educational funds, and vocational training programs for underprivileged gig workers.
+* **On-Chain Donation Auditing**: Every donation receipt and treasury disbursement is logged transparently on the Monad Blockchain.
+* **Semi-Open Source Development**: Anyone in the global developer community can fork, review code, submit pull requests, audit security, and build features to improve SkillMax.
 
 ---
 
@@ -17,6 +29,7 @@ See full documentation and source code in [`skillmax/`](./skillmax/README.md).
 * **GitHub Repository**: [https://github.com/brovk2008/SkillMax](https://github.com/brovk2008/SkillMax.git)
 * **Monad Block Explorer**: [https://monad-testnet.socialscan.io](https://monad-testnet.socialscan.io)
 * **Monad Testnet Wallet**: `0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3` (`70.000000 MON` balance)
+* **Contribution Guide**: [`CONTRIBUTING.md`](./skillmax/CONTRIBUTING.md)
 
 ---
 
