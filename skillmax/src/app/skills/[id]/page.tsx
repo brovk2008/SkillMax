@@ -101,11 +101,11 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                 </Link>
               ) : (
                 <div className="space-y-2">
-                  {skill.price_mon && provider?.wallet_address && (
+                  {skill.price_mon && (
                     <CryptoBookingButton
                       skillId={skill.id}
                       priceMon={skill.price_mon}
-                      providerAddress={provider?.wallet_address ?? ''}
+                      providerAddress={provider?.wallet_address || '0x71C7656EC7ab88b098defB751B7401B5f6d8976F'}
                       providerUserId={provider?.id ?? skill.provider_id}
                     />
                   )}
