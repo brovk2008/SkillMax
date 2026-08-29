@@ -5,10 +5,23 @@ import { createAdminClient } from '@/lib/supabase/admin'
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const supabase = await createServerClient()
   const { id } = await params
-  const { data: { user } } = await supabase.auth.getUser()
+
+  let user = null
+  const authHeader = req.headers.get('authorization')
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.replace('Bearer ', '').trim()
+    const { data: tokenData } = await supabase.auth.getUser(token)
+    user = tokenData.user
+  }
+  if (!user) {
+    const { data: cookieData } = await supabase.auth.getUser()
+    user = cookieData.user
+  }
+
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { data: job, error: fetchErr } = await supabase.from('jobs').select('*').eq('id', id).single()
+  const supabaseAdmin = createAdminClient()
+  const { data: job, error: fetchErr } = await supabaseAdmin.from('jobs').select('*').eq('id', id).single()
   if (fetchErr || !job) return NextResponse.json({ error: 'Job not found' }, { status: 404 })
   if (job.client_id !== user.id) return NextResponse.json({ error: 'Forbidden — only the client can release payment' }, { status: 403 })
 
@@ -21,8 +34,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
 
   const { txHash } = await req.json().catch(() => ({}))
-
-  const supabaseAdmin = createAdminClient()
 
   await supabaseAdmin
     .from('jobs')
@@ -47,6 +58,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: req.headers.get('authorization') || '',
         Cookie: req.headers.get('cookie') ?? '',
       },
       body: JSON.stringify({ jobId: id }),

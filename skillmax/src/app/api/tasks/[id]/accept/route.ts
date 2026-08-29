@@ -7,13 +7,27 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const supabase = await createServerClient()
     const { id: taskId } = await params
 
-    const { data: { user } } = await supabase.auth.getUser()
+    // Check user via Bearer token header or SSR cookies
+    let user = null
+    const authHeader = req.headers.get('authorization')
+    if (authHeader?.startsWith('Bearer ')) {
+      const token = authHeader.replace('Bearer ', '').trim()
+      const { data: tokenData } = await supabase.auth.getUser(token)
+      user = tokenData.user
+    }
+    if (!user) {
+      const { data: cookieData } = await supabase.auth.getUser()
+      user = cookieData.user
+    }
+
     if (!user) {
       return NextResponse.json({ error: 'Please sign in to accept tasks' }, { status: 401 })
     }
 
+    const supabaseAdmin = createAdminClient()
+
     // 1. Fetch task posting
-    const { data: task, error: taskErr } = await supabase
+    const { data: task, error: taskErr } = await supabaseAdmin
       .from('task_postings')
       .select('*')
       .eq('id', taskId)
@@ -30,8 +44,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     if (task.status !== 'open') {
       return NextResponse.json({ error: 'This task is already assigned or completed' }, { status: 400 })
     }
-
-    const supabaseAdmin = createAdminClient()
 
     // 2. Create active Job linking client and provider using admin client
     const { data: job, error: jobErr } = await supabaseAdmin
