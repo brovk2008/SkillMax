@@ -6,6 +6,7 @@ import { parseEther } from 'viem'
 import { useRouter } from 'next/navigation'
 import { ESCROW_ADDRESS, ESCROW_ABI } from '@/lib/contracts'
 import { monadTestnet } from '@/lib/wagmi/config'
+import { ShieldCheck, Zap } from 'lucide-react'
 
 interface Props {
   skillId: string
@@ -16,6 +17,7 @@ interface Props {
 
 export function CryptoBookingButton({ skillId, priceMon, providerAddress, providerUserId }: Props) {
   const { address, chain } = useAccount()
+  const [quantity, setQuantity] = useState(1)
   const [status, setStatus] = useState<'idle' | 'approving' | 'done'>('idle')
   const [dbJobId, setDbJobId] = useState<string | null>(null)
   const router = useRouter()
@@ -23,6 +25,7 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
   const { writeContract, data: hash, isPending } = useWriteContract()
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
 
+  const totalMon = (priceMon * quantity).toFixed(3)
   const isWrongChain = chain?.id !== monadTestnet.id
 
   async function handleBook() {
@@ -35,7 +38,7 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
         abi: ESCROW_ABI,
         functionName: 'createJob',
         args: [providerAddress as `0x${string}`],
-        value: parseEther(priceMon.toString()),
+        value: parseEther(totalMon.toString()),
         chainId: monadTestnet.id,
       })
     } catch {
@@ -43,7 +46,6 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
     }
   }
 
-  // After tx confirmed → create DB record
   async function createDbJob() {
     const res = await fetch('/api/jobs/create-from-chain', {
       method: 'POST',
@@ -52,7 +54,7 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
         skillId,
         providerUserId,
         txHash: hash,
-        priceMon,
+        priceMon: parseFloat(totalMon),
       }),
     })
     const { jobId } = await res.json()
@@ -63,7 +65,6 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
     }
   }
 
-  // Trigger DB creation after chain confirmation
   if (isSuccess && status === 'approving' && hash) {
     createDbJob()
   }
@@ -74,15 +75,39 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
     ? 'Confirming on Monad...'
     : status === 'done'
     ? 'Booked Successfully'
-    : `Book · ${priceMon} MON`
+    : `Pay ${totalMon} MON (Monad Escrow)`
 
   return (
-    <button
-      onClick={handleBook}
-      disabled={isPending || isConfirming || status === 'done'}
-      className="w-full rounded-md bg-gray-900 px-4 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      {label}
-    </button>
+    <div className="space-y-2 border-t border-slate-100 pt-3">
+      <div className="flex items-center justify-between text-xs">
+        <span className="font-semibold text-slate-700">Quantity / Hours:</span>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            className="h-6 w-6 rounded border border-slate-300 bg-white font-bold text-slate-700 hover:bg-slate-100"
+          >
+            -
+          </button>
+          <span className="px-2 font-bold text-slate-900">{quantity}</span>
+          <button
+            type="button"
+            onClick={() => setQuantity(quantity + 1)}
+            className="h-6 w-6 rounded border border-slate-300 bg-white font-bold text-slate-700 hover:bg-slate-100"
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <button
+        onClick={handleBook}
+        disabled={isPending || isConfirming || status === 'done'}
+        className="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs flex items-center justify-center gap-1.5"
+      >
+        <Zap className="h-3.5 w-3.5" />
+        <span>{label}</span>
+      </button>
+    </div>
   )
 }

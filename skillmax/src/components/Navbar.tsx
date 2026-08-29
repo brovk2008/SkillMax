@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { WalletConnectButton } from '@/components/WalletConnectButton'
 import { NotifBadge } from '@/components/NotifBadge'
 import { LocationPicker } from '@/components/LocationPicker'
-import { Search, Plus, UserCheck, Trophy } from 'lucide-react'
+import { Search, Plus, UserCheck, Trophy, MessageSquare } from 'lucide-react'
 
 interface NavbarProps {
   user?: {
@@ -57,6 +57,7 @@ export function Navbar({ user }: NavbarProps) {
             {[
               { label: 'Explore', href: '/explore' },
               { label: 'Leaderboard', href: '/leaderboard', icon: Trophy },
+              { label: 'Messages', href: '/messages', icon: MessageSquare },
               { label: 'Dashboard', href: '/dashboard' },
               { label: 'Profile', href: '/profile' },
             ].map((link) => {
@@ -72,7 +73,7 @@ export function Navbar({ user }: NavbarProps) {
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  {Icon && <Icon className="h-3.5 w-3.5 text-amber-500" />}
+                  {Icon && <Icon className="h-3.5 w-3.5 text-emerald-600" />}
                   <span>{link.label}</span>
                 </Link>
               )
