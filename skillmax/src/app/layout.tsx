@@ -24,12 +24,22 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // Middleware already refreshed the session cookie, so getUser() works reliably
   let user = null
+  let profile = null
+
   try {
     const supabase = await createServerClient()
     const { data } = await supabase.auth.getUser()
     user = data.user
+
+    if (user) {
+      const { data: prof } = await supabase
+        .from('profiles')
+        .select('id, username, full_name, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle()
+      profile = prof
+    }
   } catch (e) {
     // Static generation edge case — safe to ignore
   }
@@ -38,7 +48,19 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-white text-slate-900 antialiased`}>
         <Providers>
-          <Navbar user={user ? { id: user.id, email: user.email } : null} />
+          <Navbar
+            user={
+              user
+                ? {
+                    id: user.id,
+                    email: user.email,
+                    avatar_url: profile?.avatar_url || null,
+                    full_name: profile?.full_name || null,
+                    username: profile?.username || null,
+                  }
+                : null
+            }
+          />
           <main className="min-h-screen">{children}</main>
 
           {/* Footer */}
@@ -48,7 +70,7 @@ export default async function RootLayout({
                 <span className="font-bold text-slate-900">SkillMax Protocol</span>
                 <span>·</span>
                 <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md text-[11px]">
-                  <Zap className="h-3 w-3 text-emerald-600" />
+                  <Zap className="size-3 text-emerald-600" />
                   Monad Chain ID 10143
                 </span>
               </div>

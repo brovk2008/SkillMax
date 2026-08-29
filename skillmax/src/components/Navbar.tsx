@@ -1,22 +1,56 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { WalletConnectButton } from '@/components/WalletConnectButton'
 import { NotifBadge } from '@/components/NotifBadge'
 import { LocationPicker } from '@/components/LocationPicker'
+import { createBrowserClient } from '@/lib/supabase/client'
 import { Search, Plus, UserCheck, Trophy, MessageSquare, ClipboardList, HandHeart } from 'lucide-react'
 
 interface NavbarProps {
   user?: {
     id: string
     email?: string
+    avatar_url?: string | null
+    full_name?: string | null
+    username?: string | null
   } | null
 }
 
 export function Navbar({ user }: NavbarProps) {
   const pathname = usePathname()
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(user?.avatar_url || null)
+  const [displayName, setDisplayName] = useState<string>(user?.full_name || user?.username || 'My Profile')
+
+  useEffect(() => {
+    if (!user?.id) return
+    if (user.avatar_url) {
+      setAvatarUrl(user.avatar_url)
+    }
+
+    try {
+      const supabase = createBrowserClient()
+      supabase
+        .from('profiles')
+        .select('avatar_url, full_name, username')
+        .eq('id', user.id)
+        .maybeSingle()
+        .then(({ data }: { data: any }) => {
+          if (data?.avatar_url) setAvatarUrl(data.avatar_url)
+          if (data?.full_name) setDisplayName(data.full_name)
+          else if (data?.username) setDisplayName(data.username)
+        })
+    } catch (e) {
+      // client error ignore
+    }
+  }, [user?.id, user?.avatar_url])
+
+  // Deterministic fallback avatar only if no custom avatar is set
+  const fallbackSeed = user?.username || user?.email || user?.id || 'User'
+  const finalAvatar = avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(fallbackSeed)}`
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -93,13 +127,13 @@ export function Navbar({ user }: NavbarProps) {
               </Link>
               <Link
                 href="/profile"
-                className="h-8 w-8 rounded-full border-2 border-emerald-500 overflow-hidden bg-emerald-50 flex items-center justify-center hover:scale-105 transition-transform"
-                title="My Profile"
+                className="size-8 rounded-full border-2 border-emerald-500 overflow-hidden bg-emerald-50 flex items-center justify-center hover:scale-105 transition-transform shadow-xs shrink-0"
+                title={displayName}
               >
                 <img
-                  src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
-                  alt="Profile"
-                  className="h-full w-full object-cover"
+                  src={finalAvatar}
+                  alt={displayName}
+                  className="size-full object-cover"
                 />
               </Link>
             </div>
