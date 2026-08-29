@@ -6,6 +6,7 @@ import { AchievementsGrid } from '@/components/AchievementsGrid'
 import SkillCard from '@/components/SkillCard'
 import Link from 'next/link'
 import { UserStats } from '@/lib/achievements'
+import { MapPin, Phone, User as UserIcon, Tag, CheckCircle2 } from 'lucide-react'
 
 export default async function MyProfilePage() {
   const supabase = await createServerClient()
@@ -31,13 +32,13 @@ export default async function MyProfilePage() {
     .select('id, status, payment_method, price_mon, price_inr, category')
     .eq('provider_id', user.id)
 
-  // Compute user stats for achievements
   const completedJobs = (providerJobs ?? []).filter((j) => j.status === 'completed')
   const cryptoJobs = completedJobs.filter((j) => j.payment_method === 'crypto')
   const inrJobs = completedJobs.filter((j) => j.payment_method === 'razorpay')
   const disputedJobs = (providerJobs ?? []).filter((j) => j.status === 'disputed')
   const totalMonEarned = cryptoJobs.reduce((acc, curr) => acc + (curr.price_mon ?? 0), 0)
   const categoriesCount = new Set((skills ?? []).map((s) => s.category)).size
+  const skillTags = (profile.skill_tags as string[]) ?? []
 
   const stats: UserStats = {
     skillsCount: skills?.length ?? 0,
@@ -54,35 +55,90 @@ export default async function MyProfilePage() {
     joinedYear: new Date(profile.created_at ?? Date.now()).getFullYear(),
   }
 
+  const avatar = profile.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 space-y-8 bg-white">
-      {/* Profile Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-        <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">{profile.full_name}</h1>
-          <p className="text-xs text-slate-500 font-mono mt-0.5">@{profile.username} · {profile.city}</p>
+      {/* Profile Header Card */}
+      <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 md:p-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <img
+              src={avatar}
+              alt={profile.full_name}
+              className="h-20 w-20 rounded-full object-cover border-2 border-emerald-500 shadow-sm shrink-0"
+            />
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">{profile.full_name}</h1>
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                  Verified
+                </span>
+              </div>
+
+              {profile.headline && (
+                <p className="text-xs font-semibold text-emerald-700">{profile.headline}</p>
+              )}
+
+              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-0.5">
+                <span className="flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                  @{profile.username} · {profile.city}
+                </span>
+                {profile.gender && profile.gender !== 'Prefer not to say' && (
+                  <span>· {profile.gender}</span>
+                )}
+                {profile.phone && (
+                  <span className="flex items-center gap-1 font-mono">
+                    <Phone className="h-3 w-3 text-slate-400" />
+                    {profile.phone}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-2 shrink-0">
+            <Link
+              href="/skills/new"
+              className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700 shadow-xs"
+            >
+              + Offer Skill
+            </Link>
+            <Link
+              href="/settings"
+              className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs"
+            >
+              Edit Settings
+            </Link>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Link
-            href="/skills/new"
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs"
-          >
-            + Offer New Skill
-          </Link>
-          <Link
-            href="/settings"
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-xs"
-          >
-            Edit Settings
-          </Link>
-        </div>
+
+        {/* Skill Tags */}
+        {skillTags.length > 0 && (
+          <div className="pt-3 border-t border-slate-200/80 flex items-center gap-2 flex-wrap">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
+              <Tag className="h-3 w-3 text-emerald-600" />
+              Skill Tags:
+            </span>
+            {skillTags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-flex items-center rounded-md bg-white border border-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-700"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Left Column — Monad On-Chain Details */}
+        {/* Left Column — Monad Reputation */}
         <div className="space-y-4">
           <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-5 space-y-2">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">Bio</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500">About & Experience</h3>
             <p className="text-xs text-slate-700 leading-relaxed">{profile.bio || 'No bio written yet.'}</p>
           </div>
 
@@ -103,17 +159,14 @@ export default async function MyProfilePage() {
 
         {/* Right Column — Offered Skills & Achievements */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Offered Skills Section */}
+          {/* Offered Skills */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">My Offered Skills</h2>
-                <p className="text-xs text-slate-500">Services you offer to local clients</p>
+                <h2 className="text-lg font-bold text-slate-900">Offered Services ({skills?.length ?? 0})</h2>
+                <p className="text-xs text-slate-500">Services listed for local clients</p>
               </div>
-              <Link
-                href="/skills/new"
-                className="text-xs font-semibold text-emerald-700 hover:underline"
-              >
+              <Link href="/skills/new" className="text-xs font-semibold text-emerald-700 hover:underline">
                 + Create Listing
               </Link>
             </div>
@@ -144,7 +197,7 @@ export default async function MyProfilePage() {
             )}
           </div>
 
-          {/* Community Achievements Section */}
+          {/* Community Achievements */}
           <div className="pt-4 border-t border-slate-200">
             <h2 className="text-lg font-bold text-slate-900 mb-4">Community Achievements</h2>
             <AchievementsGrid stats={stats} />
