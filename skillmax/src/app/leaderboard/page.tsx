@@ -6,17 +6,17 @@ import { shortenAddress, monadScanAddress } from '@/lib/utils'
 export default async function LeaderboardPage() {
   const supabase = await createServerClient()
 
-  // Fetch top profiles with jobs and skills count
-  const { data: profiles } = await supabase
-    .from('profiles')
-    .select('id, full_name, username, city, wallet_address, created_at')
-    .limit(20)
-
-  // Query completed jobs count per provider
-  const { data: jobs } = await supabase
-    .from('jobs')
-    .select('provider_id, status, price_mon, payment_method')
-    .eq('status', 'completed')
+  // Fetch top profiles and completed jobs concurrently
+  const [{ data: profiles }, { data: jobs }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, full_name, username, city, wallet_address, created_at')
+      .limit(20),
+    supabase
+      .from('jobs')
+      .select('provider_id, status, price_mon, payment_method')
+      .eq('status', 'completed'),
+  ])
 
   // Calculate stats for each provider
   const leaderboard = (profiles ?? []).map((p, idx) => {

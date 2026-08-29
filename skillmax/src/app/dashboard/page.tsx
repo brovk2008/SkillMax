@@ -9,13 +9,12 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/onboard')
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('full_name, username, city')
-    .eq('id', user.id)
-    .single()
-
-  const [{ data: clientJobs }, { data: providerJobs }] = await Promise.all([
+  const [{ data: profile }, { data: clientJobs }, { data: providerJobs }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('full_name, username, city')
+      .eq('id', user.id)
+      .maybeSingle(),
     supabase
       .from('jobs')
       .select('id, status, payment_method, price_mon, price_inr, created_at, skills(title), provider_profile:profiles!provider_id(full_name)')
