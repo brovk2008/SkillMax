@@ -86,8 +86,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     })
 
     return NextResponse.json({ ok: true, jobId: job.id })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Accept task exception:', err)
-    return NextResponse.json({ error: err.message || 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: (err as Error)?.message || 'Internal server error' }, { status: 500 })
   }
 }

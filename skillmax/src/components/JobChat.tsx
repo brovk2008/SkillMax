@@ -60,7 +60,7 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
           table: 'messages',
           filter: `job_id=eq.${jobId}`,
         },
-        async (payload: any) => {
+        async (payload: { new: { id: string; sender_id: string; content: string; created_at: string } }) => {
           const { data: profile } = await supabase
             .from('profiles')
             .select('full_name')

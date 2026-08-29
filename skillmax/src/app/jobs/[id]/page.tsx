@@ -8,7 +8,7 @@ import { MarkDoneButton } from '@/components/MarkDoneButton'
 import { FundEscrowButton } from '@/components/FundEscrowButton'
 import { STATUS_CLASSES, formatINR } from '@/lib/utils'
 import Link from 'next/link'
-import { CheckCircle2, ShieldCheck, ArrowLeft, Lock } from 'lucide-react'
+import { CheckCircle2, ShieldCheck, ArrowLeft } from 'lucide-react'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser()
@@ -66,49 +66,56 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* Chat — 3/5 */}
+        {/* Chat window — 3/5 */}
         <div className="lg:col-span-3">
           <JobChat
             jobId={job.id}
             currentUserId={user.id}
-            initialMessages={(messages ?? []) as any}
+            initialMessages={(messages ?? []) as unknown as React.ComponentProps<typeof JobChat>['initialMessages']}
             disabled={isClosed}
           />
         </div>
 
         {/* Sidebar — 2/5 */}
         <div className="lg:col-span-2 space-y-4">
-          
-          {/* Client Action Needed: Fund Escrow from Wallet if not funded yet */}
-          {isClient && job.payment_method === 'crypto' && !job.chain_tx_create && job.price_mon && !isClosed && (
-            <FundEscrowButton
-              jobId={job.id}
-              priceMon={job.price_mon}
-              providerAddress={(job.provider_profile as any)?.wallet_address}
-              providerName={(job.provider_profile as any)?.full_name || 'Provider'}
-            />
-          )}
+          {(() => {
+            const clientProfile = job.client_profile as { full_name?: string } | null
+            const providerProfile = job.provider_profile as { full_name?: string; wallet_address?: `0x${string}` | null } | null
+            return (
+              <>
+                {/* Client Action Needed: Fund Escrow from Wallet if not funded yet */}
+                {isClient && job.payment_method === 'crypto' && !job.chain_tx_create && job.price_mon && !isClosed && (
+                  <FundEscrowButton
+                    jobId={job.id}
+                    priceMon={job.price_mon}
+                    providerAddress={providerProfile?.wallet_address || undefined}
+                    providerName={providerProfile?.full_name || 'Provider'}
+                  />
+                )}
 
-          {/* Job info */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3.5 shadow-xs">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Escrow Details</h3>
-            <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-500 font-medium">Client</span>
-              <span className="font-bold text-slate-900">{(job.client_profile as any)?.full_name || 'Client'}</span>
-            </div>
-            <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-500 font-medium">Provider</span>
-              <span className="font-bold text-slate-900">{(job.provider_profile as any)?.full_name || 'Provider'}</span>
-            </div>
-            <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2.5">
-              <span className="text-slate-500 font-medium">Escrow Value</span>
-              <span className="font-extrabold text-slate-900 text-sm">
-                {job.payment_method === 'crypto'
-                  ? `${job.price_mon} MON`
-                  : formatINR(job.price_inr ?? 0)}
-              </span>
-            </div>
-          </div>
+                {/* Job info */}
+                <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3.5 shadow-xs">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Escrow Details</h3>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-medium">Client</span>
+                    <span className="font-bold text-slate-900">{clientProfile?.full_name || 'Client'}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-slate-500 font-medium">Provider</span>
+                    <span className="font-bold text-slate-900">{providerProfile?.full_name || 'Provider'}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2.5">
+                    <span className="text-slate-500 font-medium">Escrow Value</span>
+                    <span className="font-extrabold text-slate-900 text-sm">
+                      {job.payment_method === 'crypto'
+                        ? `${job.price_mon} MON`
+                        : formatINR(job.price_inr ?? 0)}
+                    </span>
+                  </div>
+                </div>
+              </>
+            )
+          })()}
 
           {/* On-chain status */}
           {job.payment_method === 'crypto' && (

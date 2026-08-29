@@ -2,7 +2,20 @@ import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 import Link from 'next/link'
-import { MessageSquare, Clock, ArrowRight, User } from 'lucide-react'
+import { MessageSquare, Clock, ArrowRight } from 'lucide-react'
+
+interface JobMessageRecord {
+  id: string
+  status: string
+  created_at: string
+  payment_method: string
+  price_mon: number | null
+  price_inr: number | null
+  skills: { title?: string | null; category?: string | null } | null
+  client_profile: { full_name?: string | null; username?: string | null; avatar_url?: string | null } | null
+  provider_profile: { full_name?: string | null; username?: string | null; avatar_url?: string | null } | null
+  messages: { id: string; content: string; created_at: string; sender_id: string }[] | null
+}
 
 export default async function MessagesInboxPage() {
   const user = await getCurrentUser()
@@ -22,7 +35,7 @@ export default async function MessagesInboxPage() {
     .or(`client_id.eq.${user.id},provider_id.eq.${user.id}`)
     .order('created_at', { ascending: false })
 
-  const conversations = (jobs ?? []).map((j: any) => {
+  const conversations = ((jobs as unknown as JobMessageRecord[]) ?? []).map((j) => {
     const isClient = j.client_profile?.username === user.email
     const otherParty = isClient ? j.provider_profile : j.client_profile
     const lastMsg = j.messages?.[j.messages.length - 1]

@@ -36,9 +36,9 @@ export function OnChainReputation({ walletAddress }: Props) {
     )
   }
 
-  const [completedJobs, disputedJobs, ratingCount, avgRating100] = (rep as any) ?? [0n, 0n, 0n, 0n]
+  const repTuple = rep as readonly [bigint, bigint, bigint, bigint] | undefined
+  const [completedJobs, , ratingCount, avgRating100] = repTuple ?? [0n, 0n, 0n, 0n]
   const jobs = Number(completedJobs ?? 0n)
-  const disputes = Number(disputedJobs ?? 0n)
   const ratings = Number(ratingCount ?? 0n)
   const avgDisplay = ratings > 0 ? (Number(avgRating100 ?? 0n) / 100).toFixed(1) : 'No ratings'
 

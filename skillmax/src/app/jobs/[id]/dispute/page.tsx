@@ -29,7 +29,7 @@ export default async function DisputePage({ params }: { params: Promise<{ id: st
       </p>
       <h1 className="mt-2 text-2xl font-semibold text-gray-900">Raise a Dispute</h1>
       <p className="mt-1 text-sm text-gray-500">
-        For: <strong>{(job.skills as any)?.title}</strong>
+        For: <strong>{(job.skills as { title?: string } | null)?.title}</strong>
       </p>
       <div className="mt-6 rounded-lg border border-red-100 bg-red-50 p-4">
         <p className="text-sm text-red-700">

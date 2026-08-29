@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi'
+import { useWriteContract, useAccount } from 'wagmi'
 import { ESCROW_ABI, ESCROW_ADDRESS } from '@/lib/contracts'
 import { monadTestnet } from '@/lib/wagmi/config'
 import { AlertTriangle, Loader2 } from 'lucide-react'

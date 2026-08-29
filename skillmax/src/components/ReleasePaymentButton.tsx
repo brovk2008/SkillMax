@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, Loader2, Award, Zap } from 'lucide-react'
-import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi'
+import { useWriteContract, useAccount } from 'wagmi'
 import { ESCROW_ABI, ESCROW_ADDRESS } from '@/lib/contracts'
 import { monadTestnet } from '@/lib/wagmi/config'
 
@@ -40,7 +40,7 @@ export function ReleasePaymentButton({ jobId, isCrypto = false, chainJobId }: Re
             args: [BigInt(chainJobId)],
             chainId: monadTestnet.id,
           })
-        } catch (chainErr: any) {
+        } catch (chainErr: unknown) {
           console.warn('On-chain release error:', chainErr)
           // Allow fallback to database completion if chain transaction was rejected by RPC
           if (!confirm('On-chain transaction could not complete. Mark job as complete in SkillMax protocol anyway?')) {
@@ -64,8 +64,8 @@ export function ReleasePaymentButton({ jobId, isCrypto = false, chainJobId }: Re
       }
 
       router.refresh()
-    } catch (err: any) {
-      setError(err.message || 'Network error')
+    } catch (err: unknown) {
+      setError((err as Error)?.message || 'Network error')
       setLoading(false)
     }
   }

@@ -31,6 +31,43 @@ interface PhoneInputProps {
   className?: string
 }
 
+function getCountryFromLocationOrValue(loc: string, val: string): CountryCode {
+  if (val) {
+    const matched = COUNTRY_CODES.find((c) => val.startsWith(c.code))
+    if (matched) return matched
+  }
+  if (loc) {
+    const locLower = loc.toLowerCase()
+    if (locLower.includes('united states') || locLower.includes('usa') || locLower.includes('california') || locLower.includes('new york')) {
+      return COUNTRY_CODES[1]
+    } else if (locLower.includes('united kingdom') || locLower.includes('uk') || locLower.includes('london')) {
+      return COUNTRY_CODES[2]
+    } else if (locLower.includes('emirates') || locLower.includes('uae') || locLower.includes('dubai')) {
+      return COUNTRY_CODES[3]
+    } else if (locLower.includes('singapore')) {
+      return COUNTRY_CODES[4]
+    } else if (locLower.includes('canada')) {
+      return COUNTRY_CODES[5]
+    } else if (locLower.includes('australia')) {
+      return COUNTRY_CODES[6]
+    } else if (locLower.includes('germany')) {
+      return COUNTRY_CODES[7]
+    } else if (locLower.includes('japan')) {
+      return COUNTRY_CODES[8]
+    }
+  }
+  return COUNTRY_CODES[0]
+}
+
+function getLocalNumberFromValue(val: string): string {
+  if (!val) return ''
+  const matched = COUNTRY_CODES.find((c) => val.startsWith(c.code))
+  if (matched) {
+    return val.slice(matched.code.length).trim()
+  }
+  return val.replace(/^[^\d]+/, '').trim()
+}
+
 export function PhoneInput({
   value,
   onChange,
@@ -39,54 +76,31 @@ export function PhoneInput({
   placeholder = '9821400274',
   className = '',
 }: PhoneInputProps) {
-  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(COUNTRY_CODES[0])
-  const [localNumber, setLocalNumber] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState<CountryCode>(() =>
+    getCountryFromLocationOrValue(location, value)
+  )
+  const [localNumber, setLocalNumber] = useState<string>(() => getLocalNumberFromValue(value))
+  const [prevLocation, setPrevLocation] = useState(location)
+  const [prevValue, setPrevValue] = useState(value)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Auto-detect country code from location prop
-  useEffect(() => {
-    if (!location) return
-    const locLower = location.toLowerCase()
-
-    if (locLower.includes('united states') || locLower.includes('usa') || locLower.includes('california') || locLower.includes('new york')) {
-      setSelectedCountry(COUNTRY_CODES[1])
-    } else if (locLower.includes('united kingdom') || locLower.includes('uk') || locLower.includes('london')) {
-      setSelectedCountry(COUNTRY_CODES[2])
-    } else if (locLower.includes('emirates') || locLower.includes('uae') || locLower.includes('dubai')) {
-      setSelectedCountry(COUNTRY_CODES[3])
-    } else if (locLower.includes('singapore')) {
-      setSelectedCountry(COUNTRY_CODES[4])
-    } else if (locLower.includes('canada')) {
-      setSelectedCountry(COUNTRY_CODES[5])
-    } else if (locLower.includes('australia')) {
-      setSelectedCountry(COUNTRY_CODES[6])
-    } else if (locLower.includes('germany')) {
-      setSelectedCountry(COUNTRY_CODES[7])
-    } else if (locLower.includes('japan')) {
-      setSelectedCountry(COUNTRY_CODES[8])
-    } else {
-      setSelectedCountry(COUNTRY_CODES[0]) // Default to India (+91)
-    }
-  }, [location])
-
-  // Parse existing full value if provided (e.g. "+91 9821400274")
-  useEffect(() => {
+  // Sync state if props change (React recommended pattern without useEffect cascades)
+  if (prevLocation !== location) {
+    setPrevLocation(location)
     if (!value) {
-      setLocalNumber('')
-      return
+      setSelectedCountry(getCountryFromLocationOrValue(location, ''))
     }
+  }
 
-    // Check if value already has a country code
-    let matchedCode = COUNTRY_CODES.find((c) => value.startsWith(c.code))
-    if (matchedCode) {
-      setSelectedCountry(matchedCode)
-      const numberPart = value.slice(matchedCode.code.length).trim()
-      setLocalNumber(numberPart)
-    } else {
-      setLocalNumber(value.replace(/^[^\d]+/, '').trim())
+  if (prevValue !== value) {
+    setPrevValue(value)
+    setLocalNumber(getLocalNumberFromValue(value))
+    const matched = COUNTRY_CODES.find((c) => value.startsWith(c.code))
+    if (matched) {
+      setSelectedCountry(matched)
     }
-  }, [])
+  }
 
   // Close dropdown on outside click
   useEffect(() => {

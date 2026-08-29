@@ -14,13 +14,14 @@ import {
   Coins,
   Layers,
   Flame,
+  type LucideIcon,
 } from 'lucide-react'
 
 export interface Achievement {
   id: string
   title: string
   description: string
-  icon: any
+  icon: LucideIcon
   points: number
   category: 'skills' | 'jobs' | 'reputation' | 'community'
   checkUnlocked: (stats: UserStats) => { unlocked: boolean; progress: number; maxProgress: number }

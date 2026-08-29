@@ -100,8 +100,8 @@ export default async function ExplorePage({ searchParams }: Props) {
       {/* Skills Grid */}
       {skills && skills.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {skills.map((skill: any) => (
-            <SkillCard key={skill.id} skill={skill} />
+          {skills.map((skill) => (
+            <SkillCard key={skill.id} skill={skill as React.ComponentProps<typeof SkillCard>['skill']} />
           ))}
         </div>
       ) : (

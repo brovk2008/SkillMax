@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { Award, Shield } from 'lucide-react'
 import { CATEGORY_NAMES, BADGE_ABI, BADGE_ADDRESS } from '@/lib/contracts'
 import { useReadContract } from 'wagmi'
@@ -11,8 +11,6 @@ interface Props {
 }
 
 export function SkillBadges({ earnedBadges, walletAddress }: Props) {
-  const [earned, setEarned] = useState<{ name: string; count: number }[]>([])
-
   const { data: contractBadges } = useReadContract({
     address: BADGE_ADDRESS as `0x${string}`,
     abi: BADGE_ABI,
@@ -23,16 +21,16 @@ export function SkillBadges({ earnedBadges, walletAddress }: Props) {
     },
   })
 
-  useEffect(() => {
+  const earned = useMemo(() => {
     if (earnedBadges) {
-      const list = earnedBadges
+      return earnedBadges
         .filter((b) => b.badgeCount > 0)
         .map((b) => ({
           name: CATEGORY_NAMES[b.categoryId] ?? `Category #${b.categoryId}`,
           count: b.badgeCount,
         }))
-      setEarned(list)
-    } else if (contractBadges) {
+    }
+    if (contractBadges) {
       const counts = Array.isArray(contractBadges) ? contractBadges : []
       const list: { name: string; count: number }[] = []
       for (let i = 0; i < counts.length; i++) {
@@ -44,8 +42,9 @@ export function SkillBadges({ earnedBadges, walletAddress }: Props) {
           })
         }
       }
-      setEarned(list)
+      return list
     }
+    return []
   }, [earnedBadges, contractBadges])
 
   if (earned.length === 0) {

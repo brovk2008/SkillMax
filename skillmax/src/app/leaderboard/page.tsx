@@ -1,7 +1,6 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Trophy, Award, Star, Flame, ShieldCheck, MapPin, Zap, ExternalLink } from 'lucide-react'
-import { shortenAddress, monadScanAddress } from '@/lib/utils'
+import { Trophy, Star, Flame, MapPin } from 'lucide-react'
 
 export default async function LeaderboardPage() {
   const supabase = await createServerClient()

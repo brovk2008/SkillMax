@@ -1,7 +1,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { CATEGORY_NAMES } from '@/lib/contracts'
-import { ClipboardList, MapPin, Search, Plus, ArrowRight, CheckCircle2, Zap } from 'lucide-react'
+import { ClipboardList, MapPin, Search, Plus } from 'lucide-react'
 import { formatINR } from '@/lib/utils'
 import { AcceptTaskButton } from '@/components/AcceptTaskButton'
 
@@ -121,7 +121,19 @@ export default async function TasksBoardPage({ searchParams }: Props) {
       {/* Tasks Grid */}
       {tasks && tasks.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {tasks.map((task: any) => {
+          {tasks.map((taskItem) => {
+            const task = taskItem as {
+              id: string
+              title: string
+              description: string | null
+              category: string
+              city: string
+              budget_mon: number | null
+              budget_inr: number | null
+              client_id: string
+              created_at: string
+              client_profile: { username?: string | null; full_name?: string | null; avatar_url?: string | null } | null
+            }
             const client = task.client_profile
             const avatar = client?.avatar_url || `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(client?.username || task.id)}`
 

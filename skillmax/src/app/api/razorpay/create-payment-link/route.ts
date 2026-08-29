@@ -44,7 +44,11 @@ export async function POST(req: NextRequest) {
 
     const razorpay = getRazorpay()
 
-    const paymentLink = await razorpay.paymentLink.create({
+    const createPaymentLink = razorpay.paymentLink.create as (
+      options: unknown
+    ) => Promise<{ id: string; short_url: string }>
+
+    const paymentLink = await createPaymentLink({
       amount: verifiedPriceInr * 100, // in paise
       currency: 'INR',
       description: `SkillMax: ${skill.title}`,
@@ -56,7 +60,7 @@ export async function POST(req: NextRequest) {
         clientId: user.id,
         providerUserId: verifiedProviderUserId,
       },
-    } as any)
+    })
 
     // Pre-create job in pending state
     const { data: job, error: jobErr } = await supabase
@@ -78,8 +82,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ paymentLink: paymentLink.short_url, jobId: job?.id })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Razorpay payment link creation exception:', e)
-    return NextResponse.json({ error: e.message ?? 'Razorpay error' }, { status: 500 })
+    return NextResponse.json({ error: (e as Error)?.message ?? 'Razorpay error' }, { status: 500 })
   }
 }

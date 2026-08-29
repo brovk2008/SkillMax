@@ -51,8 +51,8 @@ export function AcceptTaskButton({ taskId, taskClientId, currentUserId }: Accept
       // Success: Navigate directly to the active job
       router.push(`/jobs/${data.jobId}`)
       router.refresh()
-    } catch (err: any) {
-      setError(err.message || 'Network error')
+    } catch (err: unknown) {
+      setError((err as Error)?.message || 'Network error')
       setLoading(false)
     }
   }

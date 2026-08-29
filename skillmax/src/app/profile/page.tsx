@@ -7,7 +7,7 @@ import { AchievementsGrid } from '@/components/AchievementsGrid'
 import SkillCard from '@/components/SkillCard'
 import Link from 'next/link'
 import { UserStats } from '@/lib/achievements'
-import { MapPin, Phone, User as UserIcon, Tag, CheckCircle2 } from 'lucide-react'
+import { MapPin, Phone, Tag, CheckCircle2 } from 'lucide-react'
 
 export default async function MyProfilePage() {
   const user = await getCurrentUser()
@@ -186,7 +186,7 @@ export default async function MyProfilePage() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {skills.map((skill) => (
                   <div key={skill.id} className="relative">
-                    <SkillCard skill={skill as any} />
+                    <SkillCard skill={skill as unknown as React.ComponentProps<typeof SkillCard>['skill']} />
                     {!skill.is_active && (
                       <span className="absolute top-3 right-3 rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">
                         Hidden

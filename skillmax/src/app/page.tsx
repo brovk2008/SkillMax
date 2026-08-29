@@ -20,19 +20,12 @@ import {
   ArrowRight,
   Sparkles,
   Lock,
-  Coins,
   ClipboardList,
   HandHeart,
-  Star,
-  Users,
-  Activity,
-  ArrowUpRight,
-  Scale,
-  Clock,
-  ExternalLink,
+  type LucideIcon,
 } from 'lucide-react'
 
-const CATEGORY_META: Record<string, { icon: any; count: string; desc: string }> = {
+const CATEGORY_META: Record<string, { icon: LucideIcon; count: string; desc: string }> = {
   Programming: { icon: Code2, count: '48 pros', desc: 'Next.js, Solidity, Python' },
   Repair: { icon: Wrench, count: '86 pros', desc: 'Electrical, AC, Plumbing' },
   Design: { icon: Palette, count: '52 pros', desc: 'UI/UX, Branding, 3D' },
@@ -431,8 +424,8 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {displaySkills.map((skill: any) => (
-            <SkillCard key={skill.id} skill={skill} />
+          {displaySkills.map((skill) => (
+            <SkillCard key={skill.id} skill={skill as React.ComponentProps<typeof SkillCard>['skill']} />
           ))}
         </div>
       </section>

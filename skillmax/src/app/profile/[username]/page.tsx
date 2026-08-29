@@ -52,7 +52,7 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
           <h2 className="text-base font-medium text-gray-900">Skills ({skills?.length ?? 0})</h2>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {skills?.map((skill) => (
-              <SkillCard key={skill.id} skill={skill as any} />
+              <SkillCard key={skill.id} skill={skill as unknown as React.ComponentProps<typeof SkillCard>['skill']} />
             ))}
           </div>
           {!skills?.length && (

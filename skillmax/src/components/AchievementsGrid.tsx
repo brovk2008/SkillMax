@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { COMMUNITY_ACHIEVEMENTS, UserStats } from '@/lib/achievements'
-import { Trophy, Award, Lock, CheckCircle2, Flame, ShieldCheck } from 'lucide-react'
+import { Trophy, Lock, CheckCircle2, ShieldCheck } from 'lucide-react'
 
 interface Props {
   stats: UserStats
@@ -81,7 +81,7 @@ export function AchievementsGrid({ stats }: Props) {
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setFilter(tab.id as any)}
+              onClick={() => setFilter(tab.id as 'all' | 'unlocked' | 'locked')}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                 filter === tab.id
                   ? 'bg-slate-900 text-white shadow-xs'

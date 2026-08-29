@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { MapPin, Navigation, CheckCircle2 } from 'lucide-react'
 
 export function LocationPicker() {

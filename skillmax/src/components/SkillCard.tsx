@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { formatINR } from '@/lib/utils'
-import { CheckCircle2, MapPin, ArrowRight, Star, ShieldCheck } from 'lucide-react'
+import { MapPin, ArrowRight, Star, ShieldCheck } from 'lucide-react'
 
 interface SkillCardProps {
   skill: {

@@ -27,7 +27,7 @@ export function FundEscrowButton({
   const { address, isConnected, chain } = useAccount()
 
   const { writeContractAsync, data: hash, isPending } = useWriteContract()
-  const { data: receipt, isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
+  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
   const isWrongChain = chain?.id !== monadTestnet.id
 
@@ -77,9 +77,9 @@ export function FundEscrowButton({
         setError(data.error || 'Failed to sync escrow status')
         setStatus('idle')
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Escrow funding error:', err)
-      setError(err.message || 'Transaction rejected or failed')
+      setError((err as Error)?.message || 'Transaction rejected or failed')
       setStatus('idle')
     }
   }

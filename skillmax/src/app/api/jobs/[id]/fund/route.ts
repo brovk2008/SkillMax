@@ -59,8 +59,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     })
 
     return NextResponse.json({ ok: true })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Job fund error:', err)
-    return NextResponse.json({ error: err.message || 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: (err as Error)?.message || 'Internal server error' }, { status: 500 })
   }
 }

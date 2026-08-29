@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ShieldCheck, FileText, Lock, Scale, Zap } from 'lucide-react'
+import { ShieldCheck, Lock, Scale, Zap } from 'lucide-react'
 
 export default function TermsPage() {
   return (

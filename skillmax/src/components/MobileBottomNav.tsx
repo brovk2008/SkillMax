@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, ClipboardList, Plus, MessageSquare, User, Compass } from 'lucide-react'
+import { Home, ClipboardList, Plus, User, Compass } from 'lucide-react'
 
 interface MobileBottomNavProps {
   user?: {

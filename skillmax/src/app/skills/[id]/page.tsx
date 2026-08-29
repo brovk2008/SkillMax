@@ -18,7 +18,16 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
 
   if (!skill) notFound()
 
-  const provider = skill.profiles as any
+  interface ProviderProfile {
+    id: string
+    username: string
+    full_name: string
+    city: string
+    bio: string | null
+    wallet_address: string | null
+    avatar_url: string | null
+  }
+  const provider = skill.profiles as ProviderProfile | null
   const isOwnSkill = user?.id === skill.provider_id
 
   return (
@@ -96,15 +105,15 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
                     <CryptoBookingButton
                       skillId={skill.id}
                       priceMon={skill.price_mon}
-                      providerAddress={provider.wallet_address}
-                      providerUserId={provider.id}
+                      providerAddress={provider?.wallet_address ?? ''}
+                      providerUserId={provider?.id ?? skill.provider_id}
                     />
                   )}
                   {skill.price_inr && (
                     <RazorpayBookingButton
                       skillId={skill.id}
                       priceInr={skill.price_inr}
-                      providerUserId={provider.id}
+                      providerUserId={provider?.id ?? skill.provider_id}
                     />
                   )}
                 </div>

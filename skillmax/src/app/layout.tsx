@@ -49,7 +49,7 @@ export default async function RootLayout({
         .maybeSingle()
       profile = prof
     }
-  } catch (e) {
+  } catch {
     // Static generation edge case — safe to ignore
   }
 

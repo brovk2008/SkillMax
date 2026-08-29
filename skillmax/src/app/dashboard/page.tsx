@@ -3,7 +3,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import { getCurrentUser } from '@/lib/auth'
 import JobCard from '@/components/JobCard'
 import Link from 'next/link'
-import { Plus, Trophy, Wallet, Coins, IndianRupee, CheckCircle2, ArrowRight, Award, ShieldCheck } from 'lucide-react'
+import { Plus, Trophy, Wallet, Coins, IndianRupee, CheckCircle2, Award, ShieldCheck } from 'lucide-react'
 import { formatINR } from '@/lib/utils'
 
 export default async function DashboardPage() {
@@ -212,7 +212,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {clientJobs?.map((job) => (
-              <JobCard key={job.id} job={job as any} perspective="client" />
+              <JobCard key={job.id} job={job as unknown as React.ComponentProps<typeof JobCard>['job']} perspective="client" />
             ))}
           </div>
         )}
@@ -240,7 +240,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2">
             {providerJobs?.map((job) => (
-              <JobCard key={job.id} job={job as any} perspective="provider" />
+              <JobCard key={job.id} job={job as unknown as React.ComponentProps<typeof JobCard>['job']} perspective="provider" />
             ))}
           </div>
         )}

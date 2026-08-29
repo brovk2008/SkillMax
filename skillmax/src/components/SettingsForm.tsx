@@ -77,15 +77,15 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
         label="Profile Avatar Photo"
       />
 
-      {[
-        { label: 'Full name *', key: 'full_name', placeholder: 'Riya Sharma' },
-        { label: 'Username *', key: 'username', placeholder: 'riya_sharma' },
-        { label: 'Headline / Tagline', key: 'headline', placeholder: 'e.g. Senior Software Engineer & Guitar Teacher' },
-      ].map((f) => (
+      {([
+        { label: 'Full name *', key: 'full_name' as const, placeholder: 'Riya Sharma' },
+        { label: 'Username *', key: 'username' as const, placeholder: 'riya_sharma' },
+        { label: 'Headline / Tagline', key: 'headline' as const, placeholder: 'e.g. Senior Software Engineer & Guitar Teacher' },
+      ] as const).map((f) => (
         <div key={f.key}>
           <label className="block text-xs font-semibold text-slate-700 mb-1">{f.label}</label>
           <input
-            value={(form as any)[f.key]}
+            value={form[f.key]}
             onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
             placeholder={f.placeholder}
             className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none text-slate-900"

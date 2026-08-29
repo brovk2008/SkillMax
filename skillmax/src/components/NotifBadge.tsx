@@ -5,17 +5,17 @@ import { createBrowserClient } from '@/lib/supabase/client'
 
 export function NotifBadge({ userId }: { userId?: string }) {
   const [count, setCount] = useState(0)
-  const supabase = createBrowserClient()
 
   useEffect(() => {
     if (!userId) return
+    const supabase = createBrowserClient()
 
     supabase
       .from('notifications')
       .select('id', { count: 'exact', head: true })
       .eq('user_id', userId)
       .eq('is_read', false)
-      .then((res: any) => setCount(res.count ?? 0))
+      .then((res: { count: number | null }) => setCount(res.count ?? 0))
 
     const channel = supabase
       .channel('notif-badge')

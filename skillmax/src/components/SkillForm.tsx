@@ -50,7 +50,7 @@ export default function SkillForm({ initialSkill, skillId, userId }: Props) {
       is_active: form.is_active,
     }
 
-    let error: any
+    let error: { message: string } | null = null
     if (skillId) {
       const res = await supabase.from('skills').update(payload).eq('id', skillId).eq('provider_id', userId)
       error = res.error

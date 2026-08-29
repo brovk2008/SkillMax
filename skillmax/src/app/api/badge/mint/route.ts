@@ -38,8 +38,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, reason: 'Badge already minted for this job' })
   }
 
-  const walletAddress = (job.provider_profile as any)?.wallet_address
-  const category = (job.skills as any)?.category ?? 'Other'
+  const providerProfile = job.provider_profile as { wallet_address?: string | null } | null
+  const skill = job.skills as { category?: string | null } | null
+  const walletAddress = providerProfile?.wallet_address
+  const category = skill?.category ?? 'Other'
   const categoryId = CATEGORY_TO_ID[category] ?? 9
 
   if (!walletAddress) {
@@ -70,10 +72,10 @@ export async function POST(req: NextRequest) {
 
     await supabaseAdmin.from('jobs').update({ badge_minted: true }).eq('id', jobId)
     return NextResponse.json({ ok: true, hash })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Badge mint error:', e)
     // Don't fail the whole experience if gas/RPC fails; update DB state
     await supabaseAdmin.from('jobs').update({ badge_minted: true }).eq('id', jobId)
-    return NextResponse.json({ ok: true, warning: e.message })
+    return NextResponse.json({ ok: true, warning: (e as Error)?.message || 'Mint failed' })
   }
 }

@@ -18,7 +18,7 @@ export async function GET() {
       profiles_count: count ?? 0,
       timestamp: new Date().toISOString(),
     })
-  } catch (err: any) {
-    return NextResponse.json({ status: 'error', error: err.message }, { status: 500 })
+  } catch (err: unknown) {
+    return NextResponse.json({ status: 'error', error: (err as Error)?.message || 'Unknown error' }, { status: 500 })
   }
 }

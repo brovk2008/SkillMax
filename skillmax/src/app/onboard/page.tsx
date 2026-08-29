@@ -12,15 +12,9 @@ import { PhoneInput } from '@/components/PhoneInput'
 import {
   User,
   Search,
-  Check,
-  Plus,
   ArrowRight,
-  Sparkles,
-  MapPin,
   ShieldCheck,
-  Camera,
   Tag,
-  Phone,
   Briefcase,
   Wallet,
   Lock,
@@ -103,7 +97,7 @@ export default function OnboardPage() {
       const web3Email = `${address.toLowerCase()}@monad.skillmax.eth`
       const web3Password = `MonadWeb3_${signature.slice(0, 16)}`
 
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
+      const { error: authError } = await supabase.auth.signInWithPassword({
         email: web3Email,
         password: web3Password,
       })
@@ -133,8 +127,8 @@ export default function OnboardPage() {
 
       setLoading(false)
       setStep('profile_survey')
-    } catch (err: any) {
-      setError(err.message || 'Web3 wallet authentication failed')
+    } catch (err: unknown) {
+      setError((err as Error)?.message || 'Web3 wallet authentication failed')
       setLoading(false)
     }
   }
@@ -143,7 +137,7 @@ export default function OnboardPage() {
     document.cookie = `skillmax_user_id=${userId}; path=/; max-age=31536000; SameSite=Lax`
     try {
       localStorage.setItem('skillmax_user_id', userId)
-    } catch (e) {}
+    } catch {}
   }
 
   // Handle Sign In
@@ -162,7 +156,7 @@ export default function OnboardPage() {
       if (error) {
         // If account doesn't exist yet, automatically create and sign in
         if (error.message.includes('Invalid login credentials') || error.message.includes('Email not confirmed')) {
-          const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
+          const { data: signUpData } = await supabase.auth.signUp({
             email: cleanEmail,
             password,
           })
@@ -178,7 +172,8 @@ export default function OnboardPage() {
             const { error: pErr } = await supabase.from('profiles').upsert({ ...baseData, city: 'Delhi NCR' })
             if (pErr) await supabase.from('profiles').upsert(baseData)
 
-            window.location.href = '/dashboard'
+            router.push('/dashboard')
+            router.refresh()
             return
           }
         }
@@ -190,12 +185,14 @@ export default function OnboardPage() {
 
       if (data?.user) {
         setSessionCookie(data.user.id)
-        window.location.href = '/dashboard'
+        router.push('/dashboard')
+        router.refresh()
       } else {
-        window.location.href = '/dashboard'
+        router.push('/dashboard')
+        router.refresh()
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign in.')
+    } catch (err: unknown) {
+      setError((err as Error)?.message || 'Failed to sign in.')
       setLoading(false)
     }
   }
@@ -328,7 +325,8 @@ export default function OnboardPage() {
       }
       setLoading(false)
     }
-    window.location.href = '/dashboard'
+    router.push('/dashboard')
+    router.refresh()
   }
 
   function toggleTag(tag: string) {

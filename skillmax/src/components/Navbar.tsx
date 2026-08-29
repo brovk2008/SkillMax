@@ -10,7 +10,6 @@ import { LocationPicker } from '@/components/LocationPicker'
 import { createBrowserClient } from '@/lib/supabase/client'
 import {
   Search,
-  Plus,
   UserCheck,
   Trophy,
   MessageSquare,
@@ -21,7 +20,6 @@ import {
   Compass,
   Settings,
   LogOut,
-  MapPin,
 } from 'lucide-react'
 
 interface NavbarProps {
@@ -39,17 +37,17 @@ export function Navbar({ user }: NavbarProps) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(user?.avatar_url || null)
   const [displayName, setDisplayName] = useState<string>(user?.full_name || user?.username || 'My Profile')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [prevPathname, setPrevPathname] = useState(pathname)
 
-  // Close mobile menu on route change
-  useEffect(() => {
+  // React-recommended pattern to close menu on pathname change without effect cascade
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
     setMobileMenuOpen(false)
-  }, [pathname])
+  }
 
   useEffect(() => {
     if (!user?.id) return
-    if (user.avatar_url) {
-      setAvatarUrl(user.avatar_url)
-    }
+    let active = true
 
     try {
       const supabase = createBrowserClient()
@@ -58,15 +56,20 @@ export function Navbar({ user }: NavbarProps) {
         .select('avatar_url, full_name, username')
         .eq('id', user.id)
         .maybeSingle()
-        .then(({ data }: { data: any }) => {
+        .then(({ data }: { data: { avatar_url?: string | null; full_name?: string | null; username?: string | null } | null }) => {
+          if (!active) return
           if (data?.avatar_url) setAvatarUrl(data.avatar_url)
           if (data?.full_name) setDisplayName(data.full_name)
           else if (data?.username) setDisplayName(data.username)
         })
-    } catch (e) {
+    } catch {
       // client error ignore
     }
-  }, [user?.id, user?.avatar_url])
+
+    return () => {
+      active = false
+    }
+  }, [user?.id])
 
   // Deterministic fallback avatar only if no custom avatar is set
   const fallbackSeed = user?.username || user?.email || user?.id || 'User'

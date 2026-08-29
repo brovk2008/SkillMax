@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { CATEGORY_NAMES } from '@/lib/contracts'
-import { ClipboardList, ArrowRight, Zap, CheckCircle2 } from 'lucide-react'
+import { ClipboardList, ArrowRight } from 'lucide-react'
 
 export default function NewTaskPostingPage() {
   const [title, setTitle] = useState('')
