@@ -607,59 +607,6 @@ export async function POST(req: NextRequest) {
 }
 ```
 
-#### [`src/app/api/badge/mint/route.ts`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/src/app/api/badge/mint/route.ts)
-Automated serverless badge minting upon verified job completion:
-```typescript
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
-import { BADGE_ADDRESS, BADGE_ABI, CATEGORY_TO_ID } from '@/lib/contracts'
-import { monadTestnet } from '@/lib/wagmi/config'
-
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-}
-
-export async function POST(req: NextRequest) {
-  const { jobId } = await req.json()
-  const supabaseAdmin = getSupabaseAdmin()
-  const { data: job } = await supabaseAdmin
-    .from('jobs')
-    .select('*, skills(category), provider_profile:profiles!provider_id(wallet_address)')
-    .eq('id', jobId)
-    .single()
-
-  if (!job || job.status !== 'completed') return NextResponse.json({ error: 'Ineligible' }, { status: 400 })
-
-  const walletAddress = (job.provider_profile as any)?.wallet_address
-  const category = (job.skills as any)?.category ?? 'Other'
-  const categoryId = CATEGORY_TO_ID[category] ?? 9
-
-  if (!walletAddress || !process.env.PLATFORM_WALLET_PRIVATE_KEY) return NextResponse.json({ ok: false })
-
-  const account = privateKeyToAccount(process.env.PLATFORM_WALLET_PRIVATE_KEY as `0x${string}`)
-  const walletClient = createWalletClient({
-    account,
-    chain: monadTestnet,
-    transport: http('https://testnet-rpc.monad.xyz'),
-  })
-
-  const hash = await walletClient.writeContract({
-    address: BADGE_ADDRESS,
-    abi: BADGE_ABI,
-    functionName: 'mintBadge',
-    args: [walletAddress as `0x${string}`, BigInt(categoryId)],
-  })
-
-  await supabaseAdmin.from('jobs').update({ badge_minted: true }).eq('id', jobId)
-  return NextResponse.json({ ok: true, hash })
-}
-```
-
 ---
 
 ## 8. Monad Blockchain Specifications
