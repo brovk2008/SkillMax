@@ -77,7 +77,7 @@ export function Navbar({ user }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-3 py-2.5 sm:px-4 sm:py-3">
+      <div className="flex w-full items-center justify-between px-4 py-2.5 sm:px-6 lg:px-8">
         
         {/* Left: Brand Logo & Location Dropdown */}
         <div className="flex items-center gap-2 sm:gap-3">
