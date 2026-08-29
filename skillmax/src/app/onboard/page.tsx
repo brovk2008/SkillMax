@@ -144,20 +144,27 @@ export default function OnboardPage() {
     setLoading(true)
     setError('')
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      })
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+        return
+      }
+
+      if (data.user || data.session) {
+        window.location.href = '/dashboard'
+      } else {
+        setError('Signed in successfully, establishing session...')
+        window.location.href = '/dashboard'
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to sign in.')
       setLoading(false)
-      return
-    }
-
-    if (data.user) {
-      router.push('/dashboard')
-      router.refresh()
     }
   }
 
@@ -287,8 +294,7 @@ export default function OnboardPage() {
       }
       setLoading(false)
     }
-    router.push('/dashboard')
-    router.refresh()
+    window.location.href = '/dashboard'
   }
 
   function toggleTag(tag: string) {
