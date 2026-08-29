@@ -141,27 +141,26 @@ export default async function HomePage() {
     <div className="space-y-16 py-6 bg-white">
 
       {/* TOP PROTOCOL TICKER */}
-      <section className="mx-auto max-w-6xl px-4">
-        <div className="rounded-xl bg-slate-900 px-4 py-2.5 text-xs text-slate-300 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-          <div className="flex items-center gap-2">
-            <span className="relative flex size-2">
+      <section className="mx-auto max-w-6xl px-3 sm:px-4">
+        <div className="rounded-xl bg-slate-900 px-3 sm:px-4 py-2 sm:py-2.5 text-[11px] sm:text-xs text-slate-300 flex flex-wrap items-center justify-between gap-2 sm:gap-3 shadow-xs">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="relative flex size-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
             </span>
-            <span className="font-bold text-white">Monad Testnet Protocol</span>
+            <span className="font-bold text-white">Monad Testnet</span>
             <span className="text-slate-500">·</span>
-            <span className="text-slate-300 font-mono">Chain ID 10143</span>
-            <span className="text-slate-500">·</span>
-            <span className="text-emerald-400 font-medium hidden sm:inline">10,000 TPS Non-Custodial Escrows Active</span>
+            <span className="text-slate-300 font-mono">Chain 10143</span>
+            <span className="text-slate-500 hidden sm:inline">·</span>
+            <span className="text-emerald-400 font-medium hidden sm:inline">10,000 TPS Non-Custodial Escrows</span>
           </div>
 
-          <div className="flex items-center gap-3 text-slate-400">
-            <span className="hidden md:inline text-[11px]">Sub-second Block Finality</span>
+          <div className="flex items-center gap-2 sm:gap-3 text-slate-400">
             <Link
               href="/leaderboard"
-              className="font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+              className="font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 text-[11px] sm:text-xs"
             >
-              <span>View On-Chain Leaderboard</span>
+              <span>On-Chain Leaderboard</span>
               <ArrowRight className="size-3" />
             </Link>
           </div>
@@ -169,44 +168,44 @@ export default async function HomePage() {
       </section>
 
       {/* HERO SECTION */}
-      <section className="mx-auto max-w-6xl px-4">
-        <div className="rounded-3xl border border-slate-200 bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40 p-8 sm:p-12 lg:p-14 shadow-xs relative overflow-hidden">
+      <section className="mx-auto max-w-6xl px-3 sm:px-4">
+        <div className="rounded-2xl sm:rounded-3xl border border-slate-200 bg-gradient-to-b from-slate-50/80 via-white to-slate-50/40 p-4 sm:p-8 lg:p-12 shadow-xs relative overflow-hidden">
           
           {/* Subtle decorative grid background */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none opacity-40" />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             
             {/* Left Column: Copy & Search */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100/90 px-3.5 py-1 text-xs font-semibold text-emerald-950 border border-emerald-200 shadow-2xs">
-                <Sparkles className="size-3.5 text-emerald-600" />
-                <span>Hyperlocal Skill Sharing · Non-Custodial Monad Escrow</span>
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-emerald-100/90 px-3 py-1 text-[11px] sm:text-xs font-semibold text-emerald-950 border border-emerald-200 shadow-2xs">
+                <Sparkles className="size-3.5 text-emerald-600 shrink-0" />
+                <span className="truncate">Hyperlocal Skills · Non-Custodial Monad Escrow</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15] text-balance">
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.2] sm:leading-[1.15] text-balance">
                 Book verified local experts. Sealed by <span className="text-emerald-600 underline decoration-emerald-300 decoration-wavy decoration-2">smart escrow</span>.
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed text-pretty max-w-xl">
+              <p className="text-xs sm:text-base text-slate-600 leading-relaxed text-pretty max-w-xl">
                 Get real-world services in your neighborhood with zero advance payment fraud. Pay via <strong>Razorpay UPI</strong> or <strong>MON tokens</strong>. Funds are locked in smart contracts and released only when you approve completion.
               </p>
 
               {/* Integrated Search Bar */}
               <form action="/explore" method="GET" className="space-y-2.5 pt-1">
                 <div className="flex flex-col sm:flex-row gap-2 rounded-2xl bg-white border-2 border-slate-200 p-1.5 shadow-xs focus-within:border-emerald-600 focus-within:ring-4 focus-within:ring-emerald-500/15 transition-all">
-                  <div className="flex-1 flex items-center px-3 py-2 text-slate-900">
+                  <div className="flex-1 flex items-center px-3 py-2 text-slate-900 min-h-[44px]">
                     <Search className="size-4 text-slate-400 mr-2.5 shrink-0" />
                     <input
                       type="text"
                       name="q"
-                      placeholder="What service do you need? (e.g. Electrician, Tutoring, Design)..."
-                      className="w-full bg-transparent text-xs sm:text-sm font-medium focus:outline-none text-slate-900 placeholder:text-slate-400"
+                      placeholder="What service do you need? (e.g. Electrician)..."
+                      className="w-full bg-transparent text-sm font-medium focus:outline-none text-slate-900 placeholder:text-slate-400"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="rounded-xl bg-emerald-600 px-6 py-3 text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs shrink-0 flex items-center justify-center gap-1.5"
+                    className="rounded-xl bg-emerald-600 px-6 py-3 min-h-[44px] text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs shrink-0 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <span>Find Pros</span>
                     <ArrowRight className="size-4" />
@@ -215,12 +214,12 @@ export default async function HomePage() {
 
                 {/* Popular Tags */}
                 <div className="flex flex-wrap items-center gap-1.5 pt-1 text-xs text-slate-500">
-                  <span className="font-semibold text-slate-400">Trending:</span>
-                  {['Electrician', 'AC Service', 'Solidity Dev', 'Guitar Lessons', 'UI Design', 'Home Cleaning'].map((tag) => (
+                  <span className="font-semibold text-slate-400 text-[11px] sm:text-xs">Trending:</span>
+                  {['Electrician', 'AC Service', 'Solidity Dev', 'Guitar', 'UI Design'].map((tag) => (
                     <Link
                       key={tag}
                       href={`/explore?q=${encodeURIComponent(tag)}`}
-                      className="rounded-md bg-white border border-slate-200 px-2.5 py-0.5 font-medium text-slate-700 hover:border-emerald-500 hover:text-emerald-700 transition-colors"
+                      className="rounded-md bg-white border border-slate-200 px-2 py-0.5 text-[11px] sm:text-xs font-medium text-slate-700 hover:border-emerald-500 hover:text-emerald-700 transition-colors"
                     >
                       {tag}
                     </Link>
@@ -229,19 +228,19 @@ export default async function HomePage() {
               </form>
 
               {/* Quick Action CTAs */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-2">
                 <Link
                   href="/tasks/new"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-50 transition-colors shadow-xs"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-slate-800 hover:bg-slate-50 transition-colors shadow-xs min-h-[42px]"
                 >
-                  <ClipboardList className="size-4 text-emerald-600" />
+                  <ClipboardList className="size-4 text-emerald-600 shrink-0" />
                   <span>Post a Task Request</span>
                 </Link>
                 <Link
                   href="/skills/new"
-                  className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-slate-800 transition-colors shadow-xs"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-slate-800 transition-colors shadow-xs min-h-[42px]"
                 >
-                  <HandHeart className="size-4 text-emerald-400" />
+                  <HandHeart className="size-4 text-emerald-400 shrink-0" />
                   <span>Offer Help & Earn</span>
                 </Link>
               </div>

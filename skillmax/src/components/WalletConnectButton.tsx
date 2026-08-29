@@ -4,6 +4,7 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { injected } from 'wagmi/connectors'
 import { monadTestnet } from '@/lib/wagmi/config'
 import { shortenAddress } from '@/lib/utils'
+import { Wallet } from 'lucide-react'
 
 export function WalletConnectButton() {
   const { address, isConnected, chain } = useAccount()
@@ -14,20 +15,22 @@ export function WalletConnectButton() {
 
   if (isConnected && address) {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5 shrink-0">
         {isWrongNetwork && (
           <button
             onClick={() => connect({ connector: injected(), chainId: monadTestnet.id })}
-            className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
+            className="rounded-lg bg-red-600 px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-white hover:bg-red-700 shadow-2xs shrink-0"
           >
-            Switch to Monad
+            Switch Network
           </button>
         )}
         <button
           onClick={() => disconnect()}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded-lg border border-slate-300 bg-white px-2.5 sm:px-3 py-1.5 text-xs font-mono font-bold text-slate-700 hover:bg-slate-50 shadow-2xs shrink-0 flex items-center gap-1"
+          title="Click to disconnect wallet"
         >
-          {shortenAddress(address)}
+          <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
+          <span>{shortenAddress(address)}</span>
         </button>
       </div>
     )
@@ -36,9 +39,11 @@ export function WalletConnectButton() {
   return (
     <button
       onClick={() => connect({ connector: injected(), chainId: monadTestnet.id })}
-      className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+      className="rounded-lg border border-slate-300 bg-white px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 shadow-2xs flex items-center gap-1.5 shrink-0"
     >
-      Connect Wallet
+      <Wallet className="size-3.5 text-emerald-600 shrink-0" />
+      <span className="hidden sm:inline">Connect Wallet</span>
+      <span className="sm:hidden">Wallet</span>
     </button>
   )
 }
