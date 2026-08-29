@@ -1,5 +1,5 @@
-# ⚡ SkillMax — Decentralized Local Skill Marketplace
-### *Powered by Monad Blockchain, Supabase & Razorpay*
+# ⚡ SkillMax — Decoupled Local Skill & Freelance Marketplace
+### *Powered by Monad Blockchain, Supabase Engine & Razorpay Fiat Payouts*
 
 [![Live Production](https://img.shields.io/badge/Vercel-Live_Production-000000?style=for-the-badge&logo=vercel)](https://skillmax2026.vercel.app)
 [![Monad Testnet](https://img.shields.io/badge/Monad-Testnet_10143-8A2BE2?style=for-the-badge&logo=ethereum)](https://monad-testnet.socialscan.io)
@@ -11,13 +11,13 @@
 
 **SkillMax** is a semi-open source, decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**.
 
-See full documentation and developer contribution guidelines in [`skillmax/`](./skillmax/README.md).
+See full 18-section technical documentation and developer contribution guidelines in [`skillmax/`](./skillmax/README.md).
 
 ---
 
 ## 💖 Semi-Open Source & 60% Charity Pledge
 
-SkillMax is governed by a **Semi-Open Source Public Social Impact Protocol**:
+SkillMax is governed by a **Public Social Impact Protocol**:
 * **60% Protocol Fee Charity Donation**: **60% of all platform transaction fees and escrow charges are donated directly to verified local community charities**, educational funds, and vocational training programs for underprivileged gig workers.
 * **On-Chain Donation Auditing**: Every donation receipt and treasury disbursement is logged transparently on the Monad Blockchain.
 * **Semi-Open Source Development**: Anyone in the global developer community can fork, review code, submit pull requests, audit security, and build features to improve SkillMax.
@@ -33,7 +33,7 @@ SkillMax is governed by a **Semi-Open Source Public Social Impact Protocol**:
 
 ---
 
-## 🌟 Key Features Overview
+## 🌟 Key Features & Architectural Highlights
 
 1. **Dual Payment Methods**:
    - **Monad Crypto Escrow**: Lock `MON` tokens in non-custodial smart contracts (`SkillMaxEscrow.sol`) with ~1-second settlement.
@@ -59,5 +59,5 @@ SkillMax is governed by a **Semi-Open Source Public Social Impact Protocol**:
 7. **Browser GPS Geolocation Access (`LocationPicker.tsx`)**:
    - Device GPS position tracking (`navigator.geolocation`) for local service filtering.
 
-8. **Legal Framework & Terms (`/terms` & `/privacy`)**:
+8. **Legal Framework & Governance (`/terms` & `/privacy`)**:
    - Terms of Service and Privacy Policy covering Monad smart contract escrows, Web3 encryption, and Razorpay compliance.
