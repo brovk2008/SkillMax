@@ -62,7 +62,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-black px-5 py-2 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+            className="rounded-lg bg-emerald-600 px-5 py-2 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm"
           >
             Search
           </button>

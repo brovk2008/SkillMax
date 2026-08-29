@@ -82,7 +82,7 @@ export function Navbar({ user }: NavbarProps) {
             {user ? (
               <Link
                 href="/skills/new"
-                className="flex items-center gap-1 rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+                className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm"
               >
                 <Plus className="h-3.5 w-3.5" />
                 <span>Offer Skill</span>
@@ -90,7 +90,7 @@ export function Navbar({ user }: NavbarProps) {
             ) : (
               <Link
                 href="/onboard"
-                className="flex items-center gap-1 rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+                className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm"
               >
                 <UserCheck className="h-3.5 w-3.5" />
                 <span>Sign In</span>

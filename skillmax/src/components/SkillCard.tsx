@@ -71,7 +71,7 @@ export default function SkillCard({ skill }: SkillCardProps) {
             )}
           </div>
 
-          <button className="rounded-lg bg-black px-4 py-1.5 text-xs font-semibold text-white group-hover:bg-emerald-600 transition-colors shadow-sm">
+          <button className="rounded-lg bg-emerald-600 px-4 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 transition-colors shadow-sm">
             Book Service
           </button>
         </div>
