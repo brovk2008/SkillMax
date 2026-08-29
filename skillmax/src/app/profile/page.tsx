@@ -66,19 +66,19 @@ export default async function MyProfilePage() {
             <img
               src={avatar}
               alt={profile.full_name}
-              className="h-20 w-20 rounded-full object-cover border-2 border-blue-500 shadow-sm shrink-0"
+              className="h-20 w-20 rounded-full object-cover border-2 border-emerald-500 shadow-sm shrink-0"
             />
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">{profile.full_name}</h1>
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-100/80 px-2 py-0.5 rounded-md">
-                  <CheckCircle2 className="h-3 w-3 text-blue-600" />
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                   Verified
                 </span>
               </div>
 
               {profile.headline && (
-                <p className="text-xs font-semibold text-blue-700">{profile.headline}</p>
+                <p className="text-xs font-semibold text-emerald-700">{profile.headline}</p>
               )}
 
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-0.5">
@@ -102,7 +102,7 @@ export default async function MyProfilePage() {
           <div className="flex gap-2 shrink-0">
             <Link
               href="/skills/new"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-bold text-white hover:bg-blue-700 shadow-xs"
+              className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700 shadow-xs"
             >
               + Offer Skill
             </Link>
@@ -119,7 +119,7 @@ export default async function MyProfilePage() {
         {skillTags.length > 0 && (
           <div className="pt-3 border-t border-slate-200/80 flex items-center gap-2 flex-wrap">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-              <Tag className="h-3 w-3 text-blue-600" />
+              <Tag className="h-3 w-3 text-emerald-600" />
               Skill Tags:
             </span>
             {skillTags.map((tag) => (
@@ -150,7 +150,7 @@ export default async function MyProfilePage() {
           ) : (
             <div className="rounded-xl border border-dashed border-slate-300 p-4 text-center">
               <p className="text-xs text-slate-500">No Monad wallet address linked.</p>
-              <Link href="/settings" className="text-xs font-semibold text-blue-600 hover:underline">
+              <Link href="/settings" className="text-xs font-semibold text-emerald-600 hover:underline">
                 Link Wallet in Settings →
               </Link>
             </div>
@@ -166,7 +166,7 @@ export default async function MyProfilePage() {
                 <h2 className="text-lg font-bold text-slate-900">Offered Services ({skills?.length ?? 0})</h2>
                 <p className="text-xs text-slate-500">Services listed for local clients</p>
               </div>
-              <Link href="/skills/new" className="text-xs font-semibold text-blue-700 hover:underline">
+              <Link href="/skills/new" className="text-xs font-semibold text-emerald-700 hover:underline">
                 + Create Listing
               </Link>
             </div>
@@ -176,7 +176,7 @@ export default async function MyProfilePage() {
                 <p className="text-sm text-slate-500">You haven't listed any skills yet.</p>
                 <Link
                   href="/skills/new"
-                  className="mt-3 inline-block rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
+                  className="mt-3 inline-block rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700"
                 >
                   Offer Your First Skill
                 </Link>

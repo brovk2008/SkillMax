@@ -48,11 +48,11 @@ export function AchievementsGrid({ stats }: Props) {
   return (
     <div className="space-y-6">
       {/* Reputation & Level Summary Card */}
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-blue-50 via-teal-50/50 to-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-slate-200 bg-gradient-to-r from-emerald-50 via-teal-50/50 to-white p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-              <ShieldCheck className="h-3.5 w-3.5 text-blue-700" />
+            <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
               Community Level {level}
             </span>
             <h2 className="text-2xl font-bold text-slate-900">{levelTitle}</h2>
@@ -67,7 +67,7 @@ export function AchievementsGrid({ stats }: Props) {
             </div>
             <div>
               <p className="text-xs font-semibold text-slate-400 uppercase">Reputation Score</p>
-              <p className="text-2xl font-extrabold text-slate-900">{totalPoints} <span className="text-xs font-semibold text-blue-600">PTS</span></p>
+              <p className="text-2xl font-extrabold text-slate-900">{totalPoints} <span className="text-xs font-semibold text-emerald-600">PTS</span></p>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@ export function AchievementsGrid({ stats }: Props) {
               key={ach.id}
               className={`rounded-xl border p-4 transition-all flex flex-col justify-between ${
                 ach.unlocked
-                  ? 'border-blue-200 bg-white shadow-xs hover:border-blue-300'
+                  ? 'border-emerald-200 bg-white shadow-xs hover:border-emerald-300'
                   : 'border-slate-200 bg-slate-50/60 opacity-80'
               }`}
             >
@@ -114,7 +114,7 @@ export function AchievementsGrid({ stats }: Props) {
                   <div
                     className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${
                       ach.unlocked
-                        ? 'bg-blue-100 text-blue-700'
+                        ? 'bg-emerald-100 text-emerald-700'
                         : 'bg-slate-200 text-slate-400'
                     }`}
                   >
@@ -124,7 +124,7 @@ export function AchievementsGrid({ stats }: Props) {
                   <span
                     className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold ${
                       ach.unlocked
-                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : 'bg-slate-100 text-slate-500 border border-slate-200'
                     }`}
                   >
@@ -135,7 +135,7 @@ export function AchievementsGrid({ stats }: Props) {
                 <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                   <span>{ach.title}</span>
                   {ach.unlocked ? (
-                    <CheckCircle2 className="h-4 w-4 text-blue-600 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
                   ) : (
                     <Lock className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                   )}
@@ -155,7 +155,7 @@ export function AchievementsGrid({ stats }: Props) {
                 <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${
-                      ach.unlocked ? 'bg-blue-600' : 'bg-slate-400'
+                      ach.unlocked ? 'bg-emerald-600' : 'bg-slate-400'
                     }`}
                     style={{ width: `${(ach.progress / ach.maxProgress) * 100}%` }}
                   />

@@ -313,8 +313,8 @@ export default function OnboardPage() {
     return (
       <div className="mx-auto max-w-md px-4 py-12 bg-white">
         <div className="text-center space-y-2">
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-            <ShieldCheck className="h-3.5 w-3.5 text-blue-600" />
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
             Step 1 of 4: Web3 Cryptographic Auth
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
@@ -333,9 +333,9 @@ export default function OnboardPage() {
             type="button"
             onClick={handleWeb3WalletAuth}
             disabled={loading}
-            className="w-full rounded-xl border-2 border-blue-600 bg-blue-50 px-4 py-3 text-xs font-bold text-emerald-900 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 shadow-xs"
+            className="w-full rounded-xl border-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2 shadow-xs"
           >
-            <Wallet className="h-4 w-4 text-blue-700" />
+            <Wallet className="h-4 w-4 text-emerald-700" />
             <span>{loading ? 'Authenticating Wallet...' : 'Sign In with Monad Web3 Wallet Signature'}</span>
           </button>
 
@@ -378,7 +378,7 @@ export default function OnboardPage() {
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Riya Sharma"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -388,7 +388,7 @@ export default function OnboardPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="riya_sharma"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -398,7 +398,7 @@ export default function OnboardPage() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Delhi NCR"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -409,7 +409,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -421,12 +421,12 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
 
             <p className="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
-              <Lock className="h-3 w-3 text-blue-600 shrink-0" />
+              <Lock className="h-3 w-3 text-emerald-600 shrink-0" />
               <span>Protected via Web3 Keccak-256 hashing & client-side encryption.</span>
             </p>
 
@@ -434,7 +434,7 @@ export default function OnboardPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-xs"
+              className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-xs"
             >
               <span>{loading ? 'Creating account...' : 'Create Account & Start Survey'}</span>
               <ArrowRight className="h-4 w-4" />
@@ -450,7 +450,7 @@ export default function OnboardPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
             <div>
@@ -461,7 +461,7 @@ export default function OnboardPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
 
@@ -469,7 +469,7 @@ export default function OnboardPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-blue-600 px-4 py-3 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-xs"
+              className="w-full rounded-lg bg-emerald-600 px-4 py-3 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-xs"
             >
               <span>{loading ? 'Signing in...' : 'Sign In to Dashboard'}</span>
               <ArrowRight className="h-4 w-4" />
@@ -491,8 +491,8 @@ export default function OnboardPage() {
     return (
       <div className="mx-auto max-w-lg px-4 py-10 bg-white space-y-6">
         <div className="text-center space-y-2">
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-            <User className="h-3.5 w-3.5 text-blue-600" />
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+            <User className="h-3.5 w-3.5 text-emerald-600" />
             Step 2 of 4: Build Profile Persona
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Personalize Your Profile</h1>
@@ -507,7 +507,7 @@ export default function OnboardPage() {
               <img
                 src={avatarUrl}
                 alt="Avatar Preview"
-                className="h-14 w-14 rounded-full object-cover border-2 border-blue-500 shadow-xs"
+                className="h-14 w-14 rounded-full object-cover border-2 border-emerald-500 shadow-xs"
               />
               <div className="flex-1">
                 <input
@@ -515,7 +515,7 @@ export default function OnboardPage() {
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
                   placeholder="Paste custom photo URL..."
-                  className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
                 />
               </div>
             </div>
@@ -526,7 +526,7 @@ export default function OnboardPage() {
                   type="button"
                   onClick={() => setAvatarUrl(url)}
                   className={`h-9 w-9 rounded-full overflow-hidden border-2 transition-all ${
-                    avatarUrl === url ? 'border-blue-600 scale-105' : 'border-slate-200 opacity-70'
+                    avatarUrl === url ? 'border-emerald-600 scale-105' : 'border-slate-200 opacity-70'
                   }`}
                 >
                   <img src={url} alt={`Preset ${idx}`} className="h-full w-full object-cover" />
@@ -541,7 +541,7 @@ export default function OnboardPage() {
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               placeholder="e.g. Senior Full-Stack Engineer, Certified Electrician, Music Teacher"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
           </div>
 
@@ -551,7 +551,7 @@ export default function OnboardPage() {
               <select
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               >
                 <option>Male</option>
                 <option>Female</option>
@@ -566,7 +566,7 @@ export default function OnboardPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 98765 43210"
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
           </div>
@@ -577,7 +577,7 @@ export default function OnboardPage() {
               value={walletAddress || address || ''}
               onChange={(e) => setWalletAddress(e.target.value)}
               placeholder="0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none font-mono"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none font-mono"
             />
           </div>
 
@@ -588,7 +588,7 @@ export default function OnboardPage() {
               onChange={(e) => setBio(e.target.value)}
               rows={3}
               placeholder="Describe your background, services offered, or what you enjoy helping neighbors with..."
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none resize-none"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none resize-none"
             />
           </div>
         </div>
@@ -605,7 +605,7 @@ export default function OnboardPage() {
             type="button"
             onClick={() => handleSaveProfileSurvey(false)}
             disabled={loading}
-            className="flex-1 rounded-lg bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+            className="flex-1 rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
           >
             <span>{loading ? 'Saving...' : 'Save & Select Skill Tags'}</span>
             <ArrowRight className="h-4 w-4" />
@@ -620,8 +620,8 @@ export default function OnboardPage() {
     return (
       <div className="mx-auto max-w-lg px-4 py-10 bg-white space-y-6">
         <div className="text-center space-y-2">
-          <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-            <Tag className="h-3.5 w-3.5 text-blue-600" />
+          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+            <Tag className="h-3.5 w-3.5 text-emerald-600" />
             Step 3 of 4: Select Your Skill Tags
           </span>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">What Skills Do You Have?</h1>
@@ -636,7 +636,7 @@ export default function OnboardPage() {
               value={tagSearch}
               onChange={(e) => setTagSearch(e.target.value)}
               placeholder="Search skills (e.g. Python, Plumbing, Figma, Tutoring)..."
-              className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-4 py-2.5 text-xs text-slate-900 focus:border-blue-600 focus:outline-none shadow-xs"
+              className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-4 py-2.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none shadow-xs"
             />
           </div>
 
@@ -648,10 +648,10 @@ export default function OnboardPage() {
                   <span
                     key={tag}
                     onClick={() => toggleTag(tag)}
-                    className="inline-flex items-center gap-1 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white shadow-xs cursor-pointer hover:bg-red-600 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1 text-xs font-semibold text-white shadow-xs cursor-pointer hover:bg-red-600 transition-colors"
                   >
                     <span>{tag}</span>
-                    <span className="text-blue-200">×</span>
+                    <span className="text-emerald-200">×</span>
                   </span>
                 ))}
               </div>
@@ -670,7 +670,7 @@ export default function OnboardPage() {
                     onClick={() => toggleTag(tag)}
                     className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all ${
                       isSelected
-                        ? 'bg-blue-600 text-white shadow-xs scale-105'
+                        ? 'bg-emerald-600 text-white shadow-xs scale-105'
                         : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'
                     }`}
                   >
@@ -687,12 +687,12 @@ export default function OnboardPage() {
               onChange={(e) => setCustomTagInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addCustomTag())}
               placeholder="Add custom skill tag..."
-              className="flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+              className="flex-1 rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
             <button
               type="button"
               onClick={addCustomTag}
-              className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-600 transition-colors"
+              className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors"
             >
               + Add
             </button>
@@ -711,7 +711,7 @@ export default function OnboardPage() {
             type="button"
             onClick={() => handleSaveSkillTags(false)}
             disabled={loading}
-            className="flex-1 rounded-lg bg-blue-600 py-2.5 text-xs font-bold text-white hover:bg-blue-700 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
+            className="flex-1 rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 shadow-xs"
           >
             <span>{loading ? 'Saving...' : 'Save & Offer Service'}</span>
             <ArrowRight className="h-4 w-4" />
@@ -725,8 +725,8 @@ export default function OnboardPage() {
   return (
     <div className="mx-auto max-w-lg px-4 py-10 bg-white space-y-6">
       <div className="text-center space-y-2">
-        <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-800 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-          <Briefcase className="h-3.5 w-3.5 text-blue-600" />
+        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full">
+          <Briefcase className="h-3.5 w-3.5 text-emerald-600" />
           Step 4 of 4: List Your Service
         </span>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">Offer Your First Service</h1>
@@ -740,7 +740,7 @@ export default function OnboardPage() {
             value={skillTitle}
             onChange={(e) => setSkillTitle(e.target.value)}
             placeholder="e.g. Python Tutoring, Web Design, Emergency Plumbing..."
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
           />
         </div>
         <div>
@@ -748,7 +748,7 @@ export default function OnboardPage() {
           <select
             value={skillCat}
             onChange={(e) => setSkillCat(e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
           >
             {CATEGORY_NAMES.map((c) => <option key={c}>{c}</option>)}
           </select>
@@ -760,7 +760,7 @@ export default function OnboardPage() {
             onChange={(e) => setSkillDesc(e.target.value)}
             rows={3}
             placeholder="Describe what your service includes, delivery time, etc..."
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none resize-none"
+            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none resize-none"
           />
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -771,7 +771,7 @@ export default function OnboardPage() {
               value={priceInr}
               onChange={(e) => setPriceInr(e.target.value)}
               placeholder="500"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
           </div>
           <div>
@@ -782,7 +782,7 @@ export default function OnboardPage() {
               value={priceMon}
               onChange={(e) => setPriceMon(e.target.value)}
               placeholder="0.1"
-              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
             />
           </div>
         </div>
@@ -800,7 +800,7 @@ export default function OnboardPage() {
           type="button"
           onClick={() => handleSaveInitialSkill(false)}
           disabled={loading}
-          className="flex-1 rounded-lg bg-blue-600 py-3 text-xs font-bold text-white hover:bg-blue-700 transition-colors shadow-xs"
+          className="flex-1 rounded-lg bg-emerald-600 py-3 text-xs font-bold text-white hover:bg-emerald-700 transition-colors shadow-xs"
         >
           {loading ? 'Saving...' : 'Complete & Launch Dashboard →'}
         </button>

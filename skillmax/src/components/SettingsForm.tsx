@@ -72,7 +72,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
         <img
           src={form.avatar_url}
           alt="Avatar Preview"
-          className="h-16 w-16 rounded-full object-cover border-2 border-blue-500 shadow-xs"
+          className="h-16 w-16 rounded-full object-cover border-2 border-emerald-500 shadow-xs"
         />
         <div className="flex-1">
           <label className="block text-xs font-semibold text-slate-700 mb-1">Profile Photo URL</label>
@@ -80,7 +80,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
             value={form.avatar_url}
             onChange={(e) => setForm({ ...form, avatar_url: e.target.value })}
             placeholder="https://..."
-            className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-blue-600 focus:outline-none"
+            className="w-full rounded-lg border border-slate-300 px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-600 focus:outline-none"
           />
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
             value={(form as any)[f.key]}
             onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
             placeholder={f.placeholder}
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-blue-600 focus:outline-none text-slate-900"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none text-slate-900"
           />
         </div>
       ))}
@@ -109,7 +109,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
         <select
           value={form.gender}
           onChange={(e) => setForm({ ...form, gender: e.target.value })}
-          className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-blue-600 focus:outline-none text-slate-900"
+          className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none text-slate-900"
         >
           <option>Male</option>
           <option>Female</option>
@@ -124,14 +124,14 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
           value={form.bio}
           onChange={(e) => setForm({ ...form, bio: e.target.value })}
           rows={3}
-          className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-blue-600 focus:outline-none resize-none text-slate-900"
+          className="w-full rounded-lg border border-slate-300 px-3.5 py-2 text-xs focus:border-emerald-600 focus:outline-none resize-none text-slate-900"
         />
       </div>
 
       {error && <p className="text-xs text-red-600 bg-red-50 p-2.5 rounded-lg">{error}</p>}
       {saved && (
-        <p className="text-xs text-blue-600 flex items-center gap-1">
-          <CheckCircle2 className="h-4 w-4 text-blue-600" />
+        <p className="text-xs text-emerald-600 flex items-center gap-1">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           Profile saved successfully!
         </p>
       )}
@@ -139,7 +139,7 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-blue-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-xs"
+        className="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors shadow-xs"
       >
         {loading ? 'Saving...' : 'Save Settings'}
       </button>

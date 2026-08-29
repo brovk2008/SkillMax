@@ -44,7 +44,7 @@ export default async function MessagesInboxPage() {
       {/* Header */}
       <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 space-y-1">
         <div className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-blue-600" />
+          <MessageSquare className="h-5 w-5 text-emerald-600" />
           <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">Messages Inbox</h1>
         </div>
         <p className="text-xs text-slate-500">
@@ -60,7 +60,7 @@ export default async function MessagesInboxPage() {
           <p className="text-xs text-slate-400">Book a service or offer a skill to start messaging.</p>
           <Link
             href="/explore"
-            className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700 shadow-xs"
+            className="inline-block rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs"
           >
             Explore Skills
           </Link>
@@ -81,7 +81,7 @@ export default async function MessagesInboxPage() {
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                    <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-600 transition-colors truncate">
                       {conv.otherPartyName}
                     </h3>
                     <span className="text-[11px] text-slate-400 font-mono">@{conv.otherPartyUsername}</span>
@@ -103,7 +103,7 @@ export default async function MessagesInboxPage() {
                   <Clock className="h-3 w-3" />
                   {new Date(conv.lastMessageTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                 </span>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 group-hover:translate-x-0.5 transition-transform">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 group-hover:translate-x-0.5 transition-transform">
                   <span>Open Chat</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </span>

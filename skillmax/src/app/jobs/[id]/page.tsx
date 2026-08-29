@@ -98,7 +98,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
             <div className="rounded-lg border border-gray-200 p-4 space-y-2">
               {isClient && job.status === 'provider_done' && (
                 <form action={`/api/jobs/${job.id}/mark-complete`} method="POST">
-                  <button className="w-full rounded-md bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+                  <button className="w-full rounded-md bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-700">
                     <span className="flex items-center justify-center gap-1.5">
                       <span>Release Payment</span>
                       <CheckCircle2 className="h-4 w-4" />
