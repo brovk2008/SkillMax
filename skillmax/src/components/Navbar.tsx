@@ -3,71 +3,99 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { WalletConnectButton } from './WalletConnectButton'
-import { NotifBadge } from './NotifBadge'
+import { WalletConnectButton } from '@/components/WalletConnectButton'
+import { NotifBadge } from '@/components/NotifBadge'
 
-export function Navbar({ userId }: { userId?: string }) {
+interface NavbarProps {
+  user?: {
+    id: string
+    email?: string
+  } | null
+}
+
+export function Navbar({ user }: NavbarProps) {
   const pathname = usePathname()
 
-  const navLinks = [
-    { href: '/explore', label: 'Explore' },
-    ...(userId ? [
-      { href: '/dashboard', label: 'Dashboard' },
-      { href: '/profile', label: 'Profile' },
-    ] : []),
-  ]
-
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="SkillMax" width={32} height={32} className="rounded" />
-          <span className="text-base font-semibold text-gray-900">SkillMax</span>
-        </Link>
+        {/* Brand Logo & Location Dropdown */}
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="SkillMax"
+              width={34}
+              height={34}
+              className="rounded-md object-contain"
+            />
+            <span className="text-xl font-bold tracking-tight text-gray-900">
+              Skill<span className="text-emerald-600">Max</span>
+            </span>
+          </Link>
 
-        {/* Nav links */}
-        <nav className="hidden items-center gap-6 sm:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors ${
-                pathname.startsWith(link.href)
-                  ? 'text-emerald-600'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+          {/* Urban Company Location Selector */}
+          <div className="hidden md:flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-700">
+            <span>📍</span>
+            <span>Delhi NCR</span>
+            <span className="text-gray-400">▾</span>
+          </div>
+        </div>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-3">
-          {userId && (
-            <Link href="/notifications" className="relative">
-              <NotifBadge userId={userId} />
-            </Link>
-          )}
-          <WalletConnectButton />
-          {!userId ? (
-            <Link
-              href="/onboard"
-              className="rounded-md bg-emerald-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-emerald-700"
-            >
-              Sign In
-            </Link>
-          ) : (
-            <form action="/api/auth/signout" method="post">
-              <button
-                type="submit"
-                className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        {/* Center Search Shortcut */}
+        <div className="hidden lg:flex flex-1 max-w-md mx-8">
+          <Link
+            href="/explore"
+            className="w-full flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-500 hover:bg-gray-100 transition-colors"
+          >
+            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span>Search for 'Electrician', 'Tutoring', 'Web Design'...</span>
+          </Link>
+        </div>
+
+        {/* Right Navigation */}
+        <div className="flex items-center gap-4">
+          <nav className="hidden sm:flex items-center gap-5">
+            {[
+              { label: 'Explore', href: '/explore' },
+              { label: 'Dashboard', href: '/dashboard' },
+              { label: 'Profile', href: '/profile' },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-xs font-semibold transition-colors ${
+                  pathname.startsWith(link.href)
+                    ? 'text-emerald-700'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
               >
-                Sign Out
-              </button>
-            </form>
-          )}
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3 border-l border-gray-200 pl-4">
+            <WalletConnectButton />
+            <NotifBadge userId={user?.id} />
+            {user ? (
+              <Link
+                href="/skills/new"
+                className="rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+              >
+                + Offer Skill
+              </Link>
+            ) : (
+              <Link
+                href="/onboard"
+                className="rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </header>

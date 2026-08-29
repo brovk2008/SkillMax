@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react'
 import { createBrowserClient } from '@/lib/supabase/client'
 
-export function NotifBadge({ userId }: { userId: string }) {
+export function NotifBadge({ userId }: { userId?: string }) {
   const [count, setCount] = useState(0)
   const supabase = createBrowserClient()
 
   useEffect(() => {
+    if (!userId) return
+
     supabase
       .from('notifications')
       .select('id', { count: 'exact', head: true })

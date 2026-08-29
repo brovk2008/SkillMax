@@ -17,26 +17,59 @@ interface SkillCardProps {
 }
 
 export default function SkillCard({ skill }: SkillCardProps) {
+  const initials = skill.profiles.full_name
+    ?.split(' ')
+    .map((n) => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase() ?? 'SK'
+
   return (
-    <Link href={`/skills/${skill.id}`}>
-      <div className="rounded-lg border border-gray-200 bg-white p-4 hover:border-gray-300 transition-colors cursor-pointer h-full flex flex-col">
-        <div className="flex items-start justify-between gap-2">
-          <span className="inline-flex items-center rounded-full border border-gray-200 px-2.5 py-0.5 text-xs text-gray-600 shrink-0">
-            {skill.category}
-          </span>
-          <div className="text-right">
-            {skill.price_inr && (
-              <p className="text-sm font-semibold text-gray-900">{formatINR(skill.price_inr)}</p>
-            )}
-            {skill.price_mon && (
-              <p className="text-xs text-gray-500">{skill.price_mon} MON</p>
-            )}
+    <Link href={`/skills/${skill.id}`} className="block group">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:shadow-md hover:border-gray-300 flex flex-col justify-between h-full">
+        <div>
+          {/* Header Badge & Category */}
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <span className="inline-flex items-center gap-1 rounded-md bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+              {skill.category}
+            </span>
+            <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+              ✓ Verified
+            </span>
+          </div>
+
+          {/* Service Title */}
+          <h3 className="text-base font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors line-clamp-2">
+            {skill.title}
+          </h3>
+
+          {/* Provider Details & Rating */}
+          <div className="mt-3 flex items-center gap-2.5">
+            <div className="h-7 w-7 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-bold">
+              {initials}
+            </div>
+            <div>
+              <p className="text-xs font-medium text-gray-900">{skill.profiles.full_name}</p>
+              <p className="text-[11px] text-gray-400">📍 {skill.profiles.city}</p>
+            </div>
           </div>
         </div>
-        <h3 className="mt-3 text-base font-medium text-gray-900 flex-1">{skill.title}</h3>
-        <p className="mt-2 text-xs text-gray-500">
-          {skill.profiles.full_name} · {skill.profiles.city}
-        </p>
+
+        {/* Bottom Bar: Price & Book Pill Button (Urban Company Style) */}
+        <div className="mt-5 border-t border-gray-100 pt-3 flex items-center justify-between">
+          <div>
+            {skill.price_inr && (
+              <p className="text-base font-bold text-gray-900">{formatINR(skill.price_inr)}</p>
+            )}
+            {skill.price_mon && (
+              <p className="text-xs font-mono text-emerald-600">{skill.price_mon} MON</p>
+            )}
+          </div>
+
+          <button className="rounded-lg bg-black px-4 py-1.5 text-xs font-semibold text-white group-hover:bg-emerald-600 transition-colors shadow-sm">
+            Book Service
+          </button>
+        </div>
       </div>
     </Link>
   )
