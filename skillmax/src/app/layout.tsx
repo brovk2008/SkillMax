@@ -5,23 +5,34 @@ import { Providers } from '@/components/Providers'
 import { Navbar } from '@/components/Navbar'
 import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { ShieldCheck, Zap } from 'lucide-react'
+import { Zap } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SkillMax — Local Skill Marketplace on Monad',
-  description: 'Hire local talent verified on-chain. Escrow powered by Monad Testnet. Payments via Razorpay.',
+  title: 'SkillMax — Hyperlocal Skill Sharing Protocol on Monad',
+  description:
+    'SkillMax empowers local communities to exchange real-world skills, offer everyday services, build verifiable proof-of-reputation, and earn in INR & MON tokens.',
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/logo.png',
+    icon: '/icon.png',
+    apple: '/apple-icon.png',
   },
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  // Middleware already refreshed the session cookie, so getUser() works reliably
+  let user = null
+  try {
+    const supabase = await createServerClient()
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch (e) {
+    // Static generation edge case — safe to ignore
+  }
 
   return (
     <html lang="en">

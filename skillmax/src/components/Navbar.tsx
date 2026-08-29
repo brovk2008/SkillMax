@@ -91,6 +91,17 @@ export function Navbar({ user }: NavbarProps) {
                 <HandHeart className="h-3.5 w-3.5" />
                 <span>Offer Help</span>
               </Link>
+              <Link
+                href="/profile"
+                className="h-8 w-8 rounded-full border-2 border-emerald-500 overflow-hidden bg-emerald-50 flex items-center justify-center hover:scale-105 transition-transform"
+                title="My Profile"
+              >
+                <img
+                  src="https://api.dicebear.com/7.x/adventurer/svg?seed=Felix"
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              </Link>
             </div>
           ) : (
             <Link

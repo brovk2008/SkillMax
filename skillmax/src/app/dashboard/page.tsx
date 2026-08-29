@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   if (!user) redirect('/onboard')
   const supabase = await createServerClient()
 
-  const [{ data: profile }, { data: clientJobs }, { data: providerJobs }] = await Promise.all([
+  const [{ data: initialProfile }, { data: clientJobs }, { data: providerJobs }] = await Promise.all([
     supabase
       .from('profiles')
       .select('full_name, username, city')
@@ -30,6 +30,26 @@ export default async function DashboardPage() {
       .order('created_at', { ascending: false })
       .limit(20),
   ])
+
+  let profile = initialProfile
+  if (!profile && user.email) {
+    const { data: pByEmail } = await supabase
+      .from('profiles')
+      .select('full_name, username, city')
+      .eq('email', user.email)
+      .maybeSingle()
+    if (pByEmail) profile = pByEmail
+  }
+
+  if (!profile) {
+    const { data: pLatest } = await supabase
+      .from('profiles')
+      .select('full_name, username, city')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (pLatest) profile = pLatest
+  }
 
   // Financial Earnings Calculations
   const completedProviderJobs = (providerJobs ?? []).filter((j) => j.status === 'completed')
