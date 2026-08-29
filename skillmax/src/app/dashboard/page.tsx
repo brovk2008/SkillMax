@@ -2,7 +2,8 @@ import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
 import JobCard from '@/components/JobCard'
 import Link from 'next/link'
-import { Plus, Trophy, UserCheck, Search, Award } from 'lucide-react'
+import { Plus, Trophy, Wallet, Coins, IndianRupee, CheckCircle2, ArrowRight, Award, ShieldCheck } from 'lucide-react'
+import { formatINR } from '@/lib/utils'
 
 export default async function DashboardPage() {
   const supabase = await createServerClient()
@@ -29,6 +30,21 @@ export default async function DashboardPage() {
       .limit(20),
   ])
 
+  // Financial Earnings Calculations
+  const completedProviderJobs = (providerJobs ?? []).filter((j) => j.status === 'completed')
+
+  const totalMonEarned = completedProviderJobs
+    .filter((j) => j.payment_method === 'crypto')
+    .reduce((acc, curr) => acc + (curr.price_mon ?? 0), 0)
+
+  const totalInrEarned = completedProviderJobs
+    .filter((j) => j.payment_method === 'razorpay' || j.payment_method === 'fiat')
+    .reduce((acc, curr) => acc + (curr.price_inr ?? 0), 0)
+
+  const activeEscrowMon = (providerJobs ?? [])
+    .filter((j) => (j.status === 'created' || j.status === 'provider_done') && j.payment_method === 'crypto')
+    .reduce((acc, curr) => acc + (curr.price_mon ?? 0), 0)
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 space-y-8 bg-white">
       {/* Header Banner */}
@@ -38,18 +54,84 @@ export default async function DashboardPage() {
             Welcome back, {profile?.full_name ?? 'User'} 👋
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Manage your service bookings, active provider requests, and community reputation.
+            Manage your earnings, service bookings, and active Monad escrow contracts.
           </p>
         </div>
 
         <Link
           href="/skills/new"
-          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-xs shrink-0"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 shadow-xs shrink-0"
         >
           <Plus className="h-4 w-4" />
           <span>Offer New Skill</span>
         </Link>
       </div>
+
+      {/* FINANCIAL EARNINGS & METRICS OVERVIEW */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+          <Wallet className="h-4 w-4 text-emerald-600" />
+          <span>Financial Earnings &amp; Escrow Overview</span>
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Total MON Earned */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-2 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">Total MON Earned</span>
+              <div className="h-8 w-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+                <Coins className="h-4 w-4" />
+              </div>
+            </div>
+            <p className="text-2xl font-extrabold text-slate-900 font-mono">
+              {totalMonEarned.toFixed(2)} <span className="text-xs font-bold text-emerald-600">MON</span>
+            </p>
+            <p className="text-[11px] text-slate-400">On-chain Monad testnet escrows</p>
+          </div>
+
+          {/* Total INR Earned */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-2 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">Total INR Earned</span>
+              <div className="h-8 w-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700">
+                <IndianRupee className="h-4 w-4" />
+              </div>
+            </div>
+            <p className="text-2xl font-extrabold text-slate-900">
+              {formatINR(totalInrEarned)}
+            </p>
+            <p className="text-[11px] text-slate-400">Razorpay UPI &amp; Fiat payouts</p>
+          </div>
+
+          {/* Active Escrow Locked */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-2 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">Active Escrow Locked</span>
+              <div className="h-8 w-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-700">
+                <ShieldCheck className="h-4 w-4" />
+              </div>
+            </div>
+            <p className="text-2xl font-extrabold text-slate-900 font-mono">
+              {activeEscrowMon.toFixed(2)} <span className="text-xs font-bold text-blue-600">MON</span>
+            </p>
+            <p className="text-[11px] text-slate-400">Pending client completion approval</p>
+          </div>
+
+          {/* Completed Jobs Count */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-4 space-y-2 shadow-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-slate-500">Jobs Completed</span>
+              <div className="h-8 w-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-700">
+                <CheckCircle2 className="h-4 w-4" />
+              </div>
+            </div>
+            <p className="text-2xl font-extrabold text-slate-900">
+              {completedProviderJobs.length} <span className="text-xs font-semibold text-slate-500">Jobs</span>
+            </p>
+            <p className="text-[11px] text-slate-400">Successfully fulfilled services</p>
+          </div>
+        </div>
+      </section>
 
       {/* Quick Action Navigation Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -71,8 +153,8 @@ export default async function DashboardPage() {
           <div className="h-10 w-10 rounded-lg bg-slate-200 flex items-center justify-center text-slate-700 mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
             <Award className="h-5 w-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700">My Offered Skills & Badges</h3>
-          <h4 className="text-xs text-slate-500 mt-0.5">View your listed skills and Monad achievements</h4>
+          <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700">My Offered Skills &amp; Badges</h3>
+          <p className="text-xs text-slate-500 mt-0.5">View your listed skills and Monad achievements</p>
         </Link>
 
         <Link
