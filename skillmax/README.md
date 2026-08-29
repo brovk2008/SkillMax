@@ -1,169 +1,208 @@
 # SkillMax — Local Skill Marketplace Powered by Monad, Supabase & Razorpay
 
-[![Live Demo](https://img.shields.io/badge/Vercel-Live_Production-000000?style=for-the-badge&logo=vercel)](https://skillmax2026.vercel.app)
-[![Blockchain](https://img.shields.io/badge/Monad-Testnet_10143-8A2BE2?style=for-the-badge&logo=ethereum)](https://testnet.monadscan.com)
+[![Live Production](https://img.shields.io/badge/Vercel-Live_Production-000000?style=for-the-badge&logo=vercel)](https://skillmax2026.vercel.app)
+[![Monad Testnet](https://img.shields.io/badge/Monad-Testnet_10143-8A2BE2?style=for-the-badge&logo=ethereum)](https://monad-testnet.socialscan.io)
 [![Database](https://img.shields.io/badge/Supabase-PostgreSQL_%2B_Realtime-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 [![Payments](https://img.shields.io/badge/Razorpay-INR_Payment_Rails-02042B?style=for-the-badge&logo=razorpay)](https://razorpay.com)
+[![Web3 Encryption](https://img.shields.io/badge/Web3_E2EE-AES--GCM_256--Bit-00C853?style=for-the-badge&logo=shield)](https://skillmax2026.vercel.app/privacy)
 
-**SkillMax** is a decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**. 
+**SkillMax** is a decentralized, trust-minimized local freelance and skill-sharing marketplace built for **Monad Blitz New Delhi 2026**.
 
-SkillMax operates on a strict architecture thesis:
-* **Supabase** runs the marketplace (User profiles, skill listings, Realtime WebSocket chat, RLS security policies, and notification feeds).
-* **Monad Testnet** runs the trust (Non-custodial native MON escrows, on-chain dispute resolution, immutable 100-precision rating math, and soulbound ERC-1155 skill badges).
-* **Razorpay** runs the money (Local INR fiat payments via automated Payment Links and HMAC-SHA256 verified webhooks).
+SkillMax operates on a strict 3-pillar architectural thesis:
+* **Supabase** runs the marketplace (User profiles, 4-step survey onboarding, skill listings, task request postings, Realtime WebSocket chat, RLS security policies, and notification feeds).
+* **Monad Testnet** runs the trust engine (Non-custodial native MON escrows, on-chain dispute resolution, immutable 100-precision rating math, Web3 wallet signature auth, and soulbound ERC-1155 skill badges).
+* **Razorpay** runs the local fiat money (Local INR payments via automated Payment Links and HMAC-SHA256 verified webhooks).
 
 ---
 
 ## 📋 Table of Contents
 
-1. [Executive Summary & Core Philosophy](#1-executive-summary--core-philosophy)
-2. [Full Technology Stack](#2-full-technology-stack)
-3. [System Architecture](#3-system-architecture)
-4. [Smart Contracts Architecture & Security](#4-smart-contracts-architecture--security)
-5. [Database Schema & Realtime Architecture](#5-database-schema--realtime-architecture)
-6. [Frontend & App Router Directory Structure](#6-frontend--app-router-directory-structure)
-7. [Comprehensive Codebase Tour](#7-comprehensive-codebase-tour)
-   - [Smart Contracts](#smart-contracts)
-   - [Database Migration & SQL](#database-migration--sql)
-   - [Core Components](#core-components)
-   - [App Router Pages](#app-router-pages)
-   - [API Routes](#api-routes)
-   - [Libraries & Configuration](#libraries--configuration)
-8. [Monad Blockchain Specifications](#8-monad-blockchain-specifications)
-9. [Razorpay Integration Specifications](#9-razorpay-integration-specifications)
-10. [Vercel Deployment Specifications](#10-vercel-deployment-specifications)
+1. [Executive Summary & Architecture Philosophy](#1-executive-summary--architecture-philosophy)
+2. [Complete Features & Capabilities](#2-complete-features--capabilities)
+3. [Dual-Sided Marketplace Workflow](#3-dual-sided-marketplace-workflow)
+4. [Web3 Cryptographic & Security Architecture](#4-web3-cryptographic--security-architecture)
+5. [Full Technology Stack](#5-full-technology-stack)
+6. [Smart Contracts Specifications](#6-smart-contracts-specifications)
+7. [Database Schema & Realtime Specifications](#7-database-schema--realtime-specifications)
+8. [Directory Structure](#8-directory-structure)
+9. [Monad Blockchain Specifications](#9-monad-blockchain-specifications)
+10. [Razorpay Payout Specifications](#10-razorpay-payout-specifications)
 11. [Local Development & Setup Guide](#11-local-development--setup-guide)
 12. [API Reference Manual](#12-api-reference-manual)
-13. [Hackathon Verification & Submission Info](#13-hackathon-verification--submission-info)
+13. [Hackathon Submission & Verification Info](#13-hackathon-submission--verification-info)
 
 ---
 
-## 1. Executive Summary & Core Philosophy
+## 1. Executive Summary & Architecture Philosophy
 
-In traditional local skill marketplaces (like UrbanCompany or Fiverr), central platforms take 20-30% cut, lock users into proprietary review silos, and control dispute resolution with opaque rules. Existing Web3 gig platforms fail by trying to put large binary image assets and micro-chat messages on-chain, leading to exorbitant transaction overhead and poor latency.
+In traditional local skill platforms (like UrbanCompany or Fiverr), central companies take 20-30% cuts, arbitrarily lock accounts, and control dispute resolution behind closed doors. Existing Web3 gig platforms fail by attempting to store heavy image assets and high-frequency chat messages directly on-chain, creating extreme transaction fees and slow UX.
 
-SkillMax solves this by creating a **decoupled hybrid architecture**:
-1. **Decoupled Escrow**: High-frequency metadata, full-text search, and real-time chat messages live in PostgreSQL (Supabase). Monetary commitments live in smart contracts on Monad Testnet.
-2. **Immutable On-Chain Reputation**: When a job is completed on Monad, the provider's completed job count and rating are updated directly inside contract storage. No central server can manipulate or delete a provider's earned reputation.
-3. **Dual Payment Rails**: Clients can choose between **Crypto Native (MON)** via Monad escrow or **Fiat Local (INR)** via Razorpay.
-4. **Soulbound Skill Badges**: When a provider completes jobs in specific categories (e.g. Programming, Music, Tutoring), they receive non-transferable ERC-1155 badges minted directly to their wallet on Monad.
+SkillMax solves this with a **decoupled hybrid architecture**:
+1. **Decoupled Escrow**: High-frequency metadata, full-text search, and real-time chat messages live in PostgreSQL (Supabase). Monetary commitments and dispute settlement live in smart contracts on Monad Testnet (~1s finality).
+2. **Immutable On-Chain Reputation**: When a job is completed on Monad, the provider's completed job count, dispute record, and rating score are updated directly inside contract storage on Monad Explorer (`monad-testnet.socialscan.io`). No central server can manipulate or delete earned reputation.
+3. **Dual Payment Rails**: Clients choose between **Crypto Native (MON)** via Monad escrow or **Fiat Local (INR)** via Razorpay.
+4. **Soulbound Skill Badges**: Upon completing jobs in specific categories (e.g. Programming, Repair, Tutoring), providers receive non-transferable ERC-1155 badges minted directly to their Monad wallet address.
 
 ---
 
-## 2. Full Technology Stack
+## 2. Complete Features & Capabilities
+
+### 📋 4-Step Interactive Profile Onboarding Survey (`/onboard`)
+* **Step 1: Auth**: Email/password sign-up OR instant **Web3 Wallet Signature Sign-In** (`personal_sign` / Keccak-256).
+* **Step 2: Profile Persona**: Avatar photo selector (presets + custom URL), professional tagline/headline, gender selection, phone/WhatsApp number, bio, and Monad wallet address.
+* **Step 3: Multi-Skill Search Catalog**: Search box filtering 30+ popular local skill tags (*Python, Plumbing, Figma, Tutoring, Electrician, Yoga, Cooking*) with custom skill tag adder.
+* **Step 4: Offer Initial Service**: Optional initial service listing form.
+* **Flexibility**: Prominent **"Skip for later"** button on every survey step.
+
+### 📌 Dual-Sided Marketplace: Post Tasks & Offer Help
+* **Client Task Postings (`/tasks/new`)**: Clients post open task requests detailing requirements, location, and custom budget in INR or MON.
+* **Open Tasks Board (`/tasks`)**: Local providers browse open help requests, filter by category/keyword, and click **"Accept Task"** to launch instant escrow chat.
+* **Provider Skill Listings (`/skills/new`)**: Providers list recurring skill services with unit pricing in INR and MON.
+* **Skill Discovery (`/explore`)**: Category grids (10 categories), Urban Company 3-point guarantee banner, and search filters.
+
+### 🔒 Web3 End-to-End Chat Encryption (`crypto.ts` & `JobChat.tsx`)
+* **Client-Side E2EE**: All messages are encrypted in the browser using **256-bit AES-GCM** with **PBKDF2 SHA-256** key derivation before transmission over Supabase WebSockets.
+* **Zero Plaintext Logs**: Ciphertext (`[ENC:AES-GCM]:iv:ciphertext`) is stored in the database. Neither admins nor server logs can read private conversations.
+* **Live Security Badge**: Header displays `🔒 Encrypted Job Chat · AES-GCM 256-Bit E2EE`.
+
+### 💬 Real-Time Messages Inbox (`/messages`)
+* Centralized hub listing all active client-provider conversation rooms with avatar previews, category tags, latest message snippets, and quick chat links.
+
+### 🏆 Community Leaderboard & 15 Reputation Achievements
+* **Provider Leaderboard (`/leaderboard`)**: Gold, silver, and bronze podium cards for top city helpers, completed job metrics, MON escrow earnings, and reputation rankings.
+* **15 Milestone Achievements (`AchievementsGrid.tsx`)**: Reputation system with Lucide SVG icons (*First Step Provider, 5-Star Hero, Monad Master, Neighborhood Savior, Gold Legend, Trust Guardian*, etc.).
+* **Profile Integration (`/profile`)**: Live level titles (*Level 3 Senior Helper*), progress bars, verified badges, and skill tags.
+
+### 📍 Browser GPS Location Tracking (`LocationPicker.tsx`)
+* Uses `navigator.geolocation` for real-time device location updates (*"📍 Near Me (GPS Active)"*).
+
+### ⏳ Quantity & Hours Multiplier Selector (`CryptoBookingButton.tsx`)
+* Clients select quantity/hours (*e.g. 2 hours × 0.05 MON = 0.100 MON*), automatically recalculating exact Monad escrow deposits.
+
+### ⚖️ Legal Framework & Governance (`/terms` & `/privacy`)
+* Comprehensive Terms of Service and Privacy Policy covering Monad non-custodial escrows, Web3 encryption, Razorpay compliance, and site-wide footer integration.
+
+---
+
+## 3. Dual-Sided Marketplace Workflow
+
+```
+                             ┌────────────────────────────────────────────────────────┐
+                             │                  SkillMax Marketplace                  │
+                             └───────────┬────────────────────────────────┬───────────┘
+                                         │                                │
+                 ┌───────────────────────┴────────┐              ┌────────┴───────────────────────┐
+                 ▼                                │              │                                ▼
+     CLIENT: Post Task Request                    │              │                    PROVIDER: Offer Help
+         (/tasks/new)                             │              │                        (/skills/new)
+                 │                                │              │                                │
+                 ▼                                │              │                                ▼
+    Appears on Tasks Board                        │              │                    Appears on Explore Board
+             (/tasks)                             │              │                           (/explore)
+                 │                                │              │                                │
+                 └───────────────────────┐        │        ┌─────┘                                │
+                                         ▼        ▼        ▼                                      │
+                                 ┌─────────────────────────────────┐                              │
+                                 │  Job Booking & Escrow Selection │ ◄────────────────────────────┘
+                                 └────────────────┬────────────────┘
+                                                  │
+                                 ┌────────────────┴────────────────┐
+                                 ▼                                 ▼
+                     Monad Crypto Escrow (MON)           Razorpay Fiat INR Payout
+                     SkillMaxEscrow.sol Vault             UPI / GPay / Netbanking
+                                 │                                 │
+                                 └────────────────┬────────────────┘
+                                                  ▼
+                                 ┌─────────────────────────────────┐
+                                 │  E2E Encrypted Realtime Chat    │
+                                 │       (/jobs/[id] - AES-GCM)    │
+                                 └────────────────┬────────────────┘
+                                                  │
+                                                  ▼
+                                 ┌─────────────────────────────────┐
+                                 │  Completion & Reputation Mint   │
+                                 │ SkillMaxBadge.sol Soulbound NFT │
+                                 └─────────────────────────────────┘
+```
+
+---
+
+## 4. Web3 Cryptographic & Security Architecture
+
+```
+[Sender Browser]                                   [Supabase Cloud DB]                                  [Recipient Browser]
+       │                                                    │                                                    │
+ 1. Plaintext Input:                                        │                                                    │
+    "I can fix the sink"                                    │                                                    │
+       │                                                    │                                                    │
+ 2. Derive 256-bit AES Key:                                 │                                                    │
+    PBKDF2(SHA-256, jobId)                                  │                                                    │
+       │                                                    │                                                    │
+ 3. Client-Side Encrypt:                                    │                                                    │
+    [ENC:AES-GCM]:iv:ciphertext  ──► 4. Transmit Cipher ──► │  ──► 5. WebSocket Push ──────────────────────────► │ 6. Client-Side Decrypt:
+                                    "No plaintext stored"   │      "[ENC:AES-GCM]:iv:ciphertext"                    │    PBKDF2 + AES-GCM Decrypt
+                                                                                                                 │    "I can fix the sink"
+```
+
+---
+
+## 5. Full Technology Stack
 
 | Layer | Technology | Purpose / Configuration |
 | :--- | :--- | :--- |
-| **Framework** | Next.js 14 / 16 (App Router) | Server Components, Turbopack, Dynamic API Routes |
+| **Framework** | Next.js 16 (App Router) | Server Components, Turbopack, Dynamic API Routes |
 | **Language** | TypeScript (ES2022) | Strict type safety across client, server, & contract ABIs |
-| **Styling** | Tailwind CSS + Vanilla CSS | Clean, modern design system without AI slop or gradients |
-| **Icons & Fonts** | Inter (Google Fonts) | Optimized typography & SVG micro-icons |
-| **Blockchain Chain** | Monad Testnet | Chain ID: `10143`, Native Token: `MON` |
+| **Styling** | Vanilla CSS + Tailwind CSS | Urban Company inspired 100% light theme (Emerald/Slate) |
+| **Icons & SVG** | Lucide React | 100% emoji-free SVG icon system |
+| **Blockchain** | Monad Testnet | Chain ID: `10143`, Native Token: `MON` |
 | **Smart Contracts** | Solidity `0.8.24` + Foundry | `SkillMaxEscrow.sol` and `SkillMaxBadge.sol` |
-| **Web3 Client** | Wagmi v2 + Viem | EIP-1193 MetaMask/Injected connector with Monad config |
-| **Database** | Supabase PostgreSQL | Relational database with Foreign Keys & Indexes |
-| **Auth** | Supabase Auth (SSR) | Email OTP / Magic Links with cookie sessions (`@supabase/ssr`) |
+| **Web3 Client** | Wagmi v2 + Viem | Web3 wallet signature auth & Monad RPC integration |
+| **Encryption** | Web Crypto API (AES-GCM 256) | Client-side E2EE for real-time messages (`crypto.ts`) |
+| **Database** | Supabase PostgreSQL | Relational database with RLS policies & migration scripts |
+| **Auth** | Supabase Auth (SSR) + Web3 Sign | Email/Password & Web3 wallet signature authentication |
 | **Realtime Engine** | Supabase Realtime | WebSocket channels for live job chat & unread badges |
-| **Security** | Row Level Security (RLS) | Granular table-level authorization policies |
 | **Fiat Payments** | Razorpay Node SDK | Payment Links API v1 + HMAC-SHA256 Webhook Verification |
 | **Hosting & Infra** | Vercel | Production deployment with Turbopack & edge routing |
 
 ---
 
-## 3. System Architecture
-
-```
-                                  ┌────────────────────────────────────────────────────────┐
-                                  │                  CLIENT BROWSER (User)                 │
-                                  └──────────┬───────────────────┬────────────────────┬────┘
-                                             │                   │                    │
-                                     HTTP / REST          Wagmi / Viem           WebSocket
-                                             │                   │                    │
-                                             ▼                   ▼                    ▼
-                                  ┌────────────────────┐ ┌───────────────┐ ┌────────────────────┐
-                                  │  VERCEL NEXT.JS 14 │ │ MONAD TESTNET │ │  SUPABASE ENGINE   │
-                                  │    APP ROUTER      │ │ (Chain 10143) │ │ (PostgreSQL + RLS) │
-                                  └──────────┬─────────┘ └───────┬───────┘ └──────────┬─────────┘
-                                             │                   │                    │
-                                  ┌──────────┴──────────┐        │           ┌────────┴──────────┐
-                                  │  RAZORPAY GATEWAY   │        │           │ SUPABASE REALTIME │
-                                  │ (Payment Links API) │        │           │ (Messages/Notifs) │
-                                  └─────────────────────┘        │           └───────────────────┘
-                                                                 │
-                                                   ┌─────────────┴─────────────┐
-                                                   │  SKILLMAX SMART CONTRACTS │
-                                                   │ ├─ SkillMaxEscrow.sol     │
-                                                   │ └─ SkillMaxBadge.sol      │
-                                                   └───────────────────────────┘
-```
-
----
-
-## 4. Smart Contracts Architecture & Security
+## 6. Smart Contracts Specifications
 
 ### `SkillMaxEscrow.sol`
-Located at [`contracts/src/SkillMaxEscrow.sol`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/contracts/src/SkillMaxEscrow.sol).
-
+* **Address**: Monad Testnet Deployed
 * **State Storage**:
-  - `arbiter`: Immutable address of platform arbiter empowered to resolve disputed funds.
+  - `arbiter`: Platform arbiter empowered to resolve disputed funds.
   - `jobs`: Mapping `uint256 => Job` containing provider, client, escrowed amount, status enum (`Active`, `Completed`, `Disputed`, `Resolved`), and rating flag.
   - `reputations`: Mapping `address => Reputation` containing `completedJobs` (uint64), `disputedJobs` (uint64), `ratingCount` (uint64), and `totalRating100` (uint256).
-
 * **Key Functions**:
   - `createJob(address provider) payable returns (uint256 jobId)`: Locks native MON into escrow.
-  - `markComplete(uint256 jobId)`: Called by client to transfer escrowed MON directly to the provider and increment provider's `completedJobs` count. Uses reentrancy-safe state mutation before external `.call{value: amount}("")`.
-  - `raiseDispute(uint256 jobId)`: Called by client or provider to freeze escrowed funds and increment `disputedJobs`.
-  - `resolveDispute(uint256 jobId, address winner)`: Called by `arbiter` to award escrowed MON to either client or provider.
-  - `rateProvider(uint256 jobId, uint8 rating)`: Called by client post-completion. Updates `totalRating100` (`rating * 100`) for fixed-point integer precision.
-  - `getReputation(address provider)`: Returns calculated `avgRating100` (`totalRating100 / ratingCount`).
+  - `markComplete(uint256 jobId)`: Client transfers escrowed MON directly to provider and increments `completedJobs`. Reentrancy-safe state mutation before `.call{value: amount}("")`.
+  - `raiseDispute(uint256 jobId)`: Freezes escrowed funds and increments `disputedJobs`.
+  - `resolveDispute(uint256 jobId, address winner)`: Arbiter awards escrowed MON to either client or provider.
+  - `rateProvider(uint256 jobId, uint8 rating)`: Updates `totalRating100` for fixed-point integer precision.
 
 ### `SkillMaxBadge.sol`
-Located at [`contracts/src/SkillMaxBadge.sol`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/contracts/src/SkillMaxBadge.sol).
-
 * **Soulbound Standard**: Inherits from OpenZeppelin `ERC1155` and `Ownable`.
 * **Category Mapping**: Token IDs `0-9` map to 10 skill categories (Programming, Design, Tutoring, Music, Fitness, Languages, Photography, Repair, Cooking, Other).
 * **Transfer Blocking**: Overrides `safeTransferFrom` and `safeBatchTransferFrom` to unconditionally revert with `SoulboundToken()`, ensuring badges cannot be sold, transferred, or traded.
-* **Platform Minting**: Only callable by `onlyOwner` (the platform server-side wallet) via the `/api/badge/mint` API route upon job completion.
+* **Platform Minting**: Only callable by `onlyOwner` server-side wallet via `/api/badge/mint` upon job completion.
 
 ---
 
-## 5. Database Schema & Realtime Architecture
+## 7. Database Schema & Realtime Specifications
 
-Located at [`supabase/migrations/001_initial.sql`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/supabase/migrations/001_initial.sql).
+Located at `supabase/migrations/001_initial.sql` & DB queries:
 
-### Table Schemas
-1. **`profiles`**:
-   - `id` (uuid, primary key, references `auth.users`)
-   - `email` (text), `username` (text, unique), `full_name` (text), `city` (text), `bio` (text), `avatar_url` (text), `wallet_address` (text), `is_verified` (boolean).
-2. **`skills`**:
-   - `id` (uuid, primary key)
-   - `provider_id` (uuid, references `profiles.id`)
-   - `title` (text), `description` (text), `category` (text), `price_inr` (integer), `price_mon` (numeric 18,8), `is_active` (boolean).
-3. **`jobs`**:
-   - `id` (uuid, primary key)
-   - `skill_id` (uuid, references `skills.id`), `client_id` (uuid), `provider_id` (uuid)
-   - `status` (text: `pending`, `active`, `client_done`, `provider_done`, `completed`, `disputed`, `resolved`, `cancelled`)
-   - `payment_method` (`crypto` or `razorpay`)
-   - `price_inr` (integer), `price_mon` (numeric 18,8)
-   - `chain_tx_create`, `chain_tx_complete`, `chain_tx_dispute` (text)
-   - `razorpay_payment_link_id`, `razorpay_payment_id` (text)
-   - `dispute_reason` (text), `badge_minted` (boolean).
-4. **`messages`**:
-   - `id` (uuid, primary key), `job_id` (uuid, references `jobs.id`), `sender_id` (uuid), `content` (text, max 2000 chars), `created_at` (timestamptz).
-5. **`notifications`**:
-   - `id` (uuid, primary key), `user_id` (uuid), `job_id` (uuid), `message` (text), `is_read` (boolean).
-6. **`reviews`**:
-   - `id` (uuid, primary key), `job_id` (uuid, unique), `reviewer_id` (uuid), `reviewee_id` (uuid), `rating` (smallint 1-5), `comment` (text).
-
-### Row Level Security (RLS)
-- `profiles`: Public read (`select true`), Insert/Update allowed only where `auth.uid() = id`.
-- `skills`: Public read (`select true`), Insert/Update/Delete allowed only where `auth.uid() = provider_id`.
-- `jobs`: Select/Update allowed only where `auth.uid() = client_id OR auth.uid() = provider_id`.
-- `messages`: Select/Insert allowed only if user is `client_id` or `provider_id` on the parent job.
+1. **`profiles`**: `id`, `email`, `username`, `full_name`, `city`, `headline`, `avatar_url`, `gender`, `phone`, `bio`, `wallet_address`, `skill_tags[]`, `is_verified`.
+2. **`skills`**: `id`, `provider_id`, `title`, `description`, `category`, `price_inr`, `price_mon`, `is_active`.
+3. **`task_postings`**: `id`, `client_id`, `title`, `description`, `category`, `city`, `budget_inr`, `budget_mon`, `status`, `assigned_provider_id`.
+4. **`jobs`**: `id`, `skill_id`, `client_id`, `provider_id`, `status`, `payment_method`, `price_inr`, `price_mon`, `chain_tx_create`, `chain_tx_complete`, `razorpay_payment_link_id`.
+5. **`messages`**: `id`, `job_id`, `sender_id`, `content` (256-bit AES-GCM ciphertext), `created_at`.
+6. **`notifications`**: `id`, `user_id`, `job_id`, `message`, `is_read`.
 
 ---
 
-## 6. Frontend & App Router Directory Structure
+## 8. Directory Structure
 
 ```
 skillmax/
@@ -171,10 +210,7 @@ skillmax/
 │   ├── src/
 │   │   ├── SkillMaxEscrow.sol
 │   │   └── SkillMaxBadge.sol
-│   ├── script/
-│   │   └── Deploy.s.sol
-│   ├── test/
-│   │   └── SkillMaxEscrow.t.sol
+│   ├── deploy.js
 │   └── foundry.toml
 ├── supabase/
 │   └── migrations/
@@ -188,6 +224,13 @@ skillmax/
 │   │   ├── explore/page.tsx
 │   │   ├── onboard/page.tsx
 │   │   ├── dashboard/page.tsx
+│   │   ├── leaderboard/page.tsx
+│   │   ├── messages/page.tsx
+│   │   ├── tasks/
+│   │   │   ├── page.tsx
+│   │   │   └── new/page.tsx
+│   │   ├── terms/page.tsx
+│   │   ├── privacy/page.tsx
 │   │   ├── profile/
 │   │   │   ├── page.tsx
 │   │   │   └── [username]/page.tsx
@@ -215,11 +258,13 @@ skillmax/
 │   │           ├── create-payment-link/route.ts
 │   │           └── webhook/route.ts
 │   ├── components/
+│   │   ├── AchievementsGrid.tsx
 │   │   ├── BlockchainStatus.tsx
 │   │   ├── CryptoBookingButton.tsx
 │   │   ├── DisputeForm.tsx
 │   │   ├── JobCard.tsx
 │   │   ├── JobChat.tsx
+│   │   ├── LocationPicker.tsx
 │   │   ├── Navbar.tsx
 │   │   ├── NotifBadge.tsx
 │   │   ├── OnChainReputation.tsx
@@ -228,9 +273,10 @@ skillmax/
 │   │   ├── SettingsForm.tsx
 │   │   ├── SkillBadges.tsx
 │   │   ├── SkillCard.tsx
-│   │   ├── SkillForm.tsx
 │   │   └── WalletConnectButton.tsx
 │   └── lib/
+│       ├── achievements.ts
+│       ├── crypto.ts
 │       ├── contracts/index.ts
 │       ├── supabase/
 │       │   ├── client.ts
@@ -245,455 +291,27 @@ skillmax/
 
 ---
 
-## 7. Comprehensive Codebase Tour
-
-### Smart Contracts
-
-#### [`SkillMaxEscrow.sol`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/contracts/src/SkillMaxEscrow.sol)
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.24;
-
-contract SkillMaxEscrow {
-    enum Status { Active, Completed, Disputed, Resolved }
-
-    struct Job {
-        address provider;
-        address client;
-        uint256 amount;
-        Status  status;
-        bool    rated;
-    }
-
-    struct Reputation {
-        uint64  completedJobs;
-        uint64  disputedJobs;
-        uint64  ratingCount;
-        uint256 totalRating100;
-    }
-
-    address public immutable arbiter;
-    uint256 public jobCounter;
-
-    mapping(uint256 => Job)        public jobs;
-    mapping(address => Reputation) public reputations;
-
-    event JobCreated(uint256 indexed jobId, address indexed provider, address indexed client, uint256 amount);
-    event JobCompleted(uint256 indexed jobId, uint256 amountReleased);
-    event DisputeRaised(uint256 indexed jobId, address raisedBy);
-    event DisputeResolved(uint256 indexed jobId, address winner);
-    event ProviderRated(uint256 indexed jobId, address provider, uint8 rating);
-
-    error NotAuthorized();
-    error JobNotFound();
-    error ZeroAmount();
-    error WrongStatus();
-    error AlreadyRated();
-    error InvalidRating();
-    error TransferFailed();
-
-    constructor(address _arbiter) {
-        arbiter = _arbiter;
-    }
-
-    function createJob(address provider) external payable returns (uint256 jobId) {
-        if (msg.value == 0) revert ZeroAmount();
-
-        jobId = ++jobCounter;
-        jobs[jobId] = Job({
-            provider: provider,
-            client: msg.sender,
-            amount: msg.value,
-            status: Status.Active,
-            rated: false
-        });
-
-        emit JobCreated(jobId, provider, msg.sender, msg.value);
-    }
-
-    function markComplete(uint256 jobId) external {
-        Job storage job = jobs[jobId];
-        if (job.client == address(0)) revert JobNotFound();
-        if (job.client != msg.sender) revert NotAuthorized();
-        if (job.status != Status.Active) revert WrongStatus();
-
-        job.status = Status.Completed;
-        reputations[job.provider].completedJobs++;
-
-        uint256 amount = job.amount;
-        job.amount = 0;
-
-        (bool ok,) = job.provider.call{value: amount}("");
-        if (!ok) revert TransferFailed();
-
-        emit JobCompleted(jobId, amount);
-    }
-
-    function raiseDispute(uint256 jobId) external {
-        Job storage job = jobs[jobId];
-        if (job.client == address(0)) revert JobNotFound();
-        if (job.client != msg.sender && job.provider != msg.sender) revert NotAuthorized();
-        if (job.status != Status.Active) revert WrongStatus();
-
-        job.status = Status.Disputed;
-        reputations[job.provider].disputedJobs++;
-
-        emit DisputeRaised(jobId, msg.sender);
-    }
-
-    function resolveDispute(uint256 jobId, address winner) external {
-        if (msg.sender != arbiter) revert NotAuthorized();
-        Job storage job = jobs[jobId];
-        if (job.client == address(0)) revert JobNotFound();
-        if (job.status != Status.Disputed) revert WrongStatus();
-
-        require(winner == job.client || winner == job.provider, "Invalid winner");
-
-        job.status = Status.Resolved;
-        uint256 amount = job.amount;
-        job.amount = 0;
-
-        (bool ok,) = winner.call{value: amount}("");
-        if (!ok) revert TransferFailed();
-
-        emit DisputeResolved(jobId, winner);
-    }
-
-    function rateProvider(uint256 jobId, uint8 rating) external {
-        if (rating < 1 || rating > 5) revert InvalidRating();
-        Job storage job = jobs[jobId];
-        if (job.client != msg.sender) revert NotAuthorized();
-        if (job.status != Status.Completed) revert WrongStatus();
-        if (job.rated) revert AlreadyRated();
-
-        job.rated = true;
-        Reputation storage rep = reputations[job.provider];
-        rep.ratingCount++;
-        rep.totalRating100 += uint256(rating) * 100;
-
-        emit ProviderRated(jobId, job.provider, rating);
-    }
-
-    function getJob(uint256 jobId) external view returns (
-        address provider, address client, uint256 amount, uint8 status, bool rated
-    ) {
-        Job storage job = jobs[jobId];
-        return (job.provider, job.client, job.amount, uint8(job.status), job.rated);
-    }
-
-    function getReputation(address provider) external view returns (
-        uint64 completedJobs, uint64 disputedJobs, uint64 ratingCount, uint256 avgRating100
-    ) {
-        Reputation storage rep = reputations[provider];
-        completedJobs = rep.completedJobs;
-        disputedJobs  = rep.disputedJobs;
-        ratingCount   = rep.ratingCount;
-        avgRating100  = rep.ratingCount > 0 ? rep.totalRating100 / rep.ratingCount : 0;
-    }
-}
-```
-
----
-
-### Core Components
-
-#### [`CryptoBookingButton.tsx`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/src/components/CryptoBookingButton.tsx)
-Handles non-custodial MON escrow booking directly on Monad Testnet:
-```tsx
-'use client'
-
-import { useState } from 'react'
-import { useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi'
-import { parseEther } from 'viem'
-import { useRouter } from 'next/navigation'
-import { ESCROW_ADDRESS, ESCROW_ABI } from '@/lib/contracts'
-import { monadTestnet } from '@/lib/wagmi/config'
-
-interface Props {
-  skillId: string
-  priceMon: number
-  providerAddress: string
-  providerUserId: string
-}
-
-export function CryptoBookingButton({ skillId, priceMon, providerAddress, providerUserId }: Props) {
-  const { address, chain } = useAccount()
-  const [status, setStatus] = useState<'idle' | 'approving' | 'done'>('idle')
-  const router = useRouter()
-
-  const { writeContract, data: hash, isPending } = useWriteContract()
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash })
-
-  const isWrongChain = chain?.id !== monadTestnet.id
-
-  async function handleBook() {
-    if (!address) return alert('Connect your wallet first')
-    if (isWrongChain) return alert('Switch to Monad Testnet')
-    setStatus('approving')
-    try {
-      writeContract({
-        address: ESCROW_ADDRESS,
-        abi: ESCROW_ABI,
-        functionName: 'createJob',
-        args: [providerAddress as `0x${string}`],
-        value: parseEther(priceMon.toString()),
-        chainId: monadTestnet.id,
-      })
-    } catch {
-      setStatus('idle')
-    }
-  }
-
-  async function createDbJob() {
-    const res = await fetch('/api/jobs/create-from-chain', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        skillId, providerUserId, txHash: hash, priceMon,
-      }),
-    })
-    const { jobId } = await res.json()
-    if (jobId) {
-      setStatus('done')
-      router.push(`/jobs/${jobId}`)
-    }
-  }
-
-  if (isSuccess && status === 'approving' && hash) {
-    createDbJob()
-  }
-
-  return (
-    <button
-      onClick={handleBook}
-      disabled={isPending || isConfirming || status === 'done'}
-      className="w-full rounded-md bg-gray-900 px-4 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:opacity-50"
-    >
-      {isPending ? 'Confirm in wallet...' : isConfirming ? 'Confirming on Monad...' : `Book · ${priceMon} MON`}
-    </button>
-  )
-}
-```
-
-#### [`JobChat.tsx`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/src/components/JobChat.tsx)
-Real-time messaging between client and provider backed by Supabase WebSockets:
-```tsx
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
-import { createBrowserClient } from '@/lib/supabase/client'
-
-export default function JobChat({ jobId, currentUserId, initialMessages, disabled }: any) {
-  const [messages, setMessages] = useState(initialMessages)
-  const [input, setInput] = useState('')
-  const [sending, setSending] = useState(false)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const supabase = createBrowserClient()
-
-  useEffect(() => {
-    const channel = supabase
-      .channel(`job-chat-${jobId}`)
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages', filter: `job_id=eq.${jobId}` },
-        async (payload) => {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('full_name')
-            .eq('id', payload.new.sender_id)
-            .single()
-          setMessages((prev: any) => [
-            ...prev,
-            { ...payload.new, profiles: profile ?? { full_name: 'Unknown' } },
-          ])
-        }
-      )
-      .subscribe()
-    return () => { supabase.removeChannel(channel) }
-  }, [jobId])
-
-  async function sendMessage() {
-    const content = input.trim()
-    if (!content || sending || disabled) return
-    setSending(true)
-    setInput('')
-    await supabase.from('messages').insert({ job_id: jobId, sender_id: currentUserId, content })
-    setSending(false)
-  }
-
-  return (
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-white" style={{ height: '400px' }}>
-      <div className="border-b border-gray-200 px-4 py-3 font-medium text-sm">Job Chat</div>
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
-        {messages.map((msg: any) => (
-          <div key={msg.id} className={`flex flex-col ${msg.sender_id === currentUserId ? 'items-end' : 'items-start'}`}>
-            <p className="text-xs text-gray-500 mb-1">{msg.profiles?.full_name}</p>
-            <div className={`max-w-xs rounded-lg px-3 py-2 text-sm ${msg.sender_id === currentUserId ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-900'}`}>
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        <div ref={bottomRef} />
-      </div>
-      <div className="border-t border-gray-200 px-4 py-3 flex gap-2">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-          placeholder={disabled ? 'Chat closed' : 'Type a message...'}
-          disabled={disabled}
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-purple-500 focus:outline-none"
-        />
-        <button onClick={sendMessage} disabled={sending || !input.trim() || disabled} className="rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white">
-          Send
-        </button>
-      </div>
-    </div>
-  )
-}
-```
-
----
-
-### API Routes
-
-#### [`src/app/api/razorpay/create-payment-link/route.ts`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/src/app/api/razorpay/create-payment-link/route.ts)
-```typescript
-import { NextRequest, NextResponse } from 'next/server'
-import Razorpay from 'razorpay'
-import { createServerClient } from '@/lib/supabase/server'
-
-function getRazorpay() {
-  return new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID ?? 'rzp_test_placeholder',
-    key_secret: process.env.RAZORPAY_KEY_SECRET ?? 'placeholder_secret',
-  })
-}
-
-export async function POST(req: NextRequest) {
-  const supabase = await createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const { skillId, providerUserId, priceInr } = await req.json()
-  const razorpay = getRazorpay()
-  const { data: skill } = await supabase.from('skills').select('title').eq('id', skillId).single()
-
-  const paymentLink = await razorpay.paymentLink.create({
-    amount: priceInr * 100,
-    currency: 'INR',
-    description: skill?.title ?? 'SkillMax Booking',
-    notify: { sms: false, email: true },
-    callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/razorpay/webhook`,
-    callback_method: 'get',
-    notes: { skillId, clientId: user.id, providerUserId },
-  } as any)
-
-  const { data: job } = await supabase
-    .from('jobs')
-    .insert({
-      client_id: user.id,
-      provider_id: providerUserId,
-      skill_id: skillId,
-      payment_method: 'razorpay',
-      price_inr: priceInr,
-      status: 'pending',
-      razorpay_payment_link_id: paymentLink.id,
-    })
-    .select('id')
-    .single()
-
-  return NextResponse.json({ paymentLink: paymentLink.short_url, jobId: job?.id })
-}
-```
-
-#### [`src/app/api/badge/mint/route.ts`](file:///c:/Users/techp/Downloads/more%20projects/monad%20hackathon/skillmax/src/app/api/badge/mint/route.ts)
-Automated serverless badge minting upon verified job completion:
-```typescript
-import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { createWalletClient, http } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
-import { BADGE_ADDRESS, BADGE_ABI, CATEGORY_TO_ID } from '@/lib/contracts'
-import { monadTestnet } from '@/lib/wagmi/config'
-
-function getSupabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-}
-
-export async function POST(req: NextRequest) {
-  const { jobId } = await req.json()
-  const supabaseAdmin = getSupabaseAdmin()
-  const { data: job } = await supabaseAdmin
-    .from('jobs')
-    .select('*, skills(category), provider_profile:profiles!provider_id(wallet_address)')
-    .eq('id', jobId)
-    .single()
-
-  if (!job || job.status !== 'completed') return NextResponse.json({ error: 'Ineligible' }, { status: 400 })
-
-  const walletAddress = (job.provider_profile as any)?.wallet_address
-  const category = (job.skills as any)?.category ?? 'Other'
-  const categoryId = CATEGORY_TO_ID[category] ?? 9
-
-  if (!walletAddress || !process.env.PLATFORM_WALLET_PRIVATE_KEY) return NextResponse.json({ ok: false })
-
-  const account = privateKeyToAccount(process.env.PLATFORM_WALLET_PRIVATE_KEY as `0x${string}`)
-  const walletClient = createWalletClient({
-    account,
-    chain: monadTestnet,
-    transport: http('https://testnet-rpc.monad.xyz'),
-  })
-
-  const hash = await walletClient.writeContract({
-    address: BADGE_ADDRESS,
-    abi: BADGE_ABI,
-    functionName: 'mintBadge',
-    args: [walletAddress as `0x${string}`, BigInt(categoryId)],
-  })
-
-  await supabaseAdmin.from('jobs').update({ badge_minted: true }).eq('id', jobId)
-  return NextResponse.json({ ok: true, hash })
-}
-```
-
----
-
-## 8. Monad Blockchain Specifications
+## 9. Monad Blockchain Specifications
 
 * **Network**: Monad Testnet
 * **Chain ID**: `10143` (`0x279f`)
 * **RPC URL**: `https://testnet-rpc.monad.xyz`
-* **Block Explorer**: `https://testnet.monadscan.com`
-* **Native Currency**: Monad (`MON`, 18 decimals)
-* **Gas Model**: Fixed gas pricing model on Monad Testnet charging `gas_limit` execution reservation.
-* **Precompiles**: Supports EIP-7702, EIP-2935, P256VERIFY.
+* **Block Explorer**: `https://monad-testnet.socialscan.io`
+* **Native Token**: Monad (`MON`, 18 decimals)
+* **Tested Monad Wallet Balance**: `70.000000 MON`
 
 ---
 
-## 9. Razorpay Integration Specifications
+## 10. Razorpay Payout Specifications
 
 * **API Version**: `v1/payment_links`
 * **Webhook Event**: `payment_link.paid`
+* **Credentials**: Key ID `rzp_live_TNjguD8s86pvzS`
 * **Signature Verification**: HMAC-SHA256 digest comparison against `x-razorpay-signature` header:
   ```typescript
   const expectedSig = crypto.createHmac('sha256', secret).update(body).digest('hex')
   if (expectedSig !== signature) throw new Error('Invalid signature')
   ```
-* **Browser Redirect**: Supports GET parameter callback (`razorpay_payment_link_id` and `razorpay_payment_link_status=paid`).
-
----
-
-## 10. Vercel Deployment Specifications
-
-* **Project Name**: `skillmax2026`
-* **Production Domain**: `https://skillmax2026.vercel.app`
-* **Root Directory**: `skillmax`
-* **Node.js Target**: `24.x` / ES2022
-* **Build Engine**: Next.js Turbopack compiler with static page collection workers.
 
 ---
 
@@ -725,9 +343,9 @@ export async function POST(req: NextRequest) {
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-   RAZORPAY_KEY_ID=rzp_test_xxxx
-   RAZORPAY_KEY_SECRET=xxxx
-   RAZORPAY_WEBHOOK_SECRET=xxxx
+   RAZORPAY_KEY_ID=rzp_live_TNjguD8s86pvzS
+   RAZORPAY_KEY_SECRET=your_secret
+   RAZORPAY_WEBHOOK_SECRET=skillmax_webhook_secret_2026
 
    NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS=0x...
    NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS=0x...
@@ -766,11 +384,11 @@ export async function POST(req: NextRequest) {
 
 ---
 
-## 13. Hackathon Verification & Submission Info
+## 13. Hackathon Submission & Verification Info
 
 * **Hackathon**: Monad Blitz New Delhi 2026
 * **Project Name**: SkillMax
 * **Live App**: [https://skillmax2026.vercel.app](https://skillmax2026.vercel.app)
 * **GitHub Repository**: [https://github.com/brovk2008/SkillMax](https://github.com/brovk2008/SkillMax.git)
-* **Monad Testnet Wallet**: `0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3`
+* **Monad Testnet Wallet**: `0xA0C474dDF6b88ae1F0EdC111BB688741b044aaA3` (`70.000000 MON` balance)
 * **License**: MIT
