@@ -41,7 +41,7 @@ SkillMax is governed by a **Public Social Impact Protocol**:
 15. [Local Development, Environment Setup & Build Guide](#15-local-development-environment-setup--build-guide)
 16. [Semi-Open Source Contribution Guidelines & PR Workflow](#16-semi-open-source-contribution-guidelines--pr-workflow)
 17. [Dispute Resolution & State Machine Flow](#17-dispute-resolution--state-machine-flow)
-18. [Hackathon Verification & Submission Info](#18-hackathon-verification--submission-info)
+18. [Hackathon Submission & Verification Info](#18-hackathon-submission--verification-info)
 
 ---
 
@@ -362,7 +362,7 @@ contract SkillMaxBadge is ERC1155, Ownable {
 
     event BadgeMinted(address indexed provider, uint256 indexed categoryId);
 
-    constructor(string me _baseUri) ERC1155(_baseUri) Ownable(msg.sender) {}
+    constructor(string memory _baseUri) ERC1155(_baseUri) Ownable(msg.sender) {}
 
     function mintBadge(address provider, uint256 categoryId) external onlyOwner {
         _mint(provider, categoryId, 1, "");
@@ -749,9 +749,9 @@ skillmax/
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-   RAZORPAY_KEY_ID=rzp_live_TNjguD8s86pvzS
-   RAZORPAY_KEY_SECRET=your_secret
-   RAZORPAY_WEBHOOK_SECRET=skillmax_webhook_secret_2026
+   RAZORPAY_KEY_ID=rzp_test_xxxx
+   RAZORPAY_KEY_SECRET=your_secret_here
+   RAZORPAY_WEBHOOK_SECRET=your_webhook_secret_here
 
    NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS=0x...
    NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS=0x...

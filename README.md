@@ -749,9 +749,9 @@ skillmax/
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
    SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-   RAZORPAY_KEY_ID=rzp_live_TNjguD8s86pvzS
-   RAZORPAY_KEY_SECRET=your_secret
-   RAZORPAY_WEBHOOK_SECRET=skillmax_webhook_secret_2026
+   RAZORPAY_KEY_ID=rzp_test_xxxx
+   RAZORPAY_KEY_SECRET=your_secret_here
+   RAZORPAY_WEBHOOK_SECRET=your_webhook_secret_here
 
    NEXT_PUBLIC_ESCROW_CONTRACT_ADDRESS=0x...
    NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS=0x...
