@@ -3,52 +3,77 @@
 import { useReadContract } from 'wagmi'
 import { ESCROW_ABI, ESCROW_ADDRESS } from '@/lib/contracts'
 import { shortenAddress, monadScanAddress } from '@/lib/utils'
+import { Star, ExternalLink, ShieldCheck } from 'lucide-react'
 
-export function OnChainReputation({ walletAddress }: { walletAddress: string }) {
-  const { data, isLoading } = useReadContract({
-    address: ESCROW_ADDRESS,
+interface Props {
+  walletAddress: string | null
+}
+
+export function OnChainReputation({ walletAddress }: Props) {
+  const { data: rep, isLoading } = useReadContract({
+    address: ESCROW_ADDRESS as `0x${string}`,
     abi: ESCROW_ABI,
     functionName: 'getReputation',
-    args: [walletAddress as `0x${string}`],
+    args: walletAddress ? [walletAddress as `0x${string}`] : undefined,
+    query: {
+      enabled: Boolean(walletAddress),
+    },
   })
 
-  if (isLoading) return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-      <p className="text-xs text-gray-400">Loading on-chain data...</p>
-    </div>
-  )
+  if (!walletAddress) {
+    return (
+      <div className="rounded-lg border border-gray-200 bg-white p-4">
+        <p className="text-xs text-gray-400">No wallet connected for on-chain reputation query.</p>
+      </div>
+    )
+  }
 
-  if (!data) return null
+  if (isLoading) {
+    return (
+      <div className="rounded-lg border border-gray-200 bg-white p-4 animate-pulse">
+        <p className="text-xs text-gray-400">Querying Monad smart contract...</p>
+      </div>
+    )
+  }
 
-  const [completed, disputed, ratingCount, avgRating100] = data as [bigint, bigint, bigint, bigint]
-  const avgDisplay = ratingCount > BigInt(0)
-    ? (Number(avgRating100) / 100).toFixed(1)
-    : '—'
+  const [jobsCount, avgRating100] = (rep as any) ?? [0n, 0n]
+  const jobs = Number(jobsCount ?? 0n)
+  const avgDisplay = jobs > 0 ? (Number(avgRating100 ?? 0n) / 100).toFixed(1) : 'No ratings'
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">On-Chain Reputation</p>
-      <div className="mt-3 grid grid-cols-3 gap-3">
+    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-3">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1">
+          <ShieldCheck className="h-4 w-4 text-emerald-600" />
+          On-Chain Monad Reputation
+        </span>
+        <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700">
+          Live Escrow Data
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 border-t border-gray-100 pt-3">
         <div>
-          <p className="text-xl font-semibold text-gray-900">{completed.toString()}</p>
-          <p className="text-xs text-gray-500">Verified jobs</p>
+          <p className="text-xs text-gray-400">Completed Jobs</p>
+          <p className="text-xl font-bold text-gray-900">{jobs}</p>
         </div>
         <div>
-          <p className="text-xl font-semibold text-gray-900">★ {avgDisplay}</p>
-          <p className="text-xs text-gray-500">Avg rating</p>
-        </div>
-        <div>
-          <p className="text-xl font-semibold text-gray-900">{disputed.toString()}</p>
-          <p className="text-xs text-gray-500">Disputes</p>
+          <p className="text-xs text-gray-400">Average Rating</p>
+          <p className="text-xl font-bold text-gray-900 flex items-center gap-1">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            {avgDisplay}
+          </p>
         </div>
       </div>
+
       <a
         href={monadScanAddress(walletAddress)}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-3 block font-mono text-xs text-emerald-600 hover:underline"
+        className="inline-flex items-center gap-1 font-mono text-xs text-emerald-600 hover:underline pt-1"
       >
-        {shortenAddress(walletAddress)} ↗ MonadScan
+        <span>{shortenAddress(walletAddress)}</span>
+        <ExternalLink className="h-3 w-3" />
       </a>
     </div>
   )

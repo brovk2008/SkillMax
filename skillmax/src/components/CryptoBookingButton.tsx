@@ -73,7 +73,7 @@ export function CryptoBookingButton({ skillId, priceMon, providerAddress, provid
     : isConfirming
     ? 'Confirming on Monad...'
     : status === 'done'
-    ? '✓ Booked!'
+    ? 'Booked Successfully'
     : `Book · ${priceMon} MON`
 
   return (

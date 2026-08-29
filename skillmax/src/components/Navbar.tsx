@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { WalletConnectButton } from '@/components/WalletConnectButton'
 import { NotifBadge } from '@/components/NotifBadge'
+import { MapPin, Search, Plus, UserCheck } from 'lucide-react'
 
 interface NavbarProps {
   user?: {
@@ -36,7 +37,7 @@ export function Navbar({ user }: NavbarProps) {
 
           {/* Urban Company Location Selector */}
           <div className="hidden md:flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-700">
-            <span>📍</span>
+            <MapPin className="h-3.5 w-3.5 text-emerald-600" />
             <span>Delhi NCR</span>
             <span className="text-gray-400">▾</span>
           </div>
@@ -48,9 +49,7 @@ export function Navbar({ user }: NavbarProps) {
             href="/explore"
             className="w-full flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs text-gray-500 hover:bg-gray-100 transition-colors"
           >
-            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <Search className="h-4 w-4 text-gray-400" />
             <span>Search for 'Electrician', 'Tutoring', 'Web Design'...</span>
           </Link>
         </div>
@@ -83,16 +82,18 @@ export function Navbar({ user }: NavbarProps) {
             {user ? (
               <Link
                 href="/skills/new"
-                className="rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+                className="flex items-center gap-1 rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
               >
-                + Offer Skill
+                <Plus className="h-3.5 w-3.5" />
+                <span>Offer Skill</span>
               </Link>
             ) : (
               <Link
                 href="/onboard"
-                className="rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
+                className="flex items-center gap-1 rounded-lg bg-black px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-600 transition-colors shadow-sm"
               >
-                Sign In
+                <UserCheck className="h-3.5 w-3.5" />
+                <span>Sign In</span>
               </Link>
             )}
           </div>

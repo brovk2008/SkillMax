@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { formatINR } from '@/lib/utils'
+import { CheckCircle2, MapPin } from 'lucide-react'
 
 interface SkillCardProps {
   skill: {
@@ -34,7 +35,8 @@ export default function SkillCard({ skill }: SkillCardProps) {
               {skill.category}
             </span>
             <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-              ✓ Verified
+              <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+              Verified
             </span>
           </div>
 
@@ -43,19 +45,22 @@ export default function SkillCard({ skill }: SkillCardProps) {
             {skill.title}
           </h3>
 
-          {/* Provider Details & Rating */}
+          {/* Provider Details */}
           <div className="mt-3 flex items-center gap-2.5">
             <div className="h-7 w-7 rounded-full bg-gray-900 text-white flex items-center justify-center text-xs font-bold">
               {initials}
             </div>
             <div>
               <p className="text-xs font-medium text-gray-900">{skill.profiles.full_name}</p>
-              <p className="text-[11px] text-gray-400">📍 {skill.profiles.city}</p>
+              <p className="text-[11px] text-gray-500 flex items-center gap-0.5">
+                <MapPin className="h-3 w-3 text-gray-400" />
+                {skill.profiles.city}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Price & Book Pill Button (Urban Company Style) */}
+        {/* Bottom Bar */}
         <div className="mt-5 border-t border-gray-100 pt-3 flex items-center justify-between">
           <div>
             {skill.price_inr && (

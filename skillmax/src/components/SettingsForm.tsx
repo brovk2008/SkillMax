@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
+import { CheckCircle2 } from 'lucide-react'
 
 interface Profile {
   id: string
@@ -81,7 +82,12 @@ export default function SettingsForm({ profile }: { profile: Profile }) {
         />
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
-      {saved && <p className="text-xs text-emerald-600">✓ Profile saved</p>}
+      {saved && (
+        <p className="text-xs text-emerald-600 flex items-center gap-1">
+          <CheckCircle2 className="h-3.5 w-3.5" />
+          Profile saved successfully
+        </p>
+      )}
       <button
         type="submit"
         disabled={loading}

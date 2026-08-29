@@ -2,6 +2,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import SkillCard from '@/components/SkillCard'
 import { CATEGORY_NAMES } from '@/lib/contracts'
+import { MapPin, Search, ArrowRight } from 'lucide-react'
 
 interface Props {
   searchParams: Promise<{
@@ -40,7 +41,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           </div>
 
           <div className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-700">
-            <span>📍</span>
+            <MapPin className="h-3.5 w-3.5 text-emerald-600" />
             <span>Delhi NCR</span>
             <span className="text-gray-400">▾</span>
           </div>
@@ -50,7 +51,7 @@ export default async function ExplorePage({ searchParams }: Props) {
         <form action="/explore" method="GET" className="flex gap-2">
           {category && <input type="hidden" name="category" value={category} />}
           <div className="flex-1 flex items-center bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
-            <span className="text-gray-400 mr-2">🔍</span>
+            <Search className="h-4 w-4 text-gray-400 mr-2 shrink-0" />
             <input
               type="text"
               name="q"
@@ -67,7 +68,7 @@ export default async function ExplorePage({ searchParams }: Props) {
           </button>
         </form>
 
-        {/* Category Pills (Urban Company Style) */}
+        {/* Category Pills */}
         <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
           {['All', ...CATEGORY_NAMES].map((cat) => {
             const active = (category ?? 'All') === cat
@@ -108,9 +109,10 @@ export default async function ExplorePage({ searchParams }: Props) {
           <p className="text-sm text-gray-500">No services found matching your search.</p>
           <Link
             href="/explore"
-            className="mt-3 inline-block text-xs font-semibold text-emerald-700 hover:underline"
+            className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:underline"
           >
-            Clear filters →
+            <span>Clear filters</span>
+            <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       )}

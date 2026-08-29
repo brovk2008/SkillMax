@@ -4,6 +4,7 @@ import JobChat from '@/components/JobChat'
 import { BlockchainStatus } from '@/components/BlockchainStatus'
 import { STATUS_CLASSES, formatINR } from '@/lib/utils'
 import Link from 'next/link'
+import { CheckCircle2 } from 'lucide-react'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const supabase = await createServerClient()
@@ -86,9 +87,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
           {/* On-chain status */}
           {job.payment_method === 'crypto' && (
             <BlockchainStatus entries={[
-              { label: 'Escrow created', hash: job.chain_tx_create },
-              { label: 'Job completed', hash: job.chain_tx_complete },
-              { label: 'Dispute raised', hash: job.chain_tx_dispute },
+              { label: 'Escrow created', hash: job.chain_tx_create, status: job.chain_tx_create ? 'success' : 'idle' },
+              { label: 'Job completed', hash: job.chain_tx_complete, status: job.chain_tx_complete ? 'success' : 'idle' },
+              { label: 'Dispute raised', hash: job.chain_tx_dispute, status: job.chain_tx_dispute ? 'success' : 'idle' },
             ]} />
           )}
 
@@ -98,7 +99,10 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
               {isClient && job.status === 'provider_done' && (
                 <form action={`/api/jobs/${job.id}/mark-complete`} method="POST">
                   <button className="w-full rounded-md bg-green-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-green-700">
-                    Release Payment ✓
+                    <span className="flex items-center justify-center gap-1.5">
+                      <span>Release Payment</span>
+                      <CheckCircle2 className="h-4 w-4" />
+                    </span>
                   </button>
                 </form>
               )}
