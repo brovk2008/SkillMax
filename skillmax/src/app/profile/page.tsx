@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import { OnChainReputation } from '@/components/OnChainReputation'
 import { SkillBadges } from '@/components/SkillBadges'
 import { AchievementsGrid } from '@/components/AchievementsGrid'
@@ -9,15 +10,15 @@ import { UserStats } from '@/lib/achievements'
 import { MapPin, Phone, User as UserIcon, Tag, CheckCircle2 } from 'lucide-react'
 
 export default async function MyProfilePage() {
-  const supabase = await createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) redirect('/onboard')
+  const supabase = await createServerClient()
 
   const { data: profile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   if (!profile) redirect('/onboard')
 

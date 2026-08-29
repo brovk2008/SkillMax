@@ -139,6 +139,13 @@ export default function OnboardPage() {
     }
   }
 
+  function setSessionCookie(userId: string) {
+    document.cookie = `skillmax_user_id=${userId}; path=/; max-age=31536000; SameSite=Lax`
+    try {
+      localStorage.setItem('skillmax_user_id', userId)
+    } catch (e) {}
+  }
+
   // Handle Sign In
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault()
@@ -154,13 +161,14 @@ export default function OnboardPage() {
 
       if (error) {
         // If account doesn't exist yet, automatically create and sign in
-        if (error.message.includes('Invalid login credentials')) {
+        if (error.message.includes('Invalid login credentials') || error.message.includes('Email not confirmed')) {
           const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({
             email: cleanEmail,
             password,
           })
 
-          if (!signUpErr && signUpData.user) {
+          if (signUpData?.user) {
+            setSessionCookie(signUpData.user.id)
             const baseData = {
               id: signUpData.user.id,
               email: signUpData.user.email,
@@ -180,7 +188,8 @@ export default function OnboardPage() {
         return
       }
 
-      if (data.user || data.session) {
+      if (data?.user) {
+        setSessionCookie(data.user.id)
         window.location.href = '/dashboard'
       } else {
         window.location.href = '/dashboard'
@@ -214,6 +223,8 @@ export default function OnboardPage() {
       setLoading(false)
       return
     }
+
+    setSessionCookie(user.id)
 
     const baseData = {
       id: user.id,

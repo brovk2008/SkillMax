@@ -1,14 +1,15 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import JobCard from '@/components/JobCard'
 import Link from 'next/link'
 import { Plus, Trophy, Wallet, Coins, IndianRupee, CheckCircle2, ArrowRight, Award, ShieldCheck } from 'lucide-react'
 import { formatINR } from '@/lib/utils'
 
 export default async function DashboardPage() {
-  const supabase = await createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) redirect('/onboard')
+  const supabase = await createServerClient()
 
   const [{ data: profile }, { data: clientJobs }, { data: providerJobs }] = await Promise.all([
     supabase

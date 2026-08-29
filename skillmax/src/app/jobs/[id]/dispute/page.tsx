@@ -1,13 +1,14 @@
 import { notFound, redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import DisputeForm from '@/components/DisputeForm'
 import Link from 'next/link'
 
 export default async function DisputePage({ params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser()
+  if (!user) redirect('/onboard')
   const supabase = await createServerClient()
   const { id } = await params
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/onboard')
 
   const { data: job } = await supabase
     .from('jobs')

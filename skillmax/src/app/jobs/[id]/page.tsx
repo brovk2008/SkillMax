@@ -1,5 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import JobChat from '@/components/JobChat'
 import { BlockchainStatus } from '@/components/BlockchainStatus'
 import { STATUS_CLASSES, formatINR } from '@/lib/utils'
@@ -7,10 +8,10 @@ import Link from 'next/link'
 import { CheckCircle2 } from 'lucide-react'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const user = await getCurrentUser()
+  if (!user) redirect('/onboard')
   const supabase = await createServerClient()
   const { id } = await params
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/onboard')
 
   const { data: job } = await supabase
     .from('jobs')

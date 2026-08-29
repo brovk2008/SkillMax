@@ -1,12 +1,13 @@
 import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase/server'
+import { getCurrentUser } from '@/lib/auth'
 import Link from 'next/link'
 import { MessageSquare, Clock, ArrowRight, User } from 'lucide-react'
 
 export default async function MessagesInboxPage() {
-  const supabase = await createServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await getCurrentUser()
   if (!user) redirect('/onboard')
+  const supabase = await createServerClient()
 
   // Query jobs where user is client or provider
   const { data: jobs } = await supabase
