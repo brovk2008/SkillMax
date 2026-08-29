@@ -53,7 +53,7 @@ export default async function MyProfilePage() {
     chatMessagesCount: 5,
     categoriesCount,
     city: profile.city ?? '',
-    joinedYear: new Date(profile.created_at ?? Date.now()).getFullYear(),
+    joinedYear: new Date(profile.created_at || '2026-01-01').getFullYear(),
   }
 
   const avatar = profile.avatar_url || 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix'

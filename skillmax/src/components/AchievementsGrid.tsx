@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { COMMUNITY_ACHIEVEMENTS, UserStats } from '@/lib/achievements'
 import { Trophy, Award, Lock, CheckCircle2, Flame, ShieldCheck } from 'lucide-react'
 
@@ -11,22 +11,20 @@ interface Props {
 export function AchievementsGrid({ stats }: Props) {
   const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all')
 
-  let totalPoints = 0
-  let unlockedCount = 0
-
-  const items = COMMUNITY_ACHIEVEMENTS.map((ach) => {
-    const { unlocked, progress, maxProgress } = ach.checkUnlocked(stats)
-    if (unlocked) {
-      totalPoints += ach.points
-      unlockedCount += 1
-    }
-    return {
-      ...ach,
-      unlocked,
-      progress,
-      maxProgress,
-    }
-  })
+  const { items, totalPoints, unlockedCount } = useMemo(() => {
+    const list = COMMUNITY_ACHIEVEMENTS.map((ach) => {
+      const { unlocked, progress, maxProgress } = ach.checkUnlocked(stats)
+      return {
+        ...ach,
+        unlocked,
+        progress,
+        maxProgress,
+      }
+    })
+    const points = list.filter((i) => i.unlocked).reduce((acc, i) => acc + i.points, 0)
+    const count = list.filter((i) => i.unlocked).length
+    return { items: list, totalPoints: points, unlockedCount: count }
+  }, [stats])
 
   const filteredItems = items.filter((item) => {
     if (filter === 'unlocked') return item.unlocked
