@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { createBrowserClient } from '@/lib/supabase/client'
+import { encryptMessage, decryptMessage } from '@/lib/crypto'
+import { ShieldCheck, Lock } from 'lucide-react'
 
 interface Message {
   id: string
@@ -19,11 +21,25 @@ interface Props {
 }
 
 export default function JobChat({ jobId, currentUserId, initialMessages, disabled = false }: Props) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const supabase = createBrowserClient()
+
+  // Decrypt initial messages on mount
+  useEffect(() => {
+    async function decryptInitial() {
+      const decrypted = await Promise.all(
+        initialMessages.map(async (msg) => ({
+          ...msg,
+          content: await decryptMessage(msg.content, jobId),
+        }))
+      )
+      setMessages(decrypted)
+    }
+    decryptInitial()
+  }, [initialMessages, jobId])
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -51,12 +67,14 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
             .eq('id', payload.new.sender_id)
             .single()
 
+          const decryptedText = await decryptMessage(payload.new.content, jobId)
+
           setMessages((prev) => [
             ...prev,
             {
               id: payload.new.id,
               sender_id: payload.new.sender_id,
-              content: payload.new.content,
+              content: decryptedText,
               created_at: payload.new.created_at,
               profiles: profile ?? { full_name: 'Unknown' },
             },
@@ -73,37 +91,47 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
   async function handleSend() {
     if (!input.trim() || sending || disabled) return
     setSending(true)
-    const content = input.trim()
+    const plainContent = input.trim()
     setInput('')
+
+    // Client-side Web3 Encryption
+    const cipherContent = await encryptMessage(plainContent, jobId)
 
     const { error } = await supabase.from('messages').insert({
       job_id: jobId,
       sender_id: currentUserId,
-      content,
+      content: cipherContent,
     })
 
     if (error) {
       console.error('Send message error:', error)
-      setInput(content)
+      setInput(plainContent)
     }
     setSending(false)
   }
 
   return (
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-white" style={{ height: '420px' }}>
-      <div className="border-b border-gray-200 px-4 py-3 font-medium text-sm text-gray-900 flex items-center justify-between">
-        <span>Job Chat</span>
-        <span className="flex items-center gap-1 text-xs font-normal text-emerald-700">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          Realtime
+    <div className="flex flex-col rounded-xl border border-slate-200 bg-white shadow-xs" style={{ height: '440px' }}>
+      {/* Header with Web3 Encryption Badge */}
+      <div className="border-b border-slate-200 px-4 py-3 bg-slate-50/70 rounded-t-xl flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Lock className="h-4 w-4 text-emerald-600" />
+          <span className="font-bold text-xs text-slate-900">Encrypted Job Chat</span>
+        </div>
+        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-200">
+          <ShieldCheck className="h-3 w-3 text-emerald-600" />
+          AES-GCM 256-Bit E2EE
         </span>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.length === 0 ? (
-          <p className="text-center text-xs text-gray-400 py-8">
-            No messages yet. Send a message to get started.
-          </p>
+          <div className="text-center text-xs text-slate-400 py-10 space-y-1">
+            <Lock className="h-5 w-5 text-slate-300 mx-auto mb-1" />
+            <p className="font-medium text-slate-600">End-to-End Encrypted Channel Established</p>
+            <p className="text-[11px]">Messages are encrypted client-side using 256-bit AES-GCM before transmission.</p>
+          </div>
         ) : (
           messages.map((msg) => {
             const isOwn = msg.sender_id === currentUserId
@@ -112,14 +140,14 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
                 key={msg.id}
                 className={`flex flex-col ${isOwn ? 'items-end' : 'items-start'}`}
               >
-                <span className="text-xs text-gray-400 mb-0.5 px-1">
+                <span className="text-[11px] text-slate-400 mb-0.5 px-1">
                   {isOwn ? 'You' : msg.profiles?.full_name ?? 'Other party'}
                 </span>
                 <div
-                  className={`max-w-xs rounded-lg px-3 py-2 text-sm ${
+                  className={`max-w-xs rounded-xl px-3.5 py-2 text-xs leading-relaxed ${
                     isOwn
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-gray-100 text-gray-900 border border-gray-200'
+                      ? 'bg-emerald-600 text-white font-medium shadow-xs'
+                      : 'bg-slate-100 text-slate-900 border border-slate-200'
                   }`}
                 >
                   {msg.content}
@@ -131,19 +159,20 @@ export default function JobChat({ jobId, currentUserId, initialMessages, disable
         <div ref={bottomRef} />
       </div>
 
-      <div className="border-t border-gray-200 p-3 flex gap-2">
+      {/* Input Form */}
+      <div className="border-t border-slate-200 p-3 flex gap-2 bg-slate-50/50 rounded-b-xl">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-          placeholder={disabled ? 'Chat closed' : 'Type a message...'}
+          placeholder={disabled ? 'Chat closed' : 'Type encrypted message...'}
           disabled={disabled}
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none disabled:bg-gray-50 disabled:text-gray-400"
+          className="flex-1 rounded-lg border border-slate-300 px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none disabled:bg-slate-100 disabled:text-slate-400"
         />
         <button
           onClick={handleSend}
           disabled={sending || !input.trim() || disabled}
-          className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs transition-colors"
         >
           Send
         </button>
