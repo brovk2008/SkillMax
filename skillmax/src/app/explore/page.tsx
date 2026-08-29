@@ -17,7 +17,7 @@ export default async function ExplorePage({ searchParams }: Props) {
 
   let query = supabase
     .from('skills')
-    .select('*, profiles(username, full_name, city)')
+    .select('*, profiles(username, full_name, city, avatar_url)')
     .eq('is_active', true)
 
   if (category && category !== 'All') {

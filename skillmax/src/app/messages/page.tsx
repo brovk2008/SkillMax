@@ -33,7 +33,7 @@ export default async function MessagesInboxPage() {
       status: j.status,
       otherPartyName: otherParty?.full_name ?? 'Community Member',
       otherPartyUsername: otherParty?.username ?? 'user',
-      avatarUrl: otherParty?.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      avatarUrl: otherParty?.avatar_url || '/logo.png',
       lastMessageText: lastMsg?.content ?? 'No chat messages yet. Click to start conversation.',
       lastMessageTime: lastMsg?.created_at ?? j.created_at,
     }

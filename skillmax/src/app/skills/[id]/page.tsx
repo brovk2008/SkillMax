@@ -51,9 +51,11 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ id
           <div className="rounded-lg border border-gray-200 bg-white p-5">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Service Provider</p>
             <Link href={`/profile/${provider?.username}`} className="flex items-center gap-3 hover:opacity-80">
-              <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-semibold">
-                {provider?.full_name?.charAt(0) ?? '?'}
-              </div>
+              <img
+                src={provider?.avatar_url || '/logo.png'}
+                alt={provider?.full_name}
+                className="h-10 w-10 rounded-full object-cover border border-slate-200"
+              />
               <div>
                 <p className="text-sm font-medium text-gray-900">{provider?.full_name}</p>
                 <p className="text-xs text-gray-500">@{provider?.username} · {provider?.city}</p>

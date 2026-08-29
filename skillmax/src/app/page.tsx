@@ -43,7 +43,7 @@ export default async function HomePage() {
   const supabase = await createServerClient()
   const { data: featuredSkills } = await supabase
     .from('skills')
-    .select('id, title, category, price_inr, price_mon, profiles(username, full_name, city)')
+    .select('id, title, category, price_inr, price_mon, profiles(username, full_name, city, avatar_url)')
     .eq('is_active', true)
     .limit(6)
 

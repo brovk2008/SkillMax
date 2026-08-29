@@ -26,11 +26,20 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
     <div className="mx-auto max-w-5xl px-4 py-10">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-4">
-          <div className="rounded-lg border border-gray-200 p-5">
-            <p className="text-base font-medium text-gray-900">{profile.full_name}</p>
-            <p className="text-sm text-gray-500">@{profile.username}</p>
-            <p className="mt-1 text-xs text-gray-400">{profile.city}</p>
-            {profile.bio && <p className="mt-3 text-sm text-gray-600">{profile.bio}</p>}
+          <div className="rounded-lg border border-gray-200 p-5 space-y-3">
+            <div className="flex items-center gap-3">
+              <img
+                src={profile.avatar_url || '/logo.png'}
+                alt={profile.full_name}
+                className="size-12 rounded-full object-cover border border-slate-200"
+              />
+              <div>
+                <p className="text-base font-bold text-gray-900">{profile.full_name}</p>
+                <p className="text-xs text-gray-500">@{profile.username} · {profile.city}</p>
+              </div>
+            </div>
+            {profile.headline && <p className="text-xs font-semibold text-fuchsia-600">{profile.headline}</p>}
+            {profile.bio && <p className="text-xs text-gray-600">{profile.bio}</p>}
           </div>
           {profile.wallet_address && (
             <>
