@@ -5,9 +5,10 @@ import JobChat from '@/components/JobChat'
 import { BlockchainStatus } from '@/components/BlockchainStatus'
 import { ReleasePaymentButton } from '@/components/ReleasePaymentButton'
 import { MarkDoneButton } from '@/components/MarkDoneButton'
+import { FundEscrowButton } from '@/components/FundEscrowButton'
 import { STATUS_CLASSES, formatINR } from '@/lib/utils'
 import Link from 'next/link'
-import { CheckCircle2, ShieldCheck, ArrowLeft } from 'lucide-react'
+import { CheckCircle2, ShieldCheck, ArrowLeft, Lock } from 'lucide-react'
 
 export default async function JobDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser()
@@ -77,6 +78,17 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
 
         {/* Sidebar — 2/5 */}
         <div className="lg:col-span-2 space-y-4">
+          
+          {/* Client Action Needed: Fund Escrow from Wallet if not funded yet */}
+          {isClient && job.payment_method === 'crypto' && !job.chain_tx_create && job.price_mon && !isClosed && (
+            <FundEscrowButton
+              jobId={job.id}
+              priceMon={job.price_mon}
+              providerAddress={(job.provider_profile as any)?.wallet_address}
+              providerName={(job.provider_profile as any)?.full_name || 'Provider'}
+            />
+          )}
+
           {/* Job info */}
           <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3.5 shadow-xs">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Escrow Details</h3>
